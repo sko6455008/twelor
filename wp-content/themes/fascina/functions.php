@@ -59,27 +59,6 @@ function fascina_register_gallery_post_type() {
 }
 add_action('init', 'fascina_register_gallery_post_type');
 
-// カスタム投稿タイプ: 口コミ
-function fascina_register_review_post_type() {
-    $args = array(
-        'public' => true,
-        'label'  => '口コミ',
-        'labels' => array(
-            'name' => '口コミ',
-            'singular_name' => '口コミ',
-            'add_new' => '新規追加',
-            'add_new_item' => '新規口コミを追加',
-            'edit_item' => '口コミを編集',
-        ),
-        'supports' => array('title', 'editor', 'thumbnail'),
-        'menu_icon' => 'dashicons-testimonial',
-        'has_archive' => true,
-        'rewrite' => array('slug' => 'review'),
-    );
-    register_post_type('review', $args);
-}
-add_action('init', 'fascina_register_review_post_type');
-
 // カスタム投稿タイプ: クーポン
 function fascina_register_coupon_post_type() {
     $args = array(
@@ -187,43 +166,6 @@ function fascina_register_acf_fields() {
                 ),
             ),
         ));
-        
-        // 口コミ用フィールド
-        acf_add_local_field_group(array(
-            'key' => 'group_review',
-            'title' => '口コミ詳細',
-            'fields' => array(
-                array(
-                    'key' => 'field_review_rating',
-                    'label' => '評価',
-                    'name' => 'review_rating',
-                    'type' => 'number',
-                    'min' => 1,
-                    'max' => 5,
-                ),
-                array(
-                    'key' => 'field_review_author',
-                    'label' => '投稿者',
-                    'name' => 'review_author',
-                    'type' => 'text',
-                ),
-                array(
-                    'key' => 'field_review_date',
-                    'label' => '投稿日',
-                    'name' => 'review_date',
-                    'type' => 'date_picker',
-                ),
-            ),
-            'location' => array(
-                array(
-                    array(
-                        'param' => 'post_type',
-                        'operator' => '==',
-                        'value' => 'review',
-                    ),
-                ),
-            ),
-        ));
 
         // お知らせ用フィールド
         acf_add_local_field_group(array(
@@ -291,16 +233,51 @@ function fascina_register_acf_fields() {
             'title' => 'クーポン詳細',
             'fields' => array(
                 array(
-                    'key' => 'field_coupon_price',
-                    'label' => '価格',
-                    'name' => 'coupon_price',
+                    'key' => 'field_coupon_name',
+                    'label' => 'クーポン名称',
+                    'name' => 'coupon_name',
                     'type' => 'text',
+                    'required' => 1,
                 ),
                 array(
-                    'key' => 'field_coupon_expiry',
-                    'label' => '有効期限',
-                    'name' => 'coupon_expiry',
-                    'type' => 'date_picker',
+                    'key' => 'field_coupon_period',
+                    'label' => 'クーポン表示期間',
+                    'name' => 'coupon_period',
+                    'type' => 'date_range_picker',
+                    'required' => 1,
+                    'display_format' => 'Y/m/d',
+                    'return_format' => 'Y/m/d',
+                ),
+                array(
+                    'key' => 'field_coupon_price',
+                    'label' => 'クーポン価格',
+                    'name' => 'coupon_price',
+                    'type' => 'text',
+                    'required' => 1,
+                ),
+                array(
+                    'key' => 'field_coupon_guidance',
+                    'label' => '案内文',
+                    'name' => 'coupon_guidance',
+                    'type' => 'textarea',
+                    'required' => 1,
+                ),
+                array(
+                    'key' => 'field_coupon_description',
+                    'label' => '説明文',
+                    'name' => 'coupon_description',
+                    'type' => 'textarea',
+                    'required' => 1,
+                ),
+                array(
+                    'key' => 'field_coupon_image',
+                    'label' => 'クーポン画像',
+                    'name' => 'coupon_image',
+                    'type' => 'image',
+                    'required' => 1,
+                    'return_format' => 'array',
+                    'preview_size' => 'medium',
+                    'library' => 'all',
                 ),
             ),
             'location' => array(

@@ -66,8 +66,6 @@
             <li><a href="/gallery_guest_nail_1.html">GUESTギャラリー</a></li>
             <li><a href="/gallery_arts_parts7_1.html">アート・パーツ</a></li>
             <li><a href="/coupon/">月替わりクーポン</a></li>
-            <li><a href="/review/">クチコミ</a></li>
-            <li><a href="https://ameblo.jp/fascina/" target="_blank">ブログ</a></li>
             <li><a href="https://fascina.jp/care.html#here" target="_blank">グリーンネイルについて</a></li>
         </ul>
 
@@ -94,8 +92,6 @@
             <li><a href="<?php echo esc_url(home_url('/gallery_guest_nail_1.html')); ?>">GUESTギャラリー</a></li>
             <li><a href="<?php echo esc_url(home_url('/gallery_arts_parts7_1.html')); ?>">アート・パーツ</a></li>
             <li><a href="<?php echo esc_url(home_url('/coupon/')); ?>">月替わりクーポン</a></li>
-            <li><a href="<?php echo esc_url(home_url('/review/')); ?>">クチコミ</a></li>
-            <li><a href="https://ameblo.jp/fascina/" target="_blank">ブログ</a></li>
             <li><a href="https://fascina.jp/care.html#here" target="_blank">グリーンネイルについて</a></li>
         </ul>
     </nav>

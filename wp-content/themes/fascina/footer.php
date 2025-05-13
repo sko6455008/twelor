@@ -20,13 +20,11 @@
                     <ul>
                       <li><a href="<?php echo esc_url(home_url('/')); ?>">トップ</a></li>
                       <li><a href="<?php echo esc_url(home_url('/first/')); ?>">初めての方へ</a></li>
-                      <li><a href="<?php echo esc_url(home_url('/menu/')); ?>">メニュー</a></li>
+                      <li><a href="<?php echo esc_url(home_url('/menu/')); ?>">料金メニュー</a></li>
                       <li><a href="<?php echo esc_url(home_url('/qa/')); ?>">Q&A</a></li>
                       <li><a href="<?php echo esc_url(home_url('/access/')); ?>">アクセス</a></li>
                       <li><a href="<?php echo esc_url(home_url('/recruit/')); ?>">リクルート</a></li>
                       <li><a href="https://fascina.jp/care.html#here" target="_blank">グリーンネイルについて</a></li>
-                      <li><a href="<?php echo esc_url(home_url('/parts/')); ?>">用語集/ネイルアートパーツ</a></li>
-                      <li><a href="<?php echo esc_url(home_url('/contact/')); ?>">お問い合わせ</a></li>
                     </ul>
                   </div>
                   <div class="footer-menu-column">
