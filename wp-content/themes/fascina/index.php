@@ -29,7 +29,7 @@
                             <div class="ranking-number"><?php echo esc_html($position); ?> 位</div>
                             <?php if (has_post_thumbnail()) : ?>
                                 <a href="<?php the_permalink(); ?>">
-                                    <?php the_post_thumbnail('medium'); ?>
+                                    <?php the_post_thumbnail('large'); ?>
                                 </a>
                             <?php endif; ?>
                         </div>
@@ -84,11 +84,11 @@
     <!-- HAND定額コースセクション -->
     <section class="hand-design-section">
         <h2 class="fascina-section-title">HAND定額コース</h2>
-        <ul class="hand-design-box">
+        <div class="design-box">
             <?php
             $hand_args = array(
                 'post_type' => 'gallery',
-                'posts_per_page' => 6,
+                'posts_per_page' => 9,
                 'tax_query' => array(
                     array(
                         'taxonomy' => 'gallery_main_category',
@@ -101,22 +101,24 @@
             if ($hand_query->have_posts()) :
                 while ($hand_query->have_posts()) : $hand_query->the_post();
             ?>
-                <li class="card">
-                    <a href="<?php the_permalink(); ?>">
-                        <?php the_post_thumbnail('medium', array('class' => 'card-img-top')); ?>
-                    </a>
-                    <p class="card-title"><?php the_title(); ?></p>
-                </li>
+                <div>
+                    <div class="image-box">
+                        <a href="<?php the_permalink(); ?>" class="design-link">
+                            <?php the_post_thumbnail('large', array('class' => 'image')); ?>
+                        </a>
+                    </div>
+                    <p class="design-title"><?php the_title(); ?></p>
+                </div>
             <?php
                 endwhile;
                 wp_reset_postdata();
             else :
             ?>
-                <div class="col-12">
+                <div class="no-designs">
                     <p style="text-align: center;">HAND定額コースはありません。</p>
                 </div>
             <?php endif; ?>
-        </ul>
+        </div>
         <div class="text-center py-4">
             <a href="<?php echo esc_url(home_url('/gallery-category/hand/')); ?>" class="btn more-button">
                 もっと見る <i class="fas fa-chevron-right ms-2"></i>
@@ -127,11 +129,11 @@
     <!-- GUESTギャラリーセクション -->
     <section class="guest-design-section">
         <h2 class="fascina-section-title">GUESTギャラリー</h2>
-        <ul class="hand-design-box">
+        <div class="design-box">
             <?php
             $guest_args = array(
                 'post_type' => 'gallery',
-                'posts_per_page' => 6,
+                'posts_per_page' => 9,
                 'tax_query' => array(
                     array(
                         'taxonomy' => 'gallery_main_category',
@@ -144,22 +146,24 @@
             if ($guest_query->have_posts()) :
                 while ($guest_query->have_posts()) : $guest_query->the_post();
             ?>
-                <li class="card">
-                    <a href="<?php the_permalink(); ?>">
-                        <?php the_post_thumbnail('medium', array('class' => 'card-img-top')); ?>
-                    </a>
-                    <p class="card-title"><?php the_title(); ?></p>
-                </li>
+                <div>
+                    <div class="image-box">
+                        <a href="<?php the_permalink(); ?>" class="design-link">
+                            <?php the_post_thumbnail('large', array('class' => 'image')); ?>
+                        </a>
+                    </div>
+                    <p class="design-title"><?php the_title(); ?></p>
+                </div>
             <?php
                 endwhile;
                 wp_reset_postdata();
             else :
             ?>
-                <div class="col-12">
+                <div class="no-designs">
                     <p style="text-align: center;">GUESTギャラリーはありません。</p>
                 </div>
             <?php endif; ?>
-        </ul>
+        </div>
         <div class="text-center py-4">
             <a href="<?php echo esc_url(home_url('/gallery-category/guest/')); ?>" class="btn more-button">
                 もっと見る <i class="fas fa-chevron-right ms-2"></i>
@@ -170,11 +174,11 @@
     <!-- クーポンセクション -->
     <section class="coupon-section">
         <h2 class="fascina-section-title">クーポン</h2>
-        <div class="coupon-box">
+        <div class="design-box">
             <?php
             $coupon_args = array(
                 'post_type' => 'coupon',
-                'posts_per_page' => 3,
+                'posts_per_page' => 9,
                 'orderby' => 'date',
                 'order' => 'DESC',
             );
@@ -188,16 +192,14 @@
                     $coupon_guidance = get_field('coupon_guidance');
                     $coupon_description = get_field('coupon_description');
             ?>
-                    <div class="coupon-card">
-                        <div class="coupon-content">
-                            <h3 class="coupon-title"><?php echo esc_html($coupon_name); ?></h3>
-                            <p class="coupon-price"><?php echo esc_html($coupon_price); ?></p>
-                            <div class="coupon-guidance"><?php echo nl2br(esc_html($coupon_guidance)); ?></div>
-                            <div class="coupon-description"><?php echo nl2br(esc_html($coupon_description)); ?></div>
-                        </div>
-                        <div class="coupon-image">
+                    <div class="coupon">
+                        <div class="coupon-title"><?php echo esc_html($coupon_name); ?></div>
+                        <div class="coupon-guidance"><?php echo nl2br(esc_html($coupon_guidance)); ?></div>
+                        <div class="coupon-description"><?php echo nl2br(esc_html($coupon_description)); ?></div>   
+                        <div class="coupon-price"><?php echo esc_html($coupon_price); ?></div>
+                        <div class="coupon-image-box">
                             <a href="<?php the_permalink(); ?>">
-                                <?php the_post_thumbnail('medium', array('class' => 'coupon-img')); ?>
+                                <?php the_post_thumbnail('large', array('class' => 'coupon-image')); ?>
                             </a>
                         </div>
                         <p class="coupon-period">有効期間: <?php echo esc_html($coupon_period); ?></p>
@@ -207,7 +209,7 @@
                 wp_reset_postdata();
             else :
             ?>
-                <div class="col-12">
+                <div class="no-designs">
                     <p style="text-align: center;">クーポンはありません。</p>
                 </div>
             <?php endif; ?>

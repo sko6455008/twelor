@@ -390,7 +390,7 @@ address {
     background-color: #f5dfee;
 }
 
-.hand-design-box {
+.design-box {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 15px;
@@ -399,30 +399,32 @@ address {
     margin: 0;
 }
 
-.hand-design-box .card {
+.image-box{
     background-color: #fff;
     border: 1px solid #eee;
-    border-radius: 8px;
     overflow: hidden;
     text-align: center;
     transition: transform 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
-.hand-design-box .card:hover {
-    transform: scale(1.03);
-}
-
-.hand-design-box .card-img-top {
-    width: 100%;
-    height: auto;
+.design-link {
     display: block;
 }
 
-.hand-design-box .card-title {
+.image {
+    width: 100%;
+    height: auto;
+    display: inline-block;
+    padding: 5px;
+}
+
+.design-title {
     font-size: 16px;
-    margin: 10px 0;
     padding: 0 10px;
     color: #333;
+    text-align: center;
+    margin-bottom: 15px;
 }
 
 /* GUESTギャラリーセクション */
@@ -430,99 +432,69 @@ address {
     background-color: #fff;
 }
 
-
 /* クーポンセクション */
 .coupon-section {
     background-color: #F9C1CF;
 }
 
-.coupon-box {
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  gap: 15px;
-  margin: 0;
-  padding: 0 8%;
+.coupon {
+    background-color: #fff;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 5px solid #eee;
 }
 
-.coupon-card {
-  background-color: #fff;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  display: flex;
-  flex-direction: column;
-}
-
-.coupon-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-}
-
-.coupon-image {
-  position: relative;
-  width: 100%;
-  padding-top: 75%;
-  overflow: hidden;
-}
-
-.coupon-img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-}
-
-.coupon-card:hover .coupon-img {
-  transform: scale(1.05);
-}
-
-.coupon-content {
-  padding: 15px;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
+.coupon:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
 }
 
 .coupon-title {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 10px;
-  color: #333;
-}
-
-.coupon-price {
-  font-size: 20px;
-  font-weight: bold;
-  color: #ff69b4;
-  margin-bottom: 10px;
+    font-size: 20px;
+    text-align: center;
+    font-weight: bold;
 }
 
 .coupon-guidance {
-  font-size: 14px;
-  margin-bottom: 10px;
-  color: #333;
+    font-size: 15px;
+    background-color: #ff69b4;
+    color: #fff;
+    margin: 0 auto;
+    text-align: center;
 }
 
 .coupon-description {
-  font-size: 13px;
-  color: #666;
-  margin-bottom: 10px;
-  flex-grow: 1;
+    font-size: 15px;
+    text-align: center;
+}
+
+.coupon-price {
+    font-size: 20px;
+    text-align: end;
+    font-weight: bold;
+    padding: 0 10px;
+}
+
+.coupon-image{
+    width: 100%;
+    height: auto;
+    display: inline-block;
+    padding: 10px;
 }
 
 .coupon-period {
-  font-size: 12px;
-  color: #888;
-  margin-top: auto;
-  border-top: 1px dashed #ddd;
-  padding-top: 10px;
+    font-size: 15px;
+    color: #888;
+    padding: 0 10px 10px;
 }
 
 /* 全体のセクション */
+.no-designs {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 20px;
+}
+
 .more-button {
     background-color: #ff69b4;
     color: white;
@@ -766,6 +738,12 @@ address {
         margin-bottom: 5px;
     }
 
+    /* HAND定額セクション,GUESTギャラリーセクション,クーポンセクション */
+    .design-box {
+        grid-template-columns: 1fr;
+        padding: 0 10%;
+    }
+
     /* フッター */
     .footer-container {
         flex-direction: column;
@@ -790,11 +768,4 @@ address {
         height: 30px;
         font-size: 14px;
     }
-}
-
-/* クーポンセクション */
-@media (min-width: 768px) {
-  .coupon-box {
-    grid-template-columns: repeat(3, 1fr);
-  }
 }
