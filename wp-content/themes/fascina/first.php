@@ -1,105 +1,229 @@
 <?php
 /**
  * Template Name: 初めての方へ
+ * Template Post Type: page
  */
+
 get_header();
 ?>
 
-<div class="container py-5">
-    <h1 class="fascina-section-title mb-4">初めての方へ</h1>
+<section class="first-section">
+    <h2 class="first-section-title">FIRST</h2>
     
-    <div class="row mb-5">
-        <div class="col-md-6">
-            <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/images/first-time.jpg" alt="初めての方へ" class="img-fluid rounded">
-        </div>
-        <div class="col-md-6">
-            <h2 class="h4 mb-3" style="color: #ff69b4;">Fascinaネイルサロンへようこそ</h2>
-            <p>Fascinaネイルサロンは、自爪を傷めないパラジェル専門店です。ナチュラルスタイリッシュな空間で、リラックスしながら美しいネイルをお楽しみいただけます。</p>
-            <p>初めてのお客様にも安心してご利用いただけるよう、丁寧なカウンセリングと施術を心がけております。</p>
-            <p>当サロンでは、お客様一人ひとりに合わせたデザインをご提案し、長持ちするネイルをご提供いたします。</p>
-        </div>
+    <div class="first-features">
+        <ul class="feature-list">
+            <li class="feature-item">
+                <div class="feature-image">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/ranking-1.jpg" alt="爪への優しさと持ちの良さ">
+                </div>
+                <p class="feature-text">
+                    当店は爪への優しさと<br>
+                    持ちの良さ･耐久性は抜群
+                </p>
+            </li>
+            <li class="feature-item">
+                <div class="feature-image">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/ranking-1.jpg" alt="スピーディーで低価格">
+                </div>
+                <p class="feature-text">
+                    スピーディーで低価格
+                </p>
+            </li>
+            <li class="feature-item">
+                <div class="feature-image">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/ranking-1.jpg" alt="豊富なアート＆カラーサンプル">
+                </div>
+                <p class="feature-text">
+                    豊富なアート＆カラーサンプル<br>
+                    定額コース、オーダーメイドコース共に382色をご用意
+                </p>
+            </li>
+        </ul>
     </div>
-    
-    <div class="row mb-5">
-        <div class="col-12">
-            <h2 class="h4 mb-3" style="color: #ff69b4;">ご予約の流れ</h2>
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">STEP 1: ご予約</h5>
-                    <p class="card-text">お電話、LINE、またはウェブサイトからご予約ください。</p>
-                    <a href="https://071f0f.b-merit.jp/pJ3MHW/web" class="btn" style="background-color: #ff69b4; color: white;">ウェブ予約はこちら</a>
-                </div>
-            </div>
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">STEP 2: ご来店</h5>
-                    <p class="card-text">ご予約時間の5分前にはご来店ください。</p>
-                </div>
-            </div>
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">STEP 3: カウンセリング</h5>
-                    <p class="card-text">お客様のご希望をお伺いし、最適なデザインをご提案いたします。</p>
-                </div>
-            </div>
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">STEP 4: 施術</h5>
-                    <p class="card-text">丁寧な施術で美しいネイルに仕上げます。</p>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">STEP 5: お会計</h5>
-                    <p class="card-text">施術後、お会計となります。現金、クレジットカード、電子マネーがご利用いただけます。</p>
-                </div>
-            </div>
-        </div>
+    <div class="hygiene-section mb-5">
+        <h3 class="first-section-subtitle">衛生管理</h3>
+        <p class="hygiene-intro">
+            池袋ネイルサロン ファッシーナでは、お客様に安心してネイルサービスをお受け頂くために、<br>
+            下記の衛生基準を守る事をお約束いたします。
+        </p>
+        <ul class="hygiene-list">
+            <li>施術の前には、殺菌ソープでの洗浄とアルコール消毒</li>
+            <li>器具はアルコール消毒、UV殺菌装置で保管</li>
+            <li>テーブル、椅子、UVライト内外も店内は全てアルコール消毒</li>
+            <li>アームレスト、マット部分のペーパータオルは新品</li>
+            <li>提供ドリンクは缶製品タイプをご提供させて頂いております</li>
+            <li>青カビ防止ネイルなどのお客様に使用したファイルは必ず処分</li>
+        </ul>
     </div>
-    
-    <div class="row">
-        <div class="col-12">
-            <h2 class="h4 mb-3" style="color: #ff69b4;">よくあるご質問</h2>
-            <div class="accordion" id="firstTimeAccordion">
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingOne">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            初めてでも大丈夫ですか？
-                        </button>
-                    </h2>
-                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#firstTimeAccordion">
-                        <div class="accordion-body">
-                            はい、もちろんです。初めての方にも安心してご利用いただけるよう、丁寧なカウンセリングと施術を心がけております。不安なことがございましたら、お気軽にスタッフにお尋ねください。
-                        </div>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingTwo">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            施術時間はどのくらいかかりますか？
-                        </button>
-                    </h2>
-                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#firstTimeAccordion">
-                        <div class="accordion-body">
-                            施術内容によって異なりますが、一般的なジェルネイルで約60〜90分、フットネイルで約60分程度です。デザインの複雑さによって時間は前後いたします。
-                        </div>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingThree">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                            予約のキャンセルはできますか？
-                        </button>
-                    </h2>
-                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#firstTimeAccordion">
-                        <div class="accordion-body">
-                            予約のキャンセルは、予約時間の24時間前までにご連絡いただければ可能です。それ以降のキャンセルについては、キャンセル料が発生する場合がございますので、ご了承ください。
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="request-section mb-5">
+        <h3 class="first-section-subtitle">お客様へのお願い</h3>
+        <ul class="request-list">
+            <li>
+                ネイリストご指名可能。<br>
+                何名かお試しの上、ご指名されることをお薦めいたします。
+            </li>
+            <li>
+                ご予約時間の10分前にはサロンにお越しくださいます様にお願い申し上げます。<br>
+                ご予約時間の変更やキャンセルについては必ずご連絡をくださいますようお願い申し上げます。
+            </li>
+            <li>
+                15分以上遅刻されますと、ご希望の施術を行えない場合がございます。<br>
+                30分以上ご連絡なく遅刻されてしまった場合施術内容の変更またはキャンセルさせていただく場合がございます。
+            </li>
+            <li>お客様のお爪や皮膚の状態により、ご希望の施術をお受けできない場合もございます。</li>
+            <li>店内での携帯電話のご利用はご遠慮頂いております。</li>
+            <li>乳幼児をお連れのお客様はご利用をご遠慮いただいております。</li>
+            <li>全席禁煙とさせて頂いております。</li>
+        </ul>
     </div>
-</div>
+</section>
+
+<style>
+.first-page {
+    padding: 60px 0;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.first-section-title {
+    display: table;
+    text-align: center;
+    color: #333333;
+    font-size: 28px;
+    font-family: "Sorts Mill Goudy";
+    white-space: nowrap;
+    margin-bottom: 50px;
+    width: 100%;
+}
+
+.first-section-title::before,
+.first-section-title::after {
+    content: '';
+    display: table-cell;
+    width: 50%;
+    background: linear-gradient(transparent 49%, #333 50%, #333 51%, transparent 52%);
+    vertical-align: middle;
+}
+
+.first-section-subtitle {
+    font-size: 24px;
+    margin: 50px 0;
+    text-align: center;
+    color: #333;
+    position: relative;
+}
+
+.first-section-subtitle::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 1px;
+    background: #333;
+}
+
+.feature-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 60px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 50px;
+}
+
+.feature-item {
+    flex: 0 1 300px;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+.feature-image {
+    margin-bottom: 20px;
+    width: 300px;
+    height: 300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.feature-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.feature-text {
+    margin: 0;
+    line-height: 1.8;
+    font-size: 16px;
+    color: #333;
+}
+
+.hygiene-intro {
+    text-align: center;
+    margin-bottom: 40px;
+    line-height: 1.8;
+    color: #333;
+}
+
+.hygiene-list,
+.request-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    max-width: 800px;
+}
+
+.hygiene-list li,
+.request-list li {
+    position: relative;
+    padding-left: 1.5em;
+    margin-bottom: 15px;
+    line-height: 1.8;
+    color: #333;
+}
+
+.hygiene-list li:before,
+.request-list li:before {
+    content: "•";
+    position: absolute;
+    left: 0.5em;
+    color: #333;
+}
+
+@media (max-width: 768px) {
+    .first-page {
+        padding: 30px 15px;
+    }
+
+    .first-section-title {
+        font-size: 24px;
+        margin: 30px auto;
+    }
+
+    .first-section-subtitle {
+        font-size: 20px;
+        margin: 30px 0 15px;
+    }
+
+    .feature-list {
+        gap: 30px;
+    }
+
+    .feature-image {
+        width: 300px;
+        height: 300px;
+    }
+
+    .hygiene-intro br {
+        display: none;
+    }
+}
+</style>
 
 <?php get_footer(); ?>

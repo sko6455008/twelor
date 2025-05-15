@@ -38,7 +38,7 @@ function fascina_scripts() {
 }
 add_action('wp_enqueue_scripts', 'fascina_scripts');
 
-// カスタム投稿タイプ: ギャラリー
+// カスタム投稿タイプ: ギャラリー、ギャラリーNo.,カテゴリー,説明文,画像
 function fascina_register_gallery_post_type() {
     $args = array(
         'public' => true,
@@ -392,6 +392,8 @@ function fascina_register_gallery_taxonomies() {
         'show_admin_column' => true,
         'query_var' => true,
         'rewrite' => array('slug' => 'gallery-category'),
+        'show_in_rest' => true,
+        'meta_box_cb' => false,
     ));
     
     // サブカテゴリー
@@ -415,6 +417,8 @@ function fascina_register_gallery_taxonomies() {
         'show_admin_column' => true,
         'query_var' => true,
         'rewrite' => array('slug' => 'gallery-subcategory'),
+        'show_in_rest' => true,
+        'meta_box_cb' => false,
     ));
 }
 add_action('init', 'fascina_register_gallery_taxonomies');
@@ -494,7 +498,7 @@ function fascina_add_gallery_acf_fields() {
                     'add_term' => 0,
                     'save_terms' => 1,
                     'load_terms' => 1,
-                    'return_format' => 'id',
+                    'return_format' => 'array',
                     'multiple' => 0,
                 ),
                 array(
@@ -504,22 +508,13 @@ function fascina_add_gallery_acf_fields() {
                     'type' => 'taxonomy',
                     'instructions' => 'サブカテゴリーを選択してください',
                     'required' => 0,
-                    'conditional_logic' => array(
-                        array(
-                            array(
-                                'field' => 'field_gallery_main_category',
-                                'operator' => '!=',
-                                'value' => '',
-                            ),
-                        ),
-                    ),
                     'taxonomy' => 'gallery_sub_category',
                     'field_type' => 'select',
                     'allow_null' => 1,
                     'add_term' => 0,
                     'save_terms' => 1,
                     'load_terms' => 1,
-                    'return_format' => 'id',
+                    'return_format' => 'array',
                     'multiple' => 0,
                 ),
             ),
@@ -537,77 +532,15 @@ function fascina_add_gallery_acf_fields() {
             'style' => 'default',
             'label_placement' => 'top',
             'instruction_placement' => 'label',
-            'hide_on_screen' => '',
+            'hide_on_screen' => array(
+                'taxonomy',
+            ),
             'active' => true,
             'description' => '',
         ));
     }
 }
 add_action('acf/init', 'fascina_add_gallery_acf_fields');
-
-// メインカテゴリーに基づいてサブカテゴリーを動的に制限するJavaScript
-function fascina_admin_gallery_script() {
-    global $post_type;
-    if ($post_type !== 'gallery') return;
-    
-    ?>
-    <script type="text/javascript">
-    (function($) {
-        $(document).ready(function() {
-            // メインカテゴリーのセレクトボックス
-            var $mainCategory = $('#acf-field_gallery_main_category');
-            // サブカテゴリーのセレクトボックス
-            var $subCategory = $('#acf-field_gallery_sub_category');
-            
-            // メインカテゴリーが変更されたときの処理
-            $mainCategory.on('change', function() {
-                var selectedMainCategory = $(this).val();
-                var selectedMainCategoryText = $(this).find('option:selected').text();
-                
-                // すべてのオプションを一旦非表示
-                $subCategory.find('option').hide();
-                $subCategory.find('option[value=""]').show();
-                
-                // メインカテゴリーに応じてサブカテゴリーを表示
-                if (selectedMainCategoryText.indexOf('HAND定額コース') !== -1 || 
-                    selectedMainCategoryText.indexOf('FOOT定額コース') !== -1) {
-                    // HANDとFOOT定額コースのサブカテゴリー
-                    $subCategory.find('option').each(function() {
-                        var text = $(this).text();
-                        if (text.indexOf('定額コース') !== -1 || text.indexOf('ブライダルデザイン') !== -1) {
-                            $(this).show();
-                        }
-                    });
-                } else if (selectedMainCategoryText.indexOf('アートパーツ') !== -1) {
-                    // アートパーツのサブカテゴリー
-                    $subCategory.find('option').each(function() {
-                        var text = $(this).text();
-                        if (text.indexOf('ラメ') !== -1 || 
-                            text.indexOf('ストーン') !== -1 || 
-                            text.indexOf('パーツ') !== -1 || 
-                            text.indexOf('カラー') !== -1) {
-                            $(this).show();
-                        }
-                    });
-                } else if (selectedMainCategoryText.indexOf('GUESTギャラリー') !== -1) {
-                    // GUESTギャラリーはサブカテゴリーなし
-                    $subCategory.val('');
-                    $subCategory.closest('.acf-field').hide();
-                    return;
-                }
-                
-                // サブカテゴリーフィールドを表示
-                $subCategory.closest('.acf-field').show();
-            });
-            
-            // 初期表示時にも実行
-            $mainCategory.trigger('change');
-        });
-    })(jQuery);
-    </script>
-    <?php
-}
-add_action('admin_footer', 'fascina_admin_gallery_script');
 
 // カスタムリライトルールの追加
 function fascina_add_rewrite_rules() {
