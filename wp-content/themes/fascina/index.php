@@ -202,7 +202,12 @@
                                 <?php the_post_thumbnail('large', array('class' => 'coupon-image')); ?>
                             </a>
                         </div>
-                        <p class="coupon-period">有効期間: <?php echo esc_html($coupon_period); ?></p>
+                        <?php if ($coupon_period) : 
+                            $start_date = date_i18n('Y年m月d日H時i分', strtotime($coupon_period['start_date']));
+                            $end_date = date_i18n('Y年m月d日H時i分', strtotime($coupon_period['end_date']));
+                        ?>
+                            <p class="coupon-period">期間:<?php echo esc_html($start_date); ?>～<?php echo esc_html($end_date); ?>迄</p>
+                        <?php endif; ?>
                     </div>
             <?php
                 endwhile;

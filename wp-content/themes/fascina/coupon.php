@@ -33,9 +33,15 @@ $coupon_query = new WP_Query($args);
                     <?php endif; ?>
                     <div class="card-body">
                         <h5 class="card-title"><?php the_title(); ?></h5>
-                        <?php if (function_exists('get_field')) : ?>
+                        <?php if (function_exists('get_field')) : 
+                            $period = get_field('coupon_period');
+                            if ($period) {
+                                $start_date = date_i18n('Y年m月d日H時i分', strtotime($period['start_date']));
+                                $end_date = date_i18n('Y年m月d日H時i分', strtotime($period['end_date']));
+                                echo '<p class="card-text">期間:' . esc_html($start_date) . '～' . esc_html($end_date) . '迄</p>';
+                            }
+                        ?>
                             <p class="card-text">価格: <?php echo esc_html(get_field('coupon_price')); ?></p>
-                            <p class="card-text">有効期限: <?php echo esc_html(get_field('coupon_expiry')); ?></p>
                         <?php endif; ?>
                         <?php the_excerpt(); ?>
                         <a href="<?php the_permalink(); ?>" class="btn btn-sm" style="background-color: #ff69b4; color: white;">詳細を見る</a>
