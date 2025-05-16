@@ -52,6 +52,8 @@ function fascina_change_title_placeholder($title, $post) {
         $title = 'ギャラリー名を入力';
     } elseif ($post->post_type === 'coupon') {
         $title = 'クーポン名称を入力';
+    } elseif ($post->post_type === 'ranking') {
+        $title = 'ギャラリー名を入力';
     }
     return $title;
 }
@@ -415,7 +417,7 @@ function fascina_flush_rewrite_rules() {
 }
 register_activation_hook(__FILE__, 'fascina_flush_rewrite_rules');
 
-// ギャラリーのカテゴリー連動機能用JavaScript
+// ギャラリーのカテゴリー,サブカテゴリー連動機能用JavaScript
 function fascina_gallery_category_script() {
     if (get_post_type() !== 'gallery') return;
     ?>
@@ -476,7 +478,7 @@ function fascina_gallery_category_script() {
 add_action('admin_footer', 'fascina_gallery_category_script');
 
 # -------------------------------
-# 管理画面の一覧
+# 管理画面一覧のカスタマイズ
 # -------------------------------
 // ギャラリー一覧のカラムをカスタマイズ
 function fascina_add_gallery_columns($columns) {
@@ -498,43 +500,6 @@ function fascina_add_gallery_columns($columns) {
     return $new_columns;
 }
 add_filter('manage_gallery_posts_columns', 'fascina_add_gallery_columns');
-
-// クーポン一覧のカラムをカスタマイズ
-function fascina_add_coupon_columns($columns) {
-    $new_columns = array();
-    foreach ($columns as $key => $value) {
-        if ($key === 'title') {
-            $new_columns['thumbnail'] = '画像';
-        }
-        $new_columns[$key] = $value;
-    }
-    $new_columns['period'] = '表示期間';
-    $new_columns['price'] = 'クーポン価格';
-    $new_columns['guidance'] = '案内文';
-    $new_columns['description'] = '説明文';
-    if (isset($new_columns['date'])) {
-        $date = $new_columns['date'];
-        unset($new_columns['date']);
-        $new_columns['date'] = $date;
-    }
-    return $new_columns;
-}
-add_filter('manage_coupon_posts_columns', 'fascina_add_coupon_columns');
-
-// お知らせ一覧のカラムをカスタマイズ
-function fascina_add_info_columns($columns) {
-    unset($columns['title']); // タイトルカラムを非表示
-    $new_columns = array();
-    $new_columns['description'] = '案内文';
-    $new_columns['period'] = '日付';
-    if (isset($columns['date'])) {
-        $date = $columns['date'];
-        unset($columns['date']);
-        $new_columns['date'] = $date;
-    }
-    return $new_columns;
-}
-add_filter('manage_info_posts_columns', 'fascina_add_info_columns');
 
 // ギャラリー一覧のカラム内容を表示
 function fascina_gallery_column_content($column_name, $post_id) {
@@ -578,6 +543,28 @@ function fascina_gallery_column_content($column_name, $post_id) {
 }
 add_action('manage_gallery_posts_custom_column', 'fascina_gallery_column_content', 10, 2);
 
+// クーポン一覧のカラムをカスタマイズ
+function fascina_add_coupon_columns($columns) {
+    $new_columns = array();
+    foreach ($columns as $key => $value) {
+        if ($key === 'title') {
+            $new_columns['thumbnail'] = '画像';
+        }
+        $new_columns[$key] = $value;
+    }
+    $new_columns['period'] = '表示期間';
+    $new_columns['price'] = 'クーポン価格';
+    $new_columns['guidance'] = '案内文';
+    $new_columns['description'] = '説明文';
+    if (isset($new_columns['date'])) {
+        $date = $new_columns['date'];
+        unset($new_columns['date']);
+        $new_columns['date'] = $date;
+    }
+    return $new_columns;
+}
+add_filter('manage_coupon_posts_columns', 'fascina_add_coupon_columns');
+
 // クーポン一覧のカラム内容を表示
 function fascina_coupon_column_content($column_name, $post_id) {
     if ($column_name === 'thumbnail') {
@@ -600,6 +587,21 @@ function fascina_coupon_column_content($column_name, $post_id) {
 }
 add_action('manage_coupon_posts_custom_column', 'fascina_coupon_column_content', 10, 2);
 
+// お知らせ一覧のカラムをカスタマイズ
+function fascina_add_info_columns($columns) {
+    unset($columns['title']); // タイトルカラムを非表示
+    $new_columns = array();
+    $new_columns['description'] = '案内文';
+    $new_columns['period'] = '日付';
+    if (isset($columns['date'])) {
+        $date = $columns['date'];
+        unset($columns['date']);
+        $new_columns['date'] = $date;
+    }
+    return $new_columns;
+}
+add_filter('manage_info_posts_columns', 'fascina_add_info_columns');
+
 // お知らせ一覧のカラム内容を表示
 function fascina_info_column_content($column_name, $post_id) {
     if ($column_name === 'period') {
@@ -609,6 +611,40 @@ function fascina_info_column_content($column_name, $post_id) {
     }
 }
 add_action('manage_info_posts_custom_column', 'fascina_info_column_content', 10, 2);
+
+// ランキング一覧のカラムをカスタマイズ
+function fascina_add_ranking_columns($columns) {
+    $new_columns = array();
+    foreach ($columns as $key => $value) {
+        if ($key === 'title') {
+            $new_columns['thumbnail'] = '画像';
+        }
+        $new_columns[$key] = $value;
+    }
+    $new_columns['position'] = '順位';
+    if (isset($new_columns['date'])) {
+        $date = $new_columns['date'];
+        unset($new_columns['date']);
+        $new_columns['date'] = $date;
+    }
+    return $new_columns;
+}
+add_filter('manage_ranking_posts_columns', 'fascina_add_ranking_columns');
+
+// ランキング一覧のカラム内容を表示
+function fascina_ranking_column_content($column_name, $post_id) {
+    if ($column_name === 'thumbnail') {
+        if (has_post_thumbnail($post_id)) {
+            echo get_the_post_thumbnail($post_id, array(60, 60));
+        }
+    } elseif ($column_name === 'position') {
+        $position = get_field('ranking_position', $post_id);
+        if ($position) {
+            echo $position . '位';
+        }
+    }
+}
+add_action('manage_ranking_posts_custom_column', 'fascina_ranking_column_content', 10, 2);
 
 // 管理画面の一覧のスタイル調整
 function fascina_admin_columns_style() {
@@ -627,6 +663,7 @@ function fascina_admin_columns_style() {
         }
         .column-period,
         .column-guidance,
+        .column-position,
         .column-description { 
             width: 300px; 
         }

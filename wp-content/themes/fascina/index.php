@@ -89,13 +89,15 @@
             $hand_args = array(
                 'post_type' => 'gallery',
                 'posts_per_page' => 9,
-                'tax_query' => array(
+                'meta_query' => array(
                     array(
-                        'taxonomy' => 'gallery_main_category',
-                        'field' => 'slug',
-                        'terms' => 'hand',
-                    ),
+                        'key' => 'gallery_main_category',
+                        'value' => 'hand',
+                        'compare' => '='
+                    )
                 ),
+                'orderby' => 'date',
+                'order' => 'DESC'
             );
             $hand_query = new WP_Query($hand_args);
             if ($hand_query->have_posts()) :
@@ -134,13 +136,15 @@
             $guest_args = array(
                 'post_type' => 'gallery',
                 'posts_per_page' => 9,
-                'tax_query' => array(
+                'meta_query' => array(
                     array(
-                        'taxonomy' => 'gallery_main_category',
-                        'field' => 'slug',
-                        'terms' => 'guest',
-                    ),
+                        'key' => 'gallery_main_category',
+                        'value' => 'guest',
+                        'compare' => '='
+                    )
                 ),
+                'orderby' => 'date',
+                'order' => 'DESC'
             );
             $guest_query = new WP_Query($guest_args);
             if ($guest_query->have_posts()) :
@@ -186,14 +190,13 @@
 
             if ($coupon_query->have_posts()) :
                 while ($coupon_query->have_posts()) : $coupon_query->the_post();
-                    $coupon_name = get_field('coupon_name');
                     $coupon_period = get_field('coupon_period');
                     $coupon_price = get_field('coupon_price');
                     $coupon_guidance = get_field('coupon_guidance');
                     $coupon_description = get_field('coupon_description');
             ?>
                     <div class="coupon">
-                        <div class="coupon-title"><?php echo esc_html($coupon_name); ?></div>
+                        <div class="coupon-title"><?php the_title(); ?></div>
                         <div class="coupon-guidance"><?php echo nl2br(esc_html($coupon_guidance)); ?></div>
                         <div class="coupon-description"><?php echo nl2br(esc_html($coupon_description)); ?></div>   
                         <div class="coupon-price"><?php echo esc_html($coupon_price); ?></div>
