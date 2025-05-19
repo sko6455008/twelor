@@ -180,7 +180,6 @@ function fascina_register_acf_fields() {
                         'onehon-s' => 'ワンホンS定額コース',
                         'onehon-m' => 'ワンホンM定額コース',
                         'onehon-l' => 'ワンホンL定額コース',
-                        'bridal' => 'ブライダルデザイン',
                         'nuance-s' => 'ニュアンスS定額コース',
                         'nuance-m' => 'ニュアンスM定額コース',
                         'nuance-l' => 'ニュアンスL定額コース',
@@ -193,6 +192,27 @@ function fascina_register_acf_fields() {
                     ),
                     'return_format' => 'value',
                     'layout' => 'vertical'
+                ),
+                array(
+                    'key' => 'field_gallery_is_bridal',
+                    'label' => 'ブライダルデザイン',
+                    'name' => 'gallery_is_bridal',
+                    'type' => 'true_false',
+                    'instructions' => 'ブライダルデザインとしても登録する場合はチェックしてください',
+                    'required' => 0,
+                    'default_value' => 0,
+                    'ui' => 1,
+                    'ui_on_text' => 'はい',
+                    'ui_off_text' => 'いいえ',
+                    'conditional_logic' => array(
+                        array(
+                            array(
+                                'field' => 'field_gallery_main_category',
+                                'operator' => '==',
+                                'value' => 'hand',
+                            ),
+                        ),
+                    ),
                 ),
                 array(
                     'key' => 'field_gallery_description',
@@ -443,6 +463,7 @@ function fascina_add_gallery_columns($columns) {
     }
     $new_columns['main_category'] = 'メインカテゴリー';
     $new_columns['sub_category'] = 'サブカテゴリー';
+    $new_columns['bridal'] = 'ブライダル';
     $new_columns['description'] = '説明';
     if (isset($new_columns['date'])) {
         $date = $new_columns['date'];
@@ -478,7 +499,6 @@ function fascina_gallery_column_content($column_name, $post_id) {
             'onehon-s' => 'ワンホンS定額コース',
             'onehon-m' => 'ワンホンM定額コース',
             'onehon-l' => 'ワンホンL定額コース',
-            'bridal' => 'ブライダルデザイン',
             'nuance-s' => 'ニュアンスS定額コース',
             'nuance-m' => 'ニュアンスM定額コース',
             'nuance-l' => 'ニュアンスL定額コース',
@@ -489,6 +509,9 @@ function fascina_gallery_column_content($column_name, $post_id) {
             'color' => 'カラー'
         );
         echo isset($categories[$sub_category]) ? $categories[$sub_category] : '';
+    } elseif ($column_name === 'bridal') {
+        $is_bridal = get_field('gallery_is_bridal', $post_id);
+        echo $is_bridal ? '✓' : '－';
     } elseif ($column_name === 'description') {
         echo get_field('gallery_description', $post_id);
     }
@@ -610,7 +633,8 @@ function fascina_admin_columns_style() {
         }
         .column-main_category,
         .column-sub_category,
-        .column-price { 
+        .column-price,
+        .column-bridal { 
             width: 150px; 
         }
         .column-period,
