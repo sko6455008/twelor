@@ -361,12 +361,11 @@ address {
 /* お知らせセクション */
 .info-section {
     margin: 50px 0;
-    padding: 0 15px;
+    padding: 0px 10%;
 }
 
 .info-box {
     max-width: 800px;
-    margin: 0 auto;
 }
 
 .info-item {
@@ -379,10 +378,12 @@ address {
     width: 120px;
     flex-shrink: 0;
     font-weight: 500;
+    width: 30%;
 }
 
 .info-description {
     flex-grow: 1;
+    width: 70%;
 }
 
 /* HAND定額コースセクション */

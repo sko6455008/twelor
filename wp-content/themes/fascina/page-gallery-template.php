@@ -1,296 +1,449 @@
 <?php
 /**
  * Template Name: ギャラリーテンプレート
+ * 
+ * ギャラリーを表示するテンプレートファイル
  */
-get_header();
 
-// クエリ変数から情報を取得
-$category = get_query_var('category', '');
-$design_type = get_query_var('design_type', '');
-$parts_type = get_query_var('parts_type', '');
-$page_num = get_query_var('page_num', 1);
+get_header(); 
 
-// カテゴリー名の設定
-$category_name = '';
-switch ($category) {
-    case 'hand':
-        $category_name = 'HAND定額コース';
-        break;
-    case 'foot':
-        $category_name = 'FOOT定額コース';
-        break;
-    case 'bridal':
-        $category_name = 'ブライダルデザイン';
-        break;
-    case 'arts-parts':
-        $category_name = 'アート・パーツ';
-        break;
-    case 'guest':
-        $category_name = 'ゲストネイルギャラリー';
-        break;
-    default:
-        $category_name = 'ギャラリー';
-}
+// 現在のページ番号を取得
+$current_page = get_query_var('paged') ? get_query_var('paged') : 1;
 
-// デザインタイプの設定
-$design_type_name = '';
-if ($category == 'hand' || $category == 'foot') {
-    switch ($design_type) {
-        case '1':
-            $design_type_name = 'シンプル定額コース';
-            break;
-        case '2':
-            $design_type_name = '一番人気コース';
-            break;
-        case '3':
-            $design_type_name = 'こだわりコース';
-            break;
-    }
-}
+// メインカテゴリーとサブカテゴリーを取得
+$main_category = get_query_var('gallery_main_category');
+$sub_category = get_query_var('gallery_sub_category');
 
-// パーツタイプの設定
-$parts_type_name = '';
-if ($category == 'arts-parts') {
-    switch ($parts_type) {
-        case '6':
-            $parts_type_name = 'ストーン・スタッズ・パール';
-            break;
-        case '7':
-            $parts_type_name = 'ラメ・ホロ・シール';
-            break;
-        case '8':
-            $parts_type_name = 'パーツ';
-            break;
-    }
-}
+// 1ページあたりの表示数
+$posts_per_page = 3;
 
-// タクソノミークエリの構築
-$tax_query = array('relation' => 'AND');
-
-if ($category) {
-    $tax_query[] = array(
-        'taxonomy' => 'gallery_category',
-        'field' => 'slug',
-        'terms' => $category,
-    );
-}
-
-if ($design_type && ($category == 'hand' || $category == 'foot')) {
-    $tax_query[] = array(
-        'taxonomy' => 'design_type',
-        'field' => 'slug',
-        'terms' => 'design' . $design_type,
-    );
-}
-
-if ($parts_type && $category == 'arts-parts') {
-    $tax_query[] = array(
-        'taxonomy' => 'parts_type',
-        'field' => 'slug',
-        'terms' => 'parts' . $parts_type,
-    );
-}
-
-// ギャラリーの投稿を取得
+// ギャラリー投稿を取得
 $args = array(
     'post_type' => 'gallery',
-    'posts_per_page' => 12,
-    'paged' => $page_num,
-    'tax_query' => $tax_query,
+    'posts_per_page' => $posts_per_page,
+    'paged' => $current_page,
+    'meta_query' => array(
+        'relation' => 'AND',
+        array(
+            'key' => 'gallery_main_category',
+            'value' => $main_category,
+            'compare' => '='
+        )
+    ),
+    'orderby' => 'date',
+    'order' => 'DESC'
 );
+
+// GUESTギャラリー以外の場合のみサブカテゴリーの条件を追加
+if ($main_category !== 'guest') {
+    $args['meta_query'][] = array(
+        'key' => 'gallery_sub_category',
+        'value' => $sub_category,
+        'compare' => '='
+    );
+}
+
 $gallery_query = new WP_Query($args);
+
+// 総ページ数を計算
+$total_posts = $gallery_query->found_posts;
+$total_pages = ceil($total_posts / $posts_per_page);
+
+// カテゴリー名を取得
+$main_category_name = '';
+switch ($main_category) {
+    case 'hand':
+        $main_category_name = 'HAND定額コース';
+        break;
+    case 'foot':
+        $main_category_name = 'FOOT定額コース';
+        break;
+    case 'guest':
+        $main_category_name = 'GUESTギャラリー';
+        break;
+    case 'arts-parts':
+        $main_category_name = 'アート・パーツ';
+        break;
+}
+
+$sub_category_name = '';
+switch ($sub_category) {
+    case 'simple':
+        $sub_category_name = 'シンプル定額コース';
+        break;
+    case 'popular':
+        $sub_category_name = '一番人気定額コース';
+        break;
+    case 'special':
+        $sub_category_name = 'こだわり定額コース';
+        break;
+    case 'clean':
+        $sub_category_name = 'キレイめ定額コース';
+        break;
+    case 'onehon-s':
+        $sub_category_name = 'ワンホンS定額コース';
+        break;
+    case 'onehon-m':
+        $sub_category_name = 'ワンホンM定額コース';
+        break;
+    case 'onehon-l':
+        $sub_category_name = 'ワンホンL定額コース';
+        break;
+    case 'bridal':
+        $sub_category_name = 'ブライダルデザイン';
+        break;
+    case 'nuance-s':
+        $sub_category_name = 'ニュアンスS定額コース';
+        break;
+    case 'nuance-m':
+        $sub_category_name = 'ニュアンスM定額コース';
+        break;
+    case 'nuance-l':
+        $sub_category_name = 'ニュアンスL定額コース';
+        break;
+    case 'nuance-xl':
+        $sub_category_name = 'ニュアンスXL定額コース';
+        break;
+    case 'lame-holo-seal':
+        $sub_category_name = 'ラメ・ホロ・シール';
+        break;
+    case 'stone-studs-pearl':
+        $sub_category_name = 'ストーン・スタッズ・パール';
+        break;
+    case 'parts':
+        $sub_category_name = 'パーツ';
+        break;
+    case 'color':
+        $sub_category_name = 'カラー';
+        break;
+}
 ?>
 
-<div class="container py-5">
-    <h1 class="fascina-section-title mb-4"><?php echo esc_html($category_name); ?></h1>
-    
-    <?php if ($design_type_name) : ?>
-    <h2 class="h4 mb-4" style="color: #ff69b4;"><?php echo esc_html($design_type_name); ?></h2>
-    <?php endif; ?>
-    
-    <?php if ($parts_type_name) : ?>
-    <h2 class="h4 mb-4" style="color: #ff69b4;"><?php echo esc_html($parts_type_name); ?></h2>
-    <?php endif; ?>
-    
-    <?php if ($category == 'hand') : ?>
-    <!-- HAND定額コースのタブ -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <ul class="nav nav-pills justify-content-center">
-                <li class="nav-item">
-                    <a class="nav-link <?php echo ($design_type == '1') ? 'active' : ''; ?>" href="<?php echo esc_url(home_url('/gallery_hand_design1_1.html')); ?>#here">シンプル定額コース</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link <?php echo ($design_type == '2') ? 'active' : ''; ?>" href="<?php echo esc_url(home_url('/gallery_hand_design2_1.html')); ?>#here">一番人気コース</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link <?php echo ($design_type == '3') ? 'active' : ''; ?>" href="<?php echo esc_url(home_url('/gallery_hand_design3_1.html')); ?>#here">こだわりコース</a>
-                </li>
-            </ul>
-        </div>
+<div class="container gallery-container">
+    <!-- ヘッダータイトル -->
+    <div class="gallery-header">
+        <h1 class="gallery-title"><?php echo esc_html($main_category_name); ?></h1>
     </div>
-    <?php endif; ?>
-    
-    <?php if ($category == 'foot') : ?>
-    <!-- FOOT定額コースのタブ -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <ul class="nav nav-pills justify-content-center">
-                <li class="nav-item">
-                    <a class="nav-link <?php echo ($design_type == '1') ? 'active' : ''; ?>" href="<?php echo esc_url(home_url('/gallery_foot_design1_1.html')); ?>#here">シンプル定額コース</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link <?php echo ($design_type == '2') ? 'active' : ''; ?>" href="<?php echo esc_url(home_url('/gallery_foot_design2_1.html')); ?>#here">一番人気コース</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link <?php echo ($design_type == '3') ? 'active' : ''; ?>" href="<?php echo esc_url(home_url('/gallery_foot_design3_1.html')); ?>#here">こだわりコース</a>
-                </li>
-            </ul>
-        </div>
+
+    <!-- オーダーメイドボタン -->
+    <div class="custom-order-button">
+        <a href="<?php echo home_url('/order-made'); ?>" class="btn btn-primary">オーダーメイドのコースはこちらから</a>
     </div>
-    <?php endif; ?>
-    
-    <?php if ($category == 'guest') : ?>
-    <!-- ゲストネイルギャラリーのタブ -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <ul class="nav nav-pills justify-content-center">
-                <li class="nav-item">
-                    <a class="nav-link active" href="<?php echo esc_url(home_url('/gallery_guest_nail_1.html')); ?>#here">ゲストネイル</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="<?php echo esc_url(home_url('/gallery_hand_design1_1.html')); ?>#here">ハンドデザイン</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="<?php echo esc_url(home_url('/gallery_foot_design1_1.html')); ?>#here">フットデザイン</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="<?php echo esc_url(home_url('/gallery_bridal_design_1.html')); ?>#here">ブライダルデザイン</a>
-                </li>
-            </ul>
-        </div>
+
+    <!-- 無料お色変更の案内 -->
+    <div class="color-change-notice">
+        <p>※お色変更無料※</p>
     </div>
-    <?php endif; ?>
-    
-    <?php if ($category == 'arts-parts') : ?>
-    <!-- アート・パーツのタブ -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <ul class="nav nav-pills justify-content-center">
-                <li class="nav-item">
-                    <a class="nav-link <?php echo ($parts_type == '7') ? 'active' : ''; ?>" href="<?php echo esc_url(home_url('/gallery_arts_parts7_1.html')); ?>#here">ラメ・ホロ・シール</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link <?php echo ($parts_type == '6') ? 'active' : ''; ?>" href="<?php echo esc_url(home_url('/gallery_arts_parts6_1.html')); ?>#here">ストーン・スタッズ・パール</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link <?php echo ($parts_type == '8') ? 'active' : ''; ?>" href="<?php echo esc_url(home_url('/gallery_arts_parts8_1.html')); ?>#here">パーツ</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <?php endif; ?>
-    
-    <div id="here" class="row">
-        <?php
-        if ($gallery_query->have_posts()) :
-            while ($gallery_query->have_posts()) : $gallery_query->the_post();
-        ?>
-            <div class="col-md-3 col-6 mb-4">
-                <div class="card h-100">
-                    <?php if (has_post_thumbnail()) : ?>
-                        <a href="<?php the_permalink(); ?>">
-                            <?php the_post_thumbnail('medium', array('class' => 'card-img-top')); ?>
-                        </a>
-                    <?php endif; ?>
-                    <div class="card-body">
-                        <h5 class="card-title"><?php the_title(); ?></h5>
-                        <?php if (function_exists('get_field')) : ?>
-                            <p class="card-text"><?php echo esc_html(get_field('gallery_price')); ?></p>
-                        <?php endif; ?>
-                        <a href="<?php the_permalink(); ?>" class="btn btn-sm" style="background-color: #ff69b4; color: white;">詳細を見る</a>
-                    </div>
-                </div>
+
+    <!-- コースカテゴリーナビゲーション -->
+    <?php if ($main_category === 'hand' || $main_category === 'foot'): ?>
+    <div class="course-navigation">
+        <div class="row">
+            <div class="col-md-3 col-6">
+                <a href="<?php echo home_url('/gallery_' . $main_category . '_design/simple/'); ?>" class="course-nav-item <?php echo ($sub_category == 'simple') ? 'active' : ''; ?>">
+                    シンプル定額コース
+                </a>
             </div>
-        <?php
-            endwhile;
-        else :
-        ?>
-            <div class="col-12">
-                <p>ギャラリーはありません。</p>
+            <div class="col-md-3 col-6">
+                <a href="<?php echo home_url('/gallery_' . $main_category . '_design/popular/'); ?>" class="course-nav-item <?php echo ($sub_category == 'popular') ? 'active' : ''; ?>">
+                    一番人気定額コース
+                </a>
+            </div>
+            <div class="col-md-3 col-6">
+                <a href="<?php echo home_url('/gallery_' . $main_category . '_design/special/'); ?>" class="course-nav-item <?php echo ($sub_category == 'special') ? 'active' : ''; ?>">
+                    こだわり定額コース
+                </a>
+            </div>
+            <div class="col-md-3 col-6">
+                <a href="<?php echo home_url('/gallery_' . $main_category . '_design/clean/'); ?>" class="course-nav-item <?php echo ($sub_category == 'clean') ? 'active' : ''; ?>">
+                    キレイめ定額コース
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 col-6">
+                <a href="<?php echo home_url('/gallery_' . $main_category . '_design/onehon-s/'); ?>" class="course-nav-item <?php echo ($sub_category == 'onehon-s') ? 'active' : ''; ?>">
+                    ワンホンS定額コース
+                </a>
+            </div>
+            <div class="col-md-3 col-6">
+                <a href="<?php echo home_url('/gallery_' . $main_category . '_design/onehon-m/'); ?>" class="course-nav-item <?php echo ($sub_category == 'onehon-m') ? 'active' : ''; ?>">
+                    ワンホンM定額コース
+                </a>
+            </div>
+            <div class="col-md-3 col-6">
+                <a href="<?php echo home_url('/gallery_' . $main_category . '_design/onehon-l/'); ?>" class="course-nav-item <?php echo ($sub_category == 'onehon-l') ? 'active' : ''; ?>">
+                    ワンホンL定額コース
+                </a>
+            </div>
+            <div class="col-md-3 col-6">
+                <a href="<?php echo home_url('/gallery_' . $main_category . '_design/bridal/'); ?>" class="course-nav-item <?php echo ($sub_category == 'bridal') ? 'active' : ''; ?>">
+                    ブライダルデザイン
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 col-6">
+                <a href="<?php echo home_url('/gallery_' . $main_category . '_design/nuance-s/'); ?>" class="course-nav-item <?php echo ($sub_category == 'nuance-s') ? 'active' : ''; ?>">
+                    ニュアンスS定額コース
+                </a>
+            </div>
+            <div class="col-md-3 col-6">
+                <a href="<?php echo home_url('/gallery_' . $main_category . '_design/nuance-m/'); ?>" class="course-nav-item <?php echo ($sub_category == 'nuance-m') ? 'active' : ''; ?>">
+                    ニュアンスM定額コース
+                </a>
+            </div>
+            <div class="col-md-3 col-6">
+                <a href="<?php echo home_url('/gallery_' . $main_category . '_design/nuance-l/'); ?>" class="course-nav-item <?php echo ($sub_category == 'nuance-l') ? 'active' : ''; ?>">
+                    ニュアンスL定額コース
+                </a>
+            </div>
+            <div class="col-md-3 col-6">
+                <a href="<?php echo home_url('/gallery_' . $main_category . '_design/nuance-xl/'); ?>" class="course-nav-item <?php echo ($sub_category == 'nuance-xl') ? 'active' : ''; ?>">
+                    ニュアンスXL定額コース
+                </a>
+            </div>
+        </div>
+    </div>
+    <?php elseif ($main_category === 'arts-parts'): ?>
+    <div class="course-navigation">
+        <div class="row">
+            <div class="col-md-3 col-6">
+                <a href="<?php echo home_url('/gallery_arts_parts/lame-holo-seal/'); ?>" class="course-nav-item <?php echo ($sub_category == 'lame-holo-seal') ? 'active' : ''; ?>">
+                    ラメ・ホロ・シール
+                </a>
+            </div>
+            <div class="col-md-3 col-6">
+                <a href="<?php echo home_url('/gallery_arts_parts/stone-studs-pearl/'); ?>" class="course-nav-item <?php echo ($sub_category == 'stone-studs-pearl') ? 'active' : ''; ?>">
+                    ストーン・スタッズ・パール
+                </a>
+            </div>
+            <div class="col-md-3 col-6">
+                <a href="<?php echo home_url('/gallery_arts_parts/parts/'); ?>" class="course-nav-item <?php echo ($sub_category == 'parts') ? 'active' : ''; ?>">
+                    パーツ
+                </a>
+            </div>
+            <div class="col-md-3 col-6">
+                <a href="<?php echo home_url('/gallery_arts_parts/color/'); ?>" class="course-nav-item <?php echo ($sub_category == 'color') ? 'active' : ''; ?>">
+                    カラー
+                </a>
+            </div>
+        </div>
+    </div>
+    <?php endif; ?>
+
+    <!-- カテゴリータイトル -->
+    <div class="category-title">
+        <h2><?php echo esc_html($main_category_name); ?></h2>
+        <?php if ($total_pages > 0): ?>
+            <div class="page-indicator">
+                <span class="page-number"><?php echo $current_page; ?>ページ目</span>
             </div>
         <?php endif; ?>
     </div>
-    
-    <!-- ページネーション -->
-    <div class="pagination-wrapper mt-4">
-        <nav aria-label="ギャラリーページネーション">
-            <?php
-            // 現在のURLパターンを取得
-            $current_url_base = '';
-            if ($category == 'hand') {
-                $current_url_base = 'gallery_hand_design' . $design_type . '_';
-            } elseif ($category == 'foot') {
-                $current_url_base = 'gallery_foot_design' . $design_type . '_';
-            } elseif ($category == 'bridal') {
-                $current_url_base = 'gallery_bridal_design_';
-            } elseif ($category == 'arts-parts') {
-                $current_url_base = 'gallery_arts_parts' . $parts_type . '_';
-            } elseif ($category == 'guest') {
-                $current_url_base = 'gallery_guest_nail_';
-            }
-            
-            // カスタムページネーションリンクの生成
-            $total_pages = $gallery_query->max_num_pages;
-            if ($total_pages > 1) {
-                echo '<ul class="pagination">';
-                
-                // 前のページへのリンク
-                if ($page_num > 1) {
-                    echo '<li class="page-item"><a class="page-link" href="' . home_url('/' . $current_url_base . ($page_num - 1) . '.html') . '#here">&laquo;</a></li>';
-                } else {
-                    echo '<li class="page-item disabled"><span class="page-link">&laquo;</span></li>';
-                }
-                
-                // ページ番号リンク
-                $start_page = max(1, $page_num - 2);
-                $end_page = min($total_pages, $page_num + 2);
-                
-                if ($start_page > 1) {
-                    echo '<li class="page-item"><a class="page-link" href="' . home_url('/' . $current_url_base . '1.html') . '#here">1</a></li>';
-                    if ($start_page > 2) {
-                        echo '<li class="page-item disabled"><span class="page-link">...</span></li>';
-                    }
-                }
-                
-                for ($i = $start_page; $i <= $end_page; $i++) {
-                    if ($i == $page_num) {
-                        echo '<li class="page-item active"><span class="page-link">' . $i . '</span></li>';
+
+    <!-- ギャラリー本体 -->
+    <?php if ($gallery_query->have_posts()): ?>
+        <div class="gallery-grid">
+            <div class="row">
+                <?php while ($gallery_query->have_posts()): $gallery_query->the_post(); ?>
+                    <div class="col-md-4 col-6 gallery-item">
+                        <div class="gallery-item-inner">
+                            <?php if (has_post_thumbnail()): ?>
+                                <div class="gallery-image">
+                                    <?php the_post_thumbnail('medium'); ?>
+                                </div>
+                            <?php endif; ?>
+                            <div class="gallery-caption">
+                                <h3 class="gallery-title"><?php the_title(); ?></h3>
+                            </div>
+                        </div>
+                    </div>
+                <?php endwhile; ?>
+            </div>
+        </div>
+
+        <!-- ページネーション -->
+        <?php if ($total_pages > 1): ?>
+            <div class="pagination-container">
+                <div class="pagination">
+                    <?php
+                    // カテゴリーに応じてベースURLを設定
+                    $base_url = '';
+                    if ($main_category === 'guest') {
+                        $base_url = home_url("gallery_guest_nail/page/%#%/");
+                    } elseif ($main_category === 'arts-parts') {
+                        $base_url = home_url("gallery_arts_parts/{$sub_category}/page/%#%/");
                     } else {
-                        echo '<li class="page-item"><a class="page-link" href="' . home_url('/' . $current_url_base . $i . '.html') . '#here">' . $i . '</a></li>';
+                        $base_url = home_url("gallery_{$main_category}_design/{$sub_category}/page/%#%/");
                     }
-                }
-                
-                if ($end_page < $total_pages) {
-                    if ($end_page < $total_pages - 1) {
-                        echo '<li class="page-item disabled"><span class="page-link">...</span></li>';
-                    }
-                    echo '<li class="page-item"><a class="page-link" href="' . home_url('/' . $current_url_base . $total_pages . '.html') . '#here">' . $total_pages . '</a></li>';
-                }
-                
-                // 次のページへのリンク
-                if ($page_num < $total_pages) {
-                    echo '<li class="page-item"><a class="page-link" href="' . home_url('/' . $current_url_base . ($page_num + 1) . '.html') . '#here">&raquo;</a></li>';
-                } else {
-                    echo '<li class="page-item disabled"><span class="page-link">&raquo;</span></li>';
-                }
-                
-                echo '</ul>';
-            }
-            ?>
-        </nav>
-    </div>
+
+                    echo paginate_links(array(
+                        'base' => $base_url,
+                        'format' => '',
+                        'current' => $current_page,
+                        'total' => $total_pages,
+                        'prev_text' => '&laquo; 前へ',
+                        'next_text' => '次へ &raquo;'
+                    ));
+                    ?>
+                </div>
+            </div>
+        <?php endif; ?>
+
+    <?php else: ?>
+        <div class="no-posts-found">
+            <p>現在、このカテゴリーにはデザインがありません。</p>
+        </div>
+    <?php endif; ?>
     <?php wp_reset_postdata(); ?>
 </div>
+
+<!-- ギャラリー用のスタイル -->
+<style>
+    .gallery-container {
+        padding: 30px 0;
+    }
+    .gallery-header {
+        text-align: center;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 10px;
+    }
+    .gallery-title {
+        font-size: 24px;
+        font-weight: bold;
+    }
+    .custom-order-button {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .custom-order-button .btn {
+        background-color: #e75a87;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+    }
+    .color-change-notice {
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 14px;
+    }
+    .course-navigation {
+        margin-bottom: 30px;
+    }
+    .course-nav-item {
+        display: block;
+        background-color: #f0f0f0;
+        padding: 10px;
+        margin-bottom: 10px;
+        text-align: center;
+        text-decoration: none;
+        color: #333;
+        border-radius: 4px;
+        transition: all 0.3s;
+    }
+    .course-nav-item:hover, .course-nav-item.active {
+        background-color: #e75a87;
+        color: #fff;
+    }
+    .category-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 10px;
+    }
+    .category-title h2 {
+        font-size: 20px;
+        margin: 0;
+    }
+    .page-indicator {
+        font-size: 14px;
+        color: #666;
+    }
+    .gallery-grid {
+        margin-bottom: 30px;
+    }
+    .gallery-item {
+        margin-bottom: 30px;
+    }
+    .gallery-item-inner {
+        border: 1px solid #eee;
+        border-radius: 4px;
+        overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .gallery-image img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+    .gallery-caption {
+        padding: 10px;
+    }
+    .gallery-caption h3 {
+        font-size: 16px;
+        margin: 0 0 5px;
+    }
+    .gallery-description {
+        font-size: 14px;
+        color: #666;
+    }
+    .pagination-container {
+        text-align: center;
+        margin: 30px 0;
+    }
+    .pagination {
+        display: inline-flex;
+        justify-content: center;
+    }
+    .page-link {
+        display: inline-block;
+        padding: 5px 10px;
+        margin: 0 3px;
+        border: 1px solid #ddd;
+        color: #333;
+        text-decoration: none;
+        border-radius: 3px;
+    }
+    .page-link.active {
+        background-color: #e75a87;
+        color: #fff;
+        border-color: #e75a87;
+    }
+    .page-link:hover {
+        background-color: #f5f5f5;
+    }
+    .page-link.active:hover {
+        background-color: #e75a87;
+    }
+    .no-posts-found {
+        text-align: center;
+        padding: 50px 0;
+        color: #666;
+    }
+    
+    /* レスポンシブ対応 */
+    @media (max-width: 767px) {
+        .gallery-title {
+            font-size: 20px;
+        }
+        .custom-order-button .btn {
+            font-size: 14px;
+            padding: 8px 15px;
+        }
+        .category-title h2 {
+            font-size: 18px;
+        }
+        .gallery-caption h3 {
+            font-size: 14px;
+        }
+        .gallery-description {
+            font-size: 12px;
+        }
+    }
+</style>
 
 <?php get_footer(); ?>

@@ -87,10 +87,10 @@
             <li><a href="<?php echo esc_url(home_url('/qa/')); ?>">Q&A</a></li>
             <li><a href="<?php echo esc_url(home_url('/access/')); ?>">アクセス</a></li>
             <li><a href="<?php echo esc_url(home_url('/recruit/')); ?>">リクルート</a></li>
-            <li><a href="<?php echo esc_url(home_url('/gallery_hand_design1_1.html')); ?>">HAND定額コース</a></li>
-            <li><a href="<?php echo esc_url(home_url('/gallery_foot_design1_1.html')); ?>">FOOT定額コース</a></li>
-            <li><a href="<?php echo esc_url(home_url('/gallery_guest_nail_1.html')); ?>">GUESTギャラリー</a></li>
-            <li><a href="<?php echo esc_url(home_url('/gallery_arts_parts7_1.html')); ?>">アート・パーツ</a></li>
+            <li><a href="<?php echo esc_url(home_url('/gallery_hand_design/simple/')); ?>">HAND定額コース</a></li>
+            <li><a href="<?php echo esc_url(home_url('/gallery_foot_design/simple/')); ?>">FOOT定額コース</a></li>
+            <li><a href="<?php echo esc_url(home_url('/gallery_guest_nail/')); ?>">GUESTギャラリー</a></li>
+            <li><a href="<?php echo esc_url(home_url('/gallery_arts_parts/lame-holo-seal/')); ?>">アート・パーツ</a></li>
             <li><a href="<?php echo esc_url(home_url('/coupon/')); ?>">月替わりクーポン</a></li>
             <li><a href="https://fascina.jp/care.html#here" target="_blank">グリーンネイルについて</a></li>
         </ul>

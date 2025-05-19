@@ -160,7 +160,7 @@ function fascina_register_acf_fields() {
                         'hand' => 'HAND定額コース',
                         'foot' => 'FOOT定額コース',
                         'guest' => 'GUESTギャラリー',
-                        'art-parts' => 'アートパーツ'
+                        'arts-parts' => 'アートパーツ'
                     ),
                     'return_format' => 'value',
                     'layout' => 'vertical'
@@ -369,54 +369,6 @@ function fascina_register_acf_fields() {
     }
 }
 
-// カスタムリライトルールの追加
-function fascina_add_rewrite_rules() {
-    // HAND定額コース
-    add_rewrite_rule(
-        'gallery_hand_design([1-3])_([0-9]+)\.html$',
-        'index.php?pagename=gallery-template&category=hand&design_type=$matches[1]&page_num=$matches[2]',
-        'top'
-    );
-    
-    // FOOT定額コース
-    add_rewrite_rule(
-        'gallery_foot_design([1-3])_([0-9]+)\.html$',
-        'index.php?pagename=gallery-template&category=foot&design_type=$matches[1]&page_num=$matches[2]',
-        'top'
-    );
-    
-    // ブライダルデザイン
-    add_rewrite_rule(
-        'gallery_bridal_design_([0-9]+)\.html$',
-        'index.php?pagename=gallery-template&category=bridal&page_num=$matches[1]',
-        'top'
-    );
-    
-    // アート・パーツ
-    add_rewrite_rule(
-        'gallery_arts_parts([6-8])_([0-9]+)\.html$',
-        'index.php?pagename=gallery-template&category=arts-parts&parts_type=$matches[1]&page_num=$matches[2]',
-        'top'
-    );
-}
-add_action('init', 'fascina_add_rewrite_rules');
-
-// クエリ変数の追加
-function fascina_add_query_vars($vars) {
-    $vars[] = 'gallery_main_category';
-    $vars[] = 'gallery_sub_category';
-    $vars[] = 'page_num';
-    return $vars;
-}
-add_filter('query_vars', 'fascina_add_query_vars');
-
-// パーマリンク更新時にリライトルールをフラッシュ
-function fascina_flush_rewrite_rules() {
-    fascina_add_rewrite_rules();
-    flush_rewrite_rules();
-}
-register_activation_hook(__FILE__, 'fascina_flush_rewrite_rules');
-
 // ギャラリーのカテゴリー,サブカテゴリー連動機能用JavaScript
 function fascina_gallery_category_script() {
     if (get_post_type() !== 'gallery') return;
@@ -450,7 +402,7 @@ function fascina_gallery_category_script() {
                         .show();
                 });
             }
-            else if (mainSelected === 'art-parts') {
+            else if (mainSelected === 'arts-parts') {
                 // アートパーツが選択された場合
                 artPartsCategories.forEach(category => {
                     $(`[name="acf[field_gallery_sub_category]"][value="${category}"]`)
@@ -513,7 +465,7 @@ function fascina_gallery_column_content($column_name, $post_id) {
             'hand' => 'HAND定額コース',
             'foot' => 'FOOT定額コース',
             'guest' => 'GUESTギャラリー',
-            'art-parts' => 'アートパーツ'
+            'arts-parts' => 'アートパーツ'
         );
         echo isset($categories[$main_category]) ? $categories[$main_category] : '';
     } elseif ($column_name === 'sub_category') {
@@ -748,3 +700,71 @@ function fascina_add_ogp() {
     echo '<meta name="twitter:image" content="' . esc_url($ogp_image) . '">' . "\n";
 }
 add_action('wp_head', 'fascina_add_ogp');
+
+// ギャラリーページのリライトルール
+function fascina_add_gallery_rewrite_rules() {
+    // HAND定額コース
+    add_rewrite_rule(
+        'gallery_hand_design/([^/]+)/page/([0-9]+)/?$',
+        'index.php?pagename=gallery-template&gallery_main_category=hand&gallery_sub_category=$matches[1]&paged=$matches[2]',
+        'top'
+    );
+    add_rewrite_rule(
+        'gallery_hand_design/([^/]+)/?$',
+        'index.php?pagename=gallery-template&gallery_main_category=hand&gallery_sub_category=$matches[1]',
+        'top'
+    );
+
+    // FOOT定額コース
+    add_rewrite_rule(
+        'gallery_foot_design/([^/]+)/page/([0-9]+)/?$',
+        'index.php?pagename=gallery-template&gallery_main_category=foot&gallery_sub_category=$matches[1]&paged=$matches[2]',
+        'top'
+    );
+    add_rewrite_rule(
+        'gallery_foot_design/([^/]+)/?$',
+        'index.php?pagename=gallery-template&gallery_main_category=foot&gallery_sub_category=$matches[1]',
+        'top'
+    );
+
+    // GUESTギャラリー
+    add_rewrite_rule(
+        'gallery_guest_nail/page/([0-9]+)/?$',
+        'index.php?pagename=gallery-template&gallery_main_category=guest&paged=$matches[1]',
+        'top'
+    );
+    add_rewrite_rule(
+        'gallery_guest_nail/?$',
+        'index.php?pagename=gallery-template&gallery_main_category=guest',
+        'top'
+    );
+
+    // アート・パーツ
+    add_rewrite_rule(
+        'gallery_arts_parts/([^/]+)/page/([0-9]+)/?$',
+        'index.php?pagename=gallery-template&gallery_main_category=arts-parts&gallery_sub_category=$matches[1]&paged=$matches[2]',
+        'top'
+    );
+    add_rewrite_rule(
+        'gallery_arts_parts/([^/]+)/?$',
+        'index.php?pagename=gallery-template&gallery_main_category=arts-parts&gallery_sub_category=$matches[1]',
+        'top'
+    );
+}
+add_action('init', 'fascina_add_gallery_rewrite_rules');
+
+// クエリ変数の追加
+function fascina_add_gallery_query_vars($vars) {
+    $vars[] = 'gallery_main_category';
+    $vars[] = 'gallery_sub_category';
+    $vars[] = 'paged';
+    return $vars;
+}
+add_filter('query_vars', 'fascina_add_gallery_query_vars');
+
+// リライトルールの更新
+function fascina_flush_gallery_rewrite_rules() {
+    fascina_add_gallery_rewrite_rules();
+    flush_rewrite_rules();
+}
+register_activation_hook(__FILE__, 'fascina_flush_gallery_rewrite_rules');
