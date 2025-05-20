@@ -286,8 +286,8 @@ switch ($sub_category) {
                         $title = esc_html($gallery_items[$index]['title']);
                         $desc = esc_html($gallery_items[$index]['desc']);
                     ?>
-                        <div class="col-lg-2-4 col-md-6 col-12 gallery-item">
-                            <div class="gallery-item-inner">
+                        <div class="col-lg-2-4 col-md-6 col-12">
+                            <div class="gallery-item">
                                 <?php if ($img): ?>
                                     <div class="gallery-image">
                                         <img
@@ -448,7 +448,7 @@ switch ($sub_category) {
         margin-bottom: 40px;
         padding: 0 10px;
     }
-    .gallery-item-inner:hover {
+    .gallery-item:hover {
         transform: translateY(-5px);
     }
     .gallery-image {

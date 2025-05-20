@@ -95,7 +95,7 @@ function fascina_register_coupon_post_type() {
         'supports' => array('title', 'thumbnail'),
         'menu_icon' => 'dashicons-tickets-alt',
         'has_archive' => true,
-        'rewrite' => array('slug' => 'coupon'),
+        'rewrite' => array('slug' => 'coupons'),
     );
     register_post_type('coupon', $args);
 }
