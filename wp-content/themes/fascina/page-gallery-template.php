@@ -327,7 +327,7 @@ switch ($sub_category) {
         <!-- ページネーション -->
         <?php if ($total_pages > 1): ?>
             <div class="pagination-container">
-                <div class="pagination">
+                <div class="pagination custom-pagination">
                     <?php
                     // カテゴリーに応じてベースURLを設定
                     $base_url = '';
@@ -339,14 +339,25 @@ switch ($sub_category) {
                         $base_url = home_url("gallery_{$main_category}_design/{$sub_category}/page/%#%/");
                     }
 
-                    echo paginate_links(array(
+                    $links = paginate_links(array(
                         'base' => $base_url,
                         'format' => '',
                         'current' => $current_page,
                         'total' => $total_pages,
                         'prev_text' => '&laquo; 前へ',
-                        'next_text' => '次へ &raquo;'
+                        'next_text' => '次へ &raquo;',
+                        'type' => 'array',
                     ));
+                    if ($links) {
+                        foreach ($links as $link) {
+                            // アクティブページには active クラスを付与
+                            if (strpos($link, 'current') !== false) {
+                                echo str_replace('page-numbers', 'pagination-link active', $link);
+                            } else {
+                                echo str_replace('page-numbers', 'pagination-link', $link);
+                            }
+                        }
+                    }
                     ?>
                 </div>
             </div>
@@ -467,32 +478,43 @@ switch ($sub_category) {
     }
     .pagination-container {
         text-align: center;
-        margin: 30px 0;
+        margin: 40px 0;
     }
-    .pagination {
-        display: inline-flex;
+    .pagination.custom-pagination {
+        display: flex;
         justify-content: center;
-        gap: 10px;
+        gap: 8px;
+        flex-wrap: wrap;
     }
-    .page-link {
-        display: inline-block;
-        padding: 8px 12px;
-        border: 1px solid #ddd;
-        color: #333;
+    .pagination-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 40px;
+        height: 40px;
+        padding: 0 12px;
+        background-color: #fff;
+        border: 1px solid #e75a87;
+        color: #e75a87;
+        font-size: 16px;
+        font-weight: 500;
         text-decoration: none;
         border-radius: 4px;
-        transition: all 0.3s;
+        transition: all 0.2s ease;
     }
-    .page-link.active {
+    .pagination-link:hover {
         background-color: #e75a87;
         color: #fff;
         border-color: #e75a87;
     }
-    .page-link:hover {
-        background-color: #f5f5f5;
-    }
-    .page-link.active:hover {
+    .pagination-link.active {
         background-color: #e75a87;
+        color: #fff;
+        border-color: #e75a87;
+        font-weight: 600;
+    }
+    .pagination-link:active {
+        transform: scale(0.98);
     }
     .no-posts-found {
         text-align: center;
@@ -617,6 +639,12 @@ switch ($sub_category) {
         }
         .gallery-item {
             padding: 0 5px;
+        }
+        .pagination-link {
+            min-width: 50px;
+            height: 50px;
+            font-size: 14px;
+            padding: 0 8px;
         }
     }
 
