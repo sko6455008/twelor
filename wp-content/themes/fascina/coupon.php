@@ -56,14 +56,14 @@ $coupon_query = new WP_Query($args);
                         <div class="coupon-item">
                             <div class="coupon-content">
                                 <h2 class="coupon-name"><?php the_title(); ?></h2>
-                                <?php if ($price) : ?>
-                                    <p class="coupon-price"><?php echo esc_html($price); ?></p>
-                                <?php endif; ?>
                                 <?php if ($guidance) : ?>
                                     <p class="coupon-guidance"><?php echo nl2br(esc_html($guidance)); ?></p>
                                 <?php endif; ?>
                                 <?php if ($description) : ?>
                                     <p class="coupon-description"><?php echo nl2br(esc_html($description)); ?></p>
+                                <?php endif; ?>
+                                <?php if ($price) : ?>
+                                    <p class="coupon-price"><?php echo esc_html($price); ?></p>
                                 <?php endif; ?>
                                 <?php if (has_post_thumbnail()) : ?>
                                 <div class="coupon-image">
