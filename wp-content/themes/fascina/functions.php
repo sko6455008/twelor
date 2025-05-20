@@ -395,10 +395,14 @@ function fascina_gallery_category_script() {
     ?>
     <script>
     jQuery(document).ready(function($) {
-        const handFootCategories = [
+        const handCategories = [
             'simple', 'popular', 'special', 'clean',
             'onehon-s', 'onehon-m', 'onehon-l', 'bridal',
             'nuance-s', 'nuance-m', 'nuance-l', 'nuance-xl'
+        ];
+        
+        const footCategories = [
+            'simple', 'popular', 'special', 'clean'
         ];
         
         const artPartsCategories = [
@@ -413,9 +417,18 @@ function fascina_gallery_category_script() {
             // すべてのラジオボタンを一旦無効化
             $subCategories.prop('disabled', true).closest('li').hide();
             
-            if (mainSelected === 'hand' || mainSelected === 'foot') {
-                // HANDまたはFOOT定額コースが選択された場合
-                handFootCategories.forEach(category => {
+            if (mainSelected === 'hand') {
+                // HAND定額コースが選択された場合
+                handCategories.forEach(category => {
+                    $(`[name="acf[field_gallery_sub_category]"][value="${category}"]`)
+                        .prop('disabled', false)
+                        .closest('li')
+                        .show();
+                });
+            }
+            else if (mainSelected === 'foot') {
+                // FOOT定額コースが選択された場合
+                footCategories.forEach(category => {
                     $(`[name="acf[field_gallery_sub_category]"][value="${category}"]`)
                         .prop('disabled', false)
                         .closest('li')

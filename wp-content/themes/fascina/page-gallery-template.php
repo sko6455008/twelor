@@ -136,7 +136,7 @@ switch ($sub_category) {
     </div>
 
     <!-- コースカテゴリーナビゲーション -->
-    <?php if ($main_category === 'hand' || $main_category === 'foot'): ?>
+    <?php if ($main_category === 'hand'): ?>
     <div class="course-navigation">
         <div class="row">
             <div class="col-md-3 col-6">
@@ -201,6 +201,31 @@ switch ($sub_category) {
             <div class="col-md-3 col-6">
                 <a href="<?php echo home_url('/gallery_' . $main_category . '_design/nuance-xl/'); ?>" class="course-nav-item <?php echo ($sub_category == 'nuance-xl') ? 'active' : ''; ?>">
                     ニュアンスXL定額コース
+                </a>
+            </div>
+        </div>
+    </div>
+    <?php elseif ($main_category === 'foot'): ?>
+    <div class="course-navigation">
+        <div class="row">
+            <div class="col-md-3 col-6">
+                <a href="<?php echo home_url('/gallery_' . $main_category . '_design/simple/'); ?>" class="course-nav-item <?php echo ($sub_category == 'simple') ? 'active' : ''; ?>">
+                    シンプル定額コース
+                </a>
+            </div>
+            <div class="col-md-3 col-6">
+                <a href="<?php echo home_url('/gallery_' . $main_category . '_design/popular/'); ?>" class="course-nav-item <?php echo ($sub_category == 'popular') ? 'active' : ''; ?>">
+                    一番人気定額コース
+                </a>
+            </div>
+            <div class="col-md-3 col-6">
+                <a href="<?php echo home_url('/gallery_' . $main_category . '_design/special/'); ?>" class="course-nav-item <?php echo ($sub_category == 'special') ? 'active' : ''; ?>">
+                    こだわり定額コース
+                </a>
+            </div>
+            <div class="col-md-3 col-6">
+                <a href="<?php echo home_url('/gallery_' . $main_category . '_design/clean/'); ?>" class="course-nav-item <?php echo ($sub_category == 'clean') ? 'active' : ''; ?>">
+                    キレイめ定額コース
                 </a>
             </div>
         </div>
