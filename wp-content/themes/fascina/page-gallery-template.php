@@ -341,7 +341,6 @@ switch ($sub_category) {
 
                     $links = paginate_links(array(
                         'base' => $base_url,
-                        'format' => '',
                         'current' => $current_page,
                         'total' => $total_pages,
                         'prev_text' => '&laquo; 前へ',

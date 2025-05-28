@@ -92,15 +92,25 @@ $coupon_query = new WP_Query($args);
                 <div class="pagination custom-pagination">
                     <?php
                     $big = 999999999;
-                    echo paginate_links(array(
+                    $links = paginate_links(array(
                         'base' => str_replace($big, '%#%', esc_url(get_pagenum_link($big))),
-                        'format' => '?paged=%#%',
                         'current' => max(1, $paged),
                         'total' => $coupon_query->max_num_pages,
                         'prev_text' => '&laquo; 前へ',
                         'next_text' => '次へ &raquo;',
                         'type' => 'array'
                     ));
+
+                    if ($links) {
+                        foreach ($links as $link) {
+                            // アクティブページには active クラスを付与
+                            if (strpos($link, 'current') !== false) {
+                                echo str_replace('page-numbers', 'pagination-link active', $link);
+                            } else {
+                                echo str_replace('page-numbers', 'pagination-link', $link);
+                            }
+                        }
+                    }
                     ?>
                 </div>
             </div>
@@ -141,11 +151,10 @@ $coupon_query = new WP_Query($args);
     }
     .coupon-image {
         background-color: #fff;
-        border-bottom: 1px solid #eee;
         overflow: hidden;
         text-align: center;
         transition: transform 0.3s ease;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        padding: 5px;
     }
     .coupon-image img {
         width: 100%;
@@ -154,7 +163,7 @@ $coupon_query = new WP_Query($args);
     }
     .coupon-content {
         padding: 20px;
-        background: #fff;
+        background: #f1f1f1;
     }
     .coupon-name {
         font-size: 16px;
@@ -164,7 +173,7 @@ $coupon_query = new WP_Query($args);
     .coupon-period {
         font-size: 14px;
         color: #666;
-        margin-bottom: 10px;
+        text-align: center;
     }
     .coupon-price {
         font-size: 18px;
@@ -235,8 +244,7 @@ $coupon_query = new WP_Query($args);
     /* カスタムグリッドクラス */
     @media (max-width: 991px) {
         .coupon-item {
-            flex: 0 0 50%;
-            max-width: 50%;
+            max-width: 100%;
         }
         .coupon-title {
             font-size: 20px;
