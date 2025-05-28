@@ -8,13 +8,13 @@ get_header();
 ?>
 
 <section class="first-section">
-    <h2 class="first-section-title">FIRST</h2>
+    <h2 class="first-section-title">初めての方へ</h2>
     
     <div class="first-features">
         <ul class="feature-list">
             <li class="feature-item">
                 <div class="feature-image">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/ranking-1.jpg" alt="爪への優しさと持ちの良さ">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/first1.jpg" alt="爪への優しさと持ちの良さ">
                 </div>
                 <p class="feature-text">
                     当店は爪への優しさと<br>
@@ -23,7 +23,7 @@ get_header();
             </li>
             <li class="feature-item">
                 <div class="feature-image">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/ranking-1.jpg" alt="スピーディーで低価格">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/first2.jpg" alt="スピーディーで低価格">
                 </div>
                 <p class="feature-text">
                     スピーディーで低価格
@@ -31,7 +31,7 @@ get_header();
             </li>
             <li class="feature-item">
                 <div class="feature-image">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/ranking-1.jpg" alt="豊富なアート＆カラーサンプル">
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/first3.jpg" alt="豊富なアート＆カラーサンプル">
                 </div>
                 <p class="feature-text">
                     豊富なアート＆カラーサンプル<br>
@@ -107,7 +107,7 @@ get_header();
 
 .first-section-subtitle {
     font-size: 24px;
-    margin: 50px 0;
+    margin: 55px 0;
     text-align: center;
     color: #333;
     position: relative;
@@ -212,7 +212,7 @@ get_header();
     }
 
     .feature-list {
-        gap: 30px;
+        gap: 35px;
     }
 
     .feature-image {
