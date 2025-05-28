@@ -21,17 +21,6 @@ header {
     z-index: 1;
 }
 
-.title {
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    color: #e64893;
-    font-size: 12px;
-    font-weight: normal;
-    margin: 0;
-    z-index: 10;
-}
-
 .backstretch {
     position: relative;
     width: 100%;
@@ -42,8 +31,8 @@ header {
 
 #sns_pc {
     position: absolute;
-    top: 40px;
-    right: 20px;
+    top: 10px;
+    right: 10px;
     z-index: 10;
 }
 
@@ -167,8 +156,8 @@ address {
 .menu-toggle {
     display: none;
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 3%;
+    right: 3%;
     z-index: 200;
     background: none;
     border: none;
@@ -181,8 +170,8 @@ address {
     display: none;
     position: fixed;
     top: 0;
-    left: 0;
-    width: 100%;
+    right: 0;
+    width: 60%;
     height: 100%;
     background: rgba(255,255,255,0.95);
     z-index: 150;
@@ -618,22 +607,7 @@ address {
 
 /* レスポンシブ対応 タブレット横向き・小型PC*/
 @media (max-width: 1024px) {
-    /* ランキングセクション */
-    .ranking-slide {
-        flex: 1 0 25%;
-    }
-}
-
-/* レスポンシブ対応 タブレット*/
-@media (max-width: 768px) {
     /* ヘッダー */
-    .title{
-        width: 70%;
-        top: 10px;
-        left: 10px;
-        font-size: 10px;
-    }
-
     .headinfo {
         position: relative;
         width: 100%;
@@ -671,6 +645,11 @@ address {
         text-align: center;
     }
 
+    /* ランキングセクション */
+    .ranking-slide {
+        flex: 1 0 25%;
+    }
+
     #sns_pc {
         display: none;
     }
@@ -678,7 +657,7 @@ address {
     .global-nav {
         display: none;
     }
-    
+
     .global-nav ul {
         flex-direction: row;
         overflow-x: auto;
@@ -696,37 +675,29 @@ address {
         padding: 5px;
     }
 
-    /* ３点リーダー */
+     /* ３点リーダー */
     .menu-toggle {
         display: block;
         position: absolute;
-        top: 22px;
-        right: 10px;
+        top: 1%;
+        right: 1%;
+        z-index: 200;
     }
-    
+
     .sp-menu {
         display: none;
         position: fixed;
         top: 0;
         left: 0;
-        width: 60%;
+        width: 65%;
         height: 100%;
-        background: rgba(255,255,255,0.7);
+        background: #fff;
         padding: 60px 20px 20px;
         box-sizing: border-box;
         overflow-y: auto;
         transform: translateX(100%);
         transition: transform 0.3s ease;
         z-index: 999;
-    }
-
-    /* ランキングセクション */
-    .ranking-section {
-        margin-top: 0px;
-    }
-
-    .ranking-slide {
-        flex: 1 0 33.333%;
     }
 
     /* お知らせセクション */
@@ -745,6 +716,14 @@ address {
         padding: 0 10%;
     }
 
+    .coupon-title {
+        font-size: 18px;
+    }
+
+    .coupon-price{
+        font-size: 18px;
+    }
+
     /* フッター */
     .footer-container {
         flex-direction: column;
@@ -754,6 +733,18 @@ address {
     .footer-left, .footer-middle, .footer-right {
         width: 100%;
         margin-bottom: 30px;
+    }
+}
+
+/* レスポンシブ対応 タブレット*/
+@media (max-width: 768px) {
+    /* ランキングセクション */
+    .ranking-section {
+        margin-top: 0px;
+    }
+
+    .ranking-slide {
+        flex: 1 0 33.333%;
     }
 }
 

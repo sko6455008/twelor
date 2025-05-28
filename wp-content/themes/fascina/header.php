@@ -12,7 +12,6 @@
     <?php wp_body_open(); ?>
 
     <header>
-        <h1 class="title">池袋ネイルサロンfascina（ファッシーナ）〜ナチュラルスタイリッシュな空間 自爪を削らない☆パラジェル専門店</h1>
         <div class="backstretch">
             <div id="sns_pc">
                 <a href="https://www.instagram.com/fascinanailsalon/" target="_blank">

@@ -40,7 +40,7 @@ $coupon_query = new WP_Query($args);
 
 <div class="coupon-container">
     <div class="coupon-header">
-        <h1 class="coupon-title">月替わりクーポン</h1>
+        <h2 class="coupon-title">月替わりクーポン</h2>
     </div>
 
     <?php if ($coupon_query->have_posts()) : ?>
@@ -77,7 +77,7 @@ $coupon_query = new WP_Query($args);
                                     $start_date_formatted = date_i18n('Y年m月d日H時i分', strtotime($start_date));
                                     $end_date_formatted = date_i18n('Y年m月d日H時i分', strtotime($end_date));
                                 ?>
-                                    <p class="coupon-period">期間: <?php echo esc_html($start_date_formatted); ?>～<?php echo esc_html($end_date_formatted); ?>迄</p>
+                                    <p class="coupon-period"><?php echo esc_html($start_date_formatted); ?>～<?php echo esc_html($end_date_formatted); ?>迄</p>
                                 <?php endif; ?>
                             </div>
                         </div>
@@ -138,6 +138,7 @@ $coupon_query = new WP_Query($args);
     .coupon-title {
         font-size: 24px;
         color: #333;
+        font-weight: normal;
     }
     .coupon-grid {
         margin: 30px;
