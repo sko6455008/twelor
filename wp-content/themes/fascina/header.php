@@ -25,8 +25,8 @@
                     <div class="logo">
                         <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/images/logo.png" alt="Fascinaロゴ">
                     </div>
-                    <a href="https://beauty.hotpepper.jp/slnH000524363/" target="_blank" class="reservation-btn">ご予約</a>
-                    <a href="<?php echo esc_url(home_url('/contact/')); ?>" class="contact-btn">お問い合わせ</a>
+                    <a href="https://071f0f.b-merit.jp/pJ3MHW/web" class="reservation-btn" target="_blank">ご予約</a>
+                    <a href="https://lin.ee/GOjVh5W" class="contact-btn" target="_blank">お問い合わせ</a>
                     <div class="phone-number">050-5305-3298</div>
                 </div>
 
@@ -55,17 +55,17 @@
 
     <nav class="sp-menu">
         <ul>
-            <li><a href="/">トップ</a></li>
-            <li><a href="/first/">初めての方へ</a></li>
-            <li><a href="/menu/">料金メニュー</a></li>
-            <li><a href="/qa/">Q&A</a></li>
-            <li><a href="/access/">アクセス</a></li>
-            <li><a href="/recruit/">リクルート</a></li>
-            <li><a href="/gallery_hand_design1_1.html">HAND定額コース</a></li>
-            <li><a href="/gallery_foot_design1_1.html">FOOT定額コース</a></li>
-            <li><a href="/gallery_guest_nail_1.html">GUESTギャラリー</a></li>
-            <li><a href="/gallery_arts_parts7_1.html">アート・パーツ</a></li>
-            <li><a href="/coupon/">月替わりクーポン</a></li>
+            <li><a href="<?php echo esc_url(home_url('/')); ?>">トップ</a></li>
+            <li><a href="<?php echo esc_url(home_url('/first/')); ?>">初めての方へ</a></li>
+            <li><a href="<?php echo esc_url(home_url('/menu/')); ?>">料金メニュー</a></li>
+            <li><a href="<?php echo esc_url(home_url('/qa/')); ?>">Q&A</a></li>
+            <li><a href="<?php echo esc_url(home_url('/access/')); ?>">アクセス</a></li>
+            <li><a href="<?php echo esc_url(home_url('/recruit/')); ?>">リクルート</a></li>
+            <li><a href="<?php echo esc_url(home_url('/gallery_hand_design/simple/')); ?>">HAND定額コース</a></li>
+            <li><a href="<?php echo esc_url(home_url('/gallery_foot_design/simple/')); ?>">FOOT定額コース</a></li>
+            <li><a href="<?php echo esc_url(home_url('/gallery_guest_nail/')); ?>">GUESTギャラリー</a></li>
+            <li><a href="<?php echo esc_url(home_url('/gallery_arts_parts/lame-holo-seal/')); ?>">アート・パーツ</a></li>
+            <li><a href="<?php echo esc_url(home_url('/coupon/')); ?>">月替わりクーポン</a></li>
             <li><a href="https://fascina.jp/care.html#here" target="_blank">グリーンネイルについて</a></li>
         </ul>
 

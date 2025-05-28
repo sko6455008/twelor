@@ -3,7 +3,7 @@
             <section class="footer-left">
                 <div class="footer-logo">
                     <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/images/logo.png" alt="Fascinaロゴ">
-                    <a href="<?php echo esc_url(home_url('/contact/')); ?>" class="footer-contact-btn">お問い合わせ</a>
+                    <a href="https://lin.ee/GOjVh5W" class="footer-contact-btn" target="_blank">お問い合わせ</a>
                 </div>
             </section>
             <section class="footer-middle">
@@ -30,10 +30,10 @@
                   <div class="footer-menu-column">
                     <p><strong>■ネイル</strong></p>
                     <ul>
-                      <li><a href="<?php echo esc_url(home_url('/gallery_hand_design1_1.html')); ?>">HAND定額コース</a></li>
-                      <li><a href="<?php echo esc_url(home_url('/gallery_foot_design1_1.html')); ?>">FOOT定額コース</a></li>
-                      <li><a href="<?php echo esc_url(home_url('/gallery_guest_nail_1.html')); ?>">GUESTギャラリー</a></li>
-                      <li><a href="<?php echo esc_url(home_url('/gallery_arts_parts7_1.html')); ?>">アート・パーツ</a></li>
+                      <li><a href="<?php echo esc_url(home_url('/gallery_hand_design/simple/')); ?>">HAND定額コース</a></li>
+                      <li><a href="<?php echo esc_url(home_url('/gallery_foot_design/simple/')); ?>">FOOT定額コース</a></li>
+                      <li><a href="<?php echo esc_url(home_url('/gallery_guest_nail/')); ?>">GUESTギャラリー</a></li>
+                      <li><a href="<?php echo esc_url(home_url('/gallery_arts_parts/lame-holo-seal/')); ?>">アート・パーツ</a></li>
                       <li><a href="<?php echo esc_url(home_url('/coupon/')); ?>">月替わりクーポン</a></li>
                     </ul>
                   </div>

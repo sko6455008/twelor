@@ -28,9 +28,7 @@
                         <div class="ranking-item">
                             <div class="ranking-number"><?php echo esc_html($position); ?> 位</div>
                             <?php if (has_post_thumbnail()) : ?>
-                                <a href="<?php the_permalink(); ?>">
-                                    <?php the_post_thumbnail('large'); ?>
-                                </a>
+                                <?php the_post_thumbnail('large'); ?>
                             <?php endif; ?>
                         </div>
                     </div>
@@ -105,9 +103,7 @@
             ?>
                 <div>
                     <div class="image-box">
-                        <a href="<?php the_permalink(); ?>" class="design-link">
-                            <?php the_post_thumbnail('large', array('class' => 'image')); ?>
-                        </a>
+                        <?php the_post_thumbnail('large', array('class' => 'image')); ?>
                     </div>
                     <p class="design-title"><?php the_title(); ?></p>
                 </div>
@@ -122,7 +118,7 @@
             <?php endif; ?>
         </div>
         <div class="text-center py-4">
-            <a href="<?php echo esc_url(home_url('/gallery-category/hand/')); ?>" class="btn more-button">
+            <a href="<?php echo esc_url(home_url('/gallery_hand_design/simple/')); ?>" class="btn more-button">
                 もっと見る <i class="fas fa-chevron-right ms-2"></i>
             </a>
         </div>
@@ -152,9 +148,7 @@
             ?>
                 <div>
                     <div class="image-box">
-                        <a href="<?php the_permalink(); ?>" class="design-link">
-                            <?php the_post_thumbnail('large', array('class' => 'image')); ?>
-                        </a>
+                        <?php the_post_thumbnail('large', array('class' => 'image')); ?>
                     </div>
                     <p class="design-title"><?php the_title(); ?></p>
                 </div>
@@ -169,7 +163,7 @@
             <?php endif; ?>
         </div>
         <div class="text-center py-4">
-            <a href="<?php echo esc_url(home_url('/gallery-category/guest/')); ?>" class="btn more-button">
+            <a href="<?php echo esc_url(home_url('/gallery_guest_nail/')); ?>" class="btn more-button">
                 もっと見る <i class="fas fa-chevron-right ms-2"></i>
             </a>
         </div>

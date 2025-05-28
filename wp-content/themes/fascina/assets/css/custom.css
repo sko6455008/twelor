@@ -394,7 +394,7 @@ address {
 .design-box {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
+    gap: 20px;
     list-style: none;
     padding: 0 8%;
     margin: 0;
