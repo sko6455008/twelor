@@ -7,7 +7,7 @@
 get_header();
 ?>
 
-<section class="first-section">
+<section class="container">
     <h2 class="first-section-title">初めての方へ</h2>
     
     <div class="first-features">
@@ -86,23 +86,13 @@ get_header();
 }
 
 .first-section-title {
-    display: table;
     text-align: center;
-    color: #333333;
-    font-size: 28px;
-    font-family: "Sorts Mill Goudy";
-    white-space: nowrap;
+    color: #333;
+    font-size: 24px;
     margin-bottom: 50px;
+    padding-bottom: 10px;
     width: 100%;
-}
-
-.first-section-title::before,
-.first-section-title::after {
-    content: '';
-    display: table-cell;
-    width: 50%;
-    background: linear-gradient(transparent 49%, #333 50%, #333 51%, transparent 52%);
-    vertical-align: middle;
+    border-bottom: 1px solid #ddd;
 }
 
 .first-section-subtitle {
