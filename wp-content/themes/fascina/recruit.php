@@ -6,99 +6,219 @@ get_header();
 ?>
 
 <div class="container py-5">
-    <h1 class="fascina-section-title mb-4">リクルート</h1>
-    
-    <div class="row mb-5">
-        <div class="col-md-6">
-            <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/images/recruit.jpg" alt="リクルート" class="img-fluid rounded">
-        </div>
-        <div class="col-md-6">
-            <h2 class="h4 mb-3" style="color: #ff69b4;">Fascinaネイルサロンで一緒に働きませんか？</h2>
-            <p>Fascinaネイルサロンでは、お客様に喜んでいただけるサービスを提供するため、一緒に働いていただけるスタッフを募集しています。</p>
-            <p>自爪を傷めないパラジェル専門店として、技術力はもちろん、お客様とのコミュニケーションを大切にしています。</p>
-            <p>未経験の方でも、ネイリストとしてのスキルを身につけるための研修制度を用意しておりますので、安心してご応募ください。</p>
-        </div>
+    <h1 class="recruit-section-title">リクルート</h1>
+
+    <div class="col-12 position-relative">
+        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/recruit_bg.jpg" alt="求人募集背景" class="img-fluid recruit-bg">
+        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/openingstaff.png" alt="求人募集" class="recruit">
     </div>
-    
-    <div class="row mb-5">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header" style="background-color: #ff69b4; color: white;">
-                    <h2 class="h5 mb-0">募集要項</h2>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h3 class="h6 mb-2">募集職種</h3>
-                            <p>ネイリスト（正社員・パート）</p>
-                            
-                            <h3 class="h6 mb-2 mt-4">応募資格</h3>
-                            <ul>
-                                <li>ネイリスト検定3級以上（未経験者は応相談）</li>
-                                <li>明るく前向きな方</li>
-                                <li>お客様とのコミュニケーションを大切にできる方</li>
-                                <li>チームワークを大切にできる方</li>
-                            </ul>
-                            
-                            <h3 class="h6 mb-2 mt-4">勤務地</h3>
-                            <p>東京都豊島区池袋2-40-13 VORT池袋ビル 3F</p>
+
+    <div class="requirements-table-container">
+        <table class="requirements-table">
+            <tbody>
+                <tr>
+                    <th class="table-header">業種</th>
+                    <td class="table-content">
+                        <div class="job-details">
+                            <p>お客様のネイルをお手伝いする仕事</p>
                         </div>
-                        <div class="col-md-6">
-                            <h3 class="h6 mb-2">勤務時間</h3>
-                            <p>シフト制（実働8時間）<br>10:00〜22:00の間でシフト制</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="table-header">対象職種</th>
+                    <td class="table-content">
+                        <p>ネイリスト</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="table-header">給与</th>
+                    <td class="table-content">
+                        <div class="salary-details">
+                            <div>
+                                <p><strong>【正社員】月給250,000円以上</strong></p>
+                                <p>●社員A　平日　13:00-23:00/土・日・祭日12:00－23:00<br>
+                                    250.440円　月24日出勤　月 7- 6休　休憩1.5/実働8.5<br>
+                                    240.000円　月23日出勤　月 8- 7休　休憩1.5/実働8.5<br>
+                                    229.500円　月22日出勤　月 9- 8休　休憩1.5/実働8.5<br>
+                                    219.100円　月21日出勤　月10- 9休　休憩1.5/実働8.5<br>
+                                    208.600円　月20日出勤　月11-10休　休憩1.5/実働8.5<br>
+                                </p>
+                                <p>●社員B　平日・土　11:00-21:00/日・祭日10:00－21:00<br>
+                                    240.440円　月24日出勤　月 7- 6休　休憩1.5/実働8.5<br>
+                                    230.000円　月23日出勤　月 8- 7休　休憩1.5/実働8.5<br>
+                                    220.000円　月22日出勤　月 9- 8休　休憩1.5/実働8.5<br>
+                                    210.000円　月21日出勤　月10- 9休　休憩1.5/実働8.5<br>
+                                    200.000円　月20日出勤　月11-10休　休憩1.5/実働8.5<br>
+                                </p>
+                            </div>
                             
-                            <h3 class="h6 mb-2 mt-4">給与</h3>
-                            <p>正社員：月給22万円〜（経験・能力による）<br>パート：時給1,200円〜（経験・能力による）</p>
+                            <div>
+                                <p><strong>【アルバイト・パート】時給1,100円～1,300円</strong></p>
+                                <p>
+                                    ※土日祝や夜の時間も出勤可能な方<br>
+                                    勤務初日から同時給が嬉しい♪<br>
+                                    研修中も安心して勤めることができます！<br>
+                                </p>
+                            </div>
                             
-                            <h3 class="h6 mb-2 mt-4">待遇・福利厚生</h3>
+                            <div>
+                                <p><strong>【業務委託】 完全歩合</strong></p>
+                                <p>
+                                    ※完全歩合制　売上の50％<br>
+                                    ※経験・能力を考慮し、優遇いたします。<br>
+                                    ※1日3～4時間勤務より応相談<br>
+                                </p>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="table-header">勤務地</th>
+                    <td class="table-content">
+                        <p>東京都豊島区池袋2-40-13 VORT1池袋ビル3F</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="table-header">勤務時間</th>
+                    <td class="table-content">
+                        <div>
+                            <p><strong>【正社員】</strong><br>
+                                平日:11:00～23:00(のうちシフト制)<br>
+                                土曜・日曜・祭日:10:00～23:00(のうちシフト制)
+                            </p>
+                            <p><strong>【アルバイト】</strong><br>
+                                週2日、1日5時間～
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="table-header">休日・休暇</th>
+                    <td class="table-content">
+                        <div>
+                            <p><strong>【正社員】</strong><br>
+                                ●週休2日<br>
+                                ●有給休暇<br>
+                                ●産休・育休
+                            </p>
+                            <p><strong>【アルバイト】</strong><br>
+                                ●希望休<br>
+                                ●有給休暇<br>
+                                ●産休・育休<br>
+                                ※なんなりとご相談いただければと思います。
+                            </p>
+                            <p><strong>【アルバイト】</strong><br>
+                                ●応相談
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="table-header">待遇</th>
+                    <td class="table-content">
+                        <div>
+                            <p><strong>【共通】</strong></p>
                             <ul>
-                                <li>社会保険完備</li>
-                                <li>交通費支給（上限あり）</li>
-                                <li>昇給あり</li>
-                                <li>賞与年2回</li>
-                                <li>有給休暇</li>
-                                <li>研修制度あり</li>
-                                <li>社員割引あり</li>
+                                <li>制服貸与</li>
+                            </ul>
+                            <p><strong>【正社員】</strong></p>
+                            <ul>
+                                <li>交通費支給(10,000円/月迄)</li>
+                                <li>有給休暇(勤務半年後から10日間発生)</li>
+                                <li>産休・育休</li>
+                                <li>社会保険(健康保険・厚生年金・雇用保険・労災加入)</li>
+                                <li>決算賞与/年1回(年度業績に応じて)</li>
+                                <li>健康診断</li>
+                            </ul>
+                            <p><strong>【アルバイト】</strong></p>
+                            <ul>
+                                <li>交通費支給(10,000円/月迄)</li>
+                                <li>有給休暇(勤務半年後から発生)</li>
+                                <li>社会保険・厚生年金・雇用保険・労災加入(勤務時間・日数によって)</li>
+                                <li>決算賞与/年1回(年度業績に応じて)</li>
+                                <li>健康診断(勤務時間・日数によって)</li>
+                            </ul>
+                            <p><strong>【業務委託】</strong></p>
+                            <ul>
+                                <li>最低保障給</li>
                             </ul>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header" style="background-color: #ff69b4; color: white;">
-                    <h2 class="h5 mb-0">応募方法</h2>
-                </div>
-                <div class="card-body">
-                    <p>下記のいずれかの方法でご応募ください。</p>
-                    
-                    <h3 class="h6 mb-2 mt-3">メールでのご応募</h3>
-                    <p>件名に「ネイリスト応募」と記載し、以下の内容を記入の上、お送りください。</p>
-                    <ul>
-                        <li>氏名</li>
-                        <li>年齢</li>
-                        <li>連絡先（電話番号・メールアドレス）</li>
-                        <li>経験年数</li>
-                        <li>保有資格</li>
-                        <li>志望動機</li>
-                    </ul>
-                    <p>メールアドレス：recruit@fascina.jp</p>
-                    
-                    <h3 class="h6 mb-2 mt-4">お電話でのご応募</h3>
-                    <p>下記の電話番号までお問い合わせください。</p>
-                    <p>電話番号：050-5305-3298（受付時間：9:00〜22:00）</p>
-                    
-                    <div class="alert alert-info mt-4">
-                        <p class="mb-0">応募いただいた後、書類選考を経て面接日をご連絡いたします。お気軽にご応募ください。</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="table-header">応募資格</th>
+                    <td class="table-content">
+                        <div>
+                            <ul>
+                                <li><strong>1年以上の実務経験ある方</strong></li>
+                                <li>幹部候補・店長候補も募集中!!</li>
+                                <li>夕方からの勤務ができる方歓迎</li>
+                                <li>土曜・日曜・祭日勤務できる方優遇</li>
+                                <li>【アルバイト】は週2日、1日5時間～面接時に相談</li>
+                                <li>20歳～35歳</li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
+
+<style>
+    .recruit-section-title {
+        text-align: center;
+        color: #333;
+        font-size: 24px;
+        margin: 30px auto;
+        padding-bottom: 10px;
+        width: 100%;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .requirements-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 1rem;
+    }
+
+    .table-header {
+        padding: 20px 25px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        text-align: left;
+        vertical-align: top;
+        width: 150px;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .table-content {
+        padding: 20px 25px;
+        color: #333;
+        line-height: 1.7;
+        border-bottom: 1px solid #e0e0e0;
+        vertical-align: top;
+    }
+
+    .requirements-table tr:last-child th.table-header,
+    .requirements-table tr:last-child td.table-content {
+        border-bottom: none;
+    }
+
+    .recruit-bg {
+        height: 350px;
+        width: 100%;
+    }
+
+    .recruit {
+        position: absolute;
+        top: 20%;
+        left: 15%;
+        transform: translate(-50%, -25%);
+        width: 300px;
+        height: 300px;
+        z-index: 10;
+    }
+</style>
 
 <?php get_footer(); ?>
