@@ -24,7 +24,7 @@
                       <li><a href="<?php echo esc_url(home_url('/qa/')); ?>">Q&A</a></li>
                       <li><a href="<?php echo esc_url(home_url('/access/')); ?>">アクセス</a></li>
                       <li><a href="<?php echo esc_url(home_url('/recruit/')); ?>">リクルート</a></li>
-                      <li><a href="https://fascina.jp/care.html#here" target="_blank">グリーンネイルについて</a></li>
+                      <li><a href="<?php echo esc_url(home_url('/care/')); ?>">グリーンネイルについて</a></li>
                     </ul>
                   </div>
                   <div class="footer-menu-column">

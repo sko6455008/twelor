@@ -8,7 +8,7 @@ get_header();
 ?>
 
 <section class="container">
-    <h2 class="first-section-title">初めての方へ</h2>
+    <h1 class="first-section-title">初めての方へ</h1>
     
     <div class="first-features">
         <ul class="feature-list">
@@ -40,7 +40,7 @@ get_header();
             </li>
         </ul>
     </div>
-    <div class="hygiene-section mb-5">
+    <div class="mb-5">
         <h3 class="first-section-subtitle">衛生管理</h3>
         <p class="hygiene-intro">
             池袋ネイルサロン ファッシーナでは、お客様に安心してネイルサービスをお受け頂くために、<br>
@@ -55,7 +55,7 @@ get_header();
             <li>青カビ防止ネイルなどのお客様に使用したファイルは必ず処分</li>
         </ul>
     </div>
-    <div class="request-section mb-5">
+    <div class="mb-5">
         <h3 class="first-section-subtitle">お客様へのお願い</h3>
         <ul class="request-list">
             <li>

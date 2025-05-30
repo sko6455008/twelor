@@ -65,7 +65,7 @@
             <li><a href="<?php echo esc_url(home_url('/gallery_guest_nail/')); ?>">GUESTギャラリー</a></li>
             <li><a href="<?php echo esc_url(home_url('/gallery_arts_parts/lame-holo-seal/')); ?>">アート・パーツ</a></li>
             <li><a href="<?php echo esc_url(home_url('/coupon/')); ?>">月替わりクーポン</a></li>
-            <li><a href="https://fascina.jp/care.html#here" target="_blank">グリーンネイルについて</a></li>
+            <li><a href="<?php echo esc_url(home_url('/care/')); ?>">グリーンネイルについて</a></li>
         </ul>
 
         <div class="sns-icons">
@@ -91,6 +91,6 @@
             <li><a href="<?php echo esc_url(home_url('/gallery_guest_nail/')); ?>">GUESTギャラリー</a></li>
             <li><a href="<?php echo esc_url(home_url('/gallery_arts_parts/lame-holo-seal/')); ?>">アート・パーツ</a></li>
             <li><a href="<?php echo esc_url(home_url('/coupon/')); ?>">月替わりクーポン</a></li>
-            <li><a href="https://fascina.jp/care.html#here" target="_blank">グリーンネイルについて</a></li>
+            <li><a href="<?php echo esc_url(home_url('/care/')); ?>">グリーンネイルについて</a></li>
         </ul>
     </nav>
