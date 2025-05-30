@@ -13,8 +13,10 @@
                     'post_type' => 'ranking',
                     'posts_per_page' => 10,
                     'meta_key' => 'ranking_position',
-                    'orderby' => 'meta_value_num',
-                    'order' => 'ASC',
+                    'orderby' => array(
+                        'menu_order' => 'ASC',
+                        'date' => 'DESC'
+                    ),
                 );
                 $ranking_query = new WP_Query($ranking_args);
 
@@ -94,8 +96,10 @@
                         'compare' => '='
                     )
                 ),
-                'orderby' => 'date',
-                'order' => 'DESC'
+                'orderby' => array(
+                    'menu_order' => 'ASC',
+                    'date' => 'DESC'
+                ),
             );
             $hand_query = new WP_Query($hand_args);
             if ($hand_query->have_posts()) :
@@ -139,8 +143,10 @@
                         'compare' => '='
                     )
                 ),
-                'orderby' => 'date',
-                'order' => 'DESC'
+                'orderby' => array(
+                    'menu_order' => 'ASC',
+                    'date' => 'DESC'
+                ),
             );
             $guest_query = new WP_Query($guest_args);
             if ($guest_query->have_posts()) :
@@ -177,8 +183,10 @@
             $coupon_args = array(
                 'post_type' => 'coupon',
                 'posts_per_page' => 9,
-                'orderby' => 'date',
-                'order' => 'DESC',
+                'orderby' => array(
+                    'menu_order' => 'ASC',
+                    'date' => 'DESC'
+                )
             );
             $coupon_query = new WP_Query($coupon_args);
 

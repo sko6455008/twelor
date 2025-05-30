@@ -59,6 +59,15 @@ function fascina_change_title_placeholder($title, $post) {
 }
 add_filter('enter_title_here', 'fascina_change_title_placeholder', 10, 2);
 
+// Intuitive Custom Post Order プラグインのサポート
+function fascina_enable_custom_post_order() {
+    // ギャラリー投稿タイプでカスタムオーダーを有効化
+    add_post_type_support('gallery', 'page-attributes');
+    add_post_type_support('coupon', 'page-attributes');
+    add_post_type_support('ranking', 'page-attributes');
+}
+add_action('init', 'fascina_enable_custom_post_order');
+
 // カスタム投稿タイプ: ギャラリー
 function fascina_register_gallery_post_type() {
     $args = array(
@@ -71,10 +80,12 @@ function fascina_register_gallery_post_type() {
             'add_new_item' => '新規ギャラリーを追加',
             'edit_item' => 'ギャラリーを編集',
         ),
-        'supports' => array('title', 'thumbnail'),
+        'supports' => array('title', 'thumbnail','page-attributes'),
         'menu_icon' => 'dashicons-format-gallery',
         'has_archive' => true,
         'rewrite' => array('slug' => 'gallery'),
+        'hierarchical' => false,
+        'show_in_menu' => true,
     );
     register_post_type('gallery', $args);
 }
@@ -92,7 +103,7 @@ function fascina_register_coupon_post_type() {
             'add_new_item' => '新規クーポンを追加',
             'edit_item' => 'クーポンを編集',
         ),
-        'supports' => array('title', 'thumbnail'),
+        'supports' => array('title', 'thumbnail', 'page-attributes'),
         'menu_icon' => 'dashicons-tickets-alt',
         'has_archive' => true,
         'rewrite' => array('slug' => 'coupons'),
@@ -113,7 +124,7 @@ function fascina_register_ranking_post_type() {
             'add_new_item' => '新規ランキングを追加',
             'edit_item' => 'ランキングを編集',
         ),
-        'supports' => array('title', 'thumbnail'),
+        'supports' => array('title', 'thumbnail', 'page-attributes'),
         'menu_icon' => 'dashicons-awards',
         'has_archive' => false,
     );
@@ -389,6 +400,44 @@ function fascina_register_acf_fields() {
     }
 }
 
+// デフォルトのクエリでカスタムオーダーを使用
+function fascina_set_default_gallery_order($query) {
+    // 管理画面ではない場合のみ適用
+    if (!is_admin() && $query->is_main_query()) {
+        // ギャラリーのアーカイブページまたはカスタムクエリの場合
+        if (is_post_type_archive('gallery') || $query->get('post_type') === 'gallery') {
+            $query->set('orderby', 'menu_order');
+            $query->set('order', 'ASC');
+        }
+        // クーポンの場合
+        if (is_post_type_archive('coupon') || $query->get('post_type') === 'coupon') {
+            $query->set('orderby', 'menu_order');
+            $query->set('order', 'ASC');
+        }
+        // ランキングの場合
+        if (is_post_type_archive('ranking') || $query->get('post_type') === 'ranking') {
+            $query->set('orderby', 'menu_order');
+            $query->set('order', 'ASC');
+        }
+    }
+}
+add_action('pre_get_posts', 'fascina_set_default_gallery_order');
+
+// 明示的な並び順指定がないときでも管理画面の投稿一覧でカスタムオーダーを適用
+function fascina_admin_gallery_order($query) {
+    if (is_admin() && $query->is_main_query()) {
+        $post_type = $query->get('post_type');
+        
+        if (in_array($post_type, array('gallery', 'coupon', 'ranking'))) {
+            if (!$query->get('orderby')) {
+                $query->set('orderby', 'menu_order');
+                $query->set('order', 'ASC');
+            }
+        }
+    }
+}
+add_action('pre_get_posts', 'fascina_admin_gallery_order');
+
 // ギャラリーのカテゴリー,サブカテゴリー連動機能用JavaScript
 function fascina_gallery_category_script() {
     if (get_post_type() !== 'gallery') return;
@@ -473,6 +522,9 @@ function fascina_add_gallery_columns($columns) {
             $new_columns['thumbnail'] = '画像';
         }
         $new_columns[$key] = $value;
+        if ($key === 'title') {
+            $new_columns['menu_order'] = '表示順';
+        }
     }
     $new_columns['main_category'] = 'メインカテゴリー';
     $new_columns['sub_category'] = 'サブカテゴリー';
@@ -493,6 +545,9 @@ function fascina_gallery_column_content($column_name, $post_id) {
         if (has_post_thumbnail($post_id)) {
             echo get_the_post_thumbnail($post_id, array(60, 60));
         }
+    } elseif ($column_name === 'menu_order') {
+        $post = get_post($post_id);
+        echo $post->menu_order;
     } elseif ($column_name === 'main_category') {
         $main_category = get_field('gallery_main_category', $post_id);
         $categories = array(
@@ -531,6 +586,13 @@ function fascina_gallery_column_content($column_name, $post_id) {
 }
 add_action('manage_gallery_posts_custom_column', 'fascina_gallery_column_content', 10, 2);
 
+// 表示順列をソート可能にする
+function fascina_sortable_gallery_columns($columns) {
+    $columns['menu_order'] = 'menu_order';
+    return $columns;
+}
+add_filter('manage_edit-gallery_sortable_columns', 'fascina_sortable_gallery_columns');
+
 // クーポン一覧のカラムをカスタマイズ
 function fascina_add_coupon_columns($columns) {
     $new_columns = array();
@@ -539,6 +601,9 @@ function fascina_add_coupon_columns($columns) {
             $new_columns['thumbnail'] = '画像';
         }
         $new_columns[$key] = $value;
+        if ($key === 'title') {
+            $new_columns['menu_order'] = '表示順';
+        }
     }
     $new_columns['period'] = '表示期間';
     $new_columns['price'] = 'クーポン価格';
@@ -559,6 +624,9 @@ function fascina_coupon_column_content($column_name, $post_id) {
         if (has_post_thumbnail($post_id)) {
             echo get_the_post_thumbnail($post_id, array(60, 60));
         }
+    } elseif ($column_name === 'menu_order') {
+        $post = get_post($post_id);
+        echo $post->menu_order;
     } elseif ($column_name === 'period') {
         $period = get_field('coupon_period', $post_id);
         if ($period) {
@@ -608,6 +676,9 @@ function fascina_add_ranking_columns($columns) {
             $new_columns['thumbnail'] = '画像';
         }
         $new_columns[$key] = $value;
+        if ($key === 'title') {
+            $new_columns['menu_order'] = '表示順';
+        }
     }
     $new_columns['position'] = '順位';
     if (isset($new_columns['date'])) {
@@ -625,6 +696,9 @@ function fascina_ranking_column_content($column_name, $post_id) {
         if (has_post_thumbnail($post_id)) {
             echo get_the_post_thumbnail($post_id, array(60, 60));
         }
+    } elseif ($column_name === 'menu_order') {
+        $post = get_post($post_id);
+        echo $post->menu_order;
     } elseif ($column_name === 'position') {
         $position = get_field('ranking_position', $post_id);
         if ($position) {
@@ -633,6 +707,14 @@ function fascina_ranking_column_content($column_name, $post_id) {
     }
 }
 add_action('manage_ranking_posts_custom_column', 'fascina_ranking_column_content', 10, 2);
+
+// 表示順列をソート可能にする
+function fascina_sortable_columns($columns) {
+    $columns['menu_order'] = 'menu_order';
+    return $columns;
+}
+add_filter('manage_edit-coupon_sortable_columns', 'fascina_sortable_columns');
+add_filter('manage_edit-ranking_sortable_columns', 'fascina_sortable_columns');
 
 // 管理画面の一覧のスタイル調整
 function fascina_admin_columns_style() {
@@ -656,9 +738,45 @@ function fascina_admin_columns_style() {
         .column-description { 
             width: 300px; 
         }
+        .ui-sortable tr {
+            cursor: move;
+        }
+        .ui-sortable tr:hover {
+            background-color: #f0f0f0;
+        }
+        .ui-sortable-helper {
+            background-color: #fff !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
     </style>';
 }
 add_action('admin_head', 'fascina_admin_columns_style');
+
+// 管理画面カスタムオーダー用のスタイル
+function fascina_custom_order_admin_script() {
+    global $post_type;
+    
+    // ギャラリー、クーポン、ランキングの一覧ページでのみ読み込み
+    if (in_array($post_type, array('gallery', 'coupon', 'ranking'))) {
+        ?>
+        <script>
+        jQuery(document).ready(function($) {
+            // ドラッグ&ドロップの視覚的フィードバックを改善
+            $('.wp-list-table tbody').addClass('ui-sortable');
+            
+            // ソート後の処理を改善
+            $('.wp-list-table tbody').on('sortstop', function(event, ui) {
+                // ソート完了後に行の背景色をリセット
+                setTimeout(function() {
+                    $('.wp-list-table tbody tr').css('background-color', '');
+                }, 100);
+            });
+        });
+        </script>
+        <?php
+    }
+}
+add_action('admin_footer', 'fascina_custom_order_admin_script');
 
 # -------------------------------
 # バリデーション
@@ -805,3 +923,143 @@ function fascina_flush_gallery_rewrite_rules() {
     flush_rewrite_rules();
 }
 register_activation_hook(__FILE__, 'fascina_flush_gallery_rewrite_rules');
+
+// 管理画面のギャラリー一覧にフィルターを追加
+function fascina_add_gallery_filters() {
+    global $typenow;
+    if ($typenow === 'gallery') {
+        // メインカテゴリーの選択肢
+        $main_categories = array(
+            'hand' => 'HAND定額コース',
+            'foot' => 'FOOT定額コース',
+            'guest' => 'GUESTギャラリー',
+            'arts-parts' => 'アートパーツ'
+        );
+
+        // サブカテゴリーの選択肢
+        $sub_categories = array(
+            'simple' => 'シンプル定額コース',
+            'popular' => '一番人気定額コース',
+            'special' => 'こだわり定額コース',
+            'clean' => 'キレイめ定額コース',
+            'onehon-s' => 'ワンホンS定額コース',
+            'onehon-m' => 'ワンホンM定額コース',
+            'onehon-l' => 'ワンホンL定額コース',
+            'bridal' => 'ブライダルデザイン',
+            'nuance-s' => 'ニュアンスS定額コース',
+            'nuance-m' => 'ニュアンスM定額コース',
+            'nuance-l' => 'ニュアンスL定額コース',
+            'nuance-xl' => 'ニュアンスXL定額コース',
+            'lame-holo-seal' => 'ラメ・ホロ・シール',
+            'stone-studs-pearl' => 'ストーン・スタッズ・パール',
+            'parts' => 'パーツ',
+            'color' => 'カラー'
+        );
+
+        // 現在選択されている値を取得
+        $current_main = isset($_GET['main_category']) ? $_GET['main_category'] : '';
+        $current_sub = isset($_GET['sub_category']) ? $_GET['sub_category'] : '';
+
+        // メインカテゴリーのドロップダウン
+        echo '<select name="main_category">';
+        echo '<option value="">メインカテゴリーを選択</option>';
+        foreach ($main_categories as $value => $label) {
+            printf(
+                '<option value="%s" %s>%s</option>',
+                esc_attr($value),
+                selected($current_main, $value, false),
+                esc_html($label)
+            );
+        }
+        echo '</select>';
+
+        // サブカテゴリーのドロップダウン
+        echo '<select name="sub_category">';
+        echo '<option value="">サブカテゴリーを選択</option>';
+        foreach ($sub_categories as $value => $label) {
+            printf(
+                '<option value="%s" %s>%s</option>',
+                esc_attr($value),
+                selected($current_sub, $value, false),
+                esc_html($label)
+            );
+        }
+        echo '</select>';
+    }
+}
+add_action('restrict_manage_posts', 'fascina_add_gallery_filters');
+
+// フィルター条件を適用
+function fascina_apply_gallery_filters($query) {
+    global $pagenow, $typenow;
+    
+    if ($pagenow === 'edit.php' && $typenow === 'gallery') {
+        $meta_query = array('relation' => 'AND');
+
+        // メインカテゴリーのフィルター
+        if (!empty($_GET['main_category'])) {
+            $meta_query[] = array(
+                'key' => 'gallery_main_category',
+                'value' => $_GET['main_category'],
+                'compare' => '='
+            );
+        }
+
+        // サブカテゴリーのフィルター
+        if (!empty($_GET['sub_category'])) {
+            $meta_query[] = array(
+                'key' => 'gallery_sub_category',
+                'value' => $_GET['sub_category'],
+                'compare' => '='
+            );
+        }
+
+        if (count($meta_query) > 1) {
+            $query->set('meta_query', $meta_query);
+        }
+    }
+}
+add_action('pre_get_posts', 'fascina_apply_gallery_filters');
+
+// フィルターのスタイルを追加
+function fascina_admin_filters_style() {
+    global $typenow;
+    if ($typenow === 'gallery') {
+        ?>
+        <style>
+            .tablenav select[name="main_category"],
+            .tablenav select[name="sub_category"] {
+                float: left;
+                margin: 0 8px 0 0;
+                padding: 0 24px 0 8px;
+                min-width: 200px;
+                height: 30px;
+                line-height: 30px;
+                font-size: 13px;
+                color: #2c3338;
+                border-color: #8c8f94;
+                border-radius: 3px;
+                background-color: #fff;
+                background-repeat: no-repeat;
+                background-position: right 5px center;
+                background-size: 16px 16px;
+            }
+            .tablenav select[name="main_category"]:focus,
+            .tablenav select[name="sub_category"]:focus {
+                border-color: #2271b1;
+                box-shadow: 0 0 0 1px #2271b1;
+                outline: 2px solid transparent;
+            }
+            .tablenav select[name="main_category"]:hover,
+            .tablenav select[name="sub_category"]:hover {
+                border-color: #2271b1;
+            }
+            .tablenav select[name="main_category"] option,
+            .tablenav select[name="sub_category"] option {
+                padding: 4px 8px;
+            }
+        </style>
+        <?php
+    }
+}
+add_action('admin_head', 'fascina_admin_filters_style');

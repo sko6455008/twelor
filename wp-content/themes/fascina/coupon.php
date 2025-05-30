@@ -31,8 +31,10 @@ $args = array(
             'type' => 'DATETIME'
         )
     ),
-    'orderby' => 'date',
-    'order' => 'DESC'
+    'orderby' => array(
+        'menu_order' => 'ASC',
+        'date' => 'DESC'
+    )
 );
 
 $coupon_query = new WP_Query($args);

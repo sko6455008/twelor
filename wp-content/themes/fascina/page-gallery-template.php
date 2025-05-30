@@ -30,8 +30,10 @@ $args = array(
             'compare' => '='
         )
     ),
-    'orderby' => 'date',
-    'order' => 'DESC'
+    'orderby' => array(
+        'menu_order' => 'ASC',
+        'date' => 'DESC'
+    )
 );
 
 // GUESTギャラリー以外の場合のみサブカテゴリーの条件を追加
