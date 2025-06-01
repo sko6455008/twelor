@@ -12,32 +12,7 @@ $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 $current_time = current_time('mysql');
 
 // クーポンの投稿を取得
-$args = array(
-    'post_type' => 'coupon',
-    'posts_per_page' => 9,
-    'paged' => $paged,
-    'meta_query' => array(
-        'relation' => 'AND',
-        array(
-            'key' => 'coupon_period_start_date',
-            'value' => $current_time,
-            'compare' => '<=',
-            'type' => 'DATETIME'
-        ),
-        array(
-            'key' => 'coupon_period_end_date',
-            'value' => $current_time,
-            'compare' => '>=',
-            'type' => 'DATETIME'
-        )
-    ),
-    'orderby' => array(
-        'menu_order' => 'ASC',
-        'date' => 'DESC'
-    )
-);
-
-$coupon_query = new WP_Query($args);
+$coupon_query = fascina_get_coupon_page_posts(9, $paged);
 ?>
 
 <div class="coupon-container">

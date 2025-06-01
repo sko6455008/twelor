@@ -18,34 +18,7 @@ $sub_category = get_query_var('gallery_sub_category');
 $posts_per_page = 20;
 
 // ギャラリー投稿を取得
-$args = array(
-    'post_type' => 'gallery',
-    'posts_per_page' => $posts_per_page,
-    'paged' => $current_page,
-    'meta_query' => array(
-        'relation' => 'AND',
-        array(
-            'key' => 'gallery_main_category',
-            'value' => $main_category,
-            'compare' => '='
-        )
-    ),
-    'orderby' => array(
-        'menu_order' => 'ASC',
-        'date' => 'DESC'
-    )
-);
-
-// GUESTギャラリー以外の場合のみサブカテゴリーの条件を追加
-if ($main_category !== 'guest') {
-    $args['meta_query'][] = array(
-        'key' => 'gallery_sub_category',
-        'value' => $sub_category,
-        'compare' => '='
-    );
-}
-
-$gallery_query = new WP_Query($args);
+$gallery_query = fascina_get_gallery_page_posts($main_category, $sub_category, $posts_per_page, $current_page);
 
 // 総ページ数を計算
 $total_posts = $gallery_query->found_posts;

@@ -233,6 +233,30 @@ function fascina_register_acf_fields() {
                     'instructions' => 'ギャラリーの説明を入力してください',
                     'required' => 1,
                 ),
+                array(
+                    'key' => 'field_gallery_display_top',
+                    'label' => 'トップページに表示',
+                    'name' => 'gallery_display_top',
+                    'type' => 'true_false',
+                    'instructions' => 'トップページに表示する場合はチェックしてください',
+                    'required' => 0,
+                    'default_value' => 1,
+                    'ui' => 1,
+                    'ui_on_text' => '表示する',
+                    'ui_off_text' => '表示しない'
+                ),
+                array(
+                    'key' => 'field_gallery_display_gallery',
+                    'label' => 'ギャラリーページに表示',
+                    'name' => 'gallery_display_gallery',
+                    'type' => 'true_false',
+                    'instructions' => 'ギャラリーページに表示する場合はチェックしてください',
+                    'required' => 0,
+                    'default_value' => 1,
+                    'ui' => 1,
+                    'ui_on_text' => '表示する',
+                    'ui_off_text' => '表示しない'
+                ),
             ),
             'location' => array(
                 array(
@@ -243,14 +267,6 @@ function fascina_register_acf_fields() {
                     ),
                 ),
             ),
-            'menu_order' => 0,
-            'position' => 'normal',
-            'style' => 'default',
-            'label_placement' => 'top',
-            'instruction_placement' => 'label',
-            'hide_on_screen' => '',
-            'active' => true,
-            'description' => '',
         ));
 
         // お知らせ用フィールド
@@ -377,6 +393,30 @@ function fascina_register_acf_fields() {
                     'name' => 'coupon_description',
                     'type' => 'textarea',
                     'required' => 1,
+                ),
+                array(
+                    'key' => 'field_coupon_display_top',
+                    'label' => 'トップページに表示',
+                    'name' => 'coupon_display_top',
+                    'type' => 'true_false',
+                    'instructions' => 'トップページに表示する場合はチェックしてください',
+                    'required' => 0,
+                    'default_value' => 1,
+                    'ui' => 1,
+                    'ui_on_text' => '表示する',
+                    'ui_off_text' => '表示しない'
+                ),
+                array(
+                    'key' => 'field_coupon_display_coupon',
+                    'label' => 'クーポンページに表示',
+                    'name' => 'coupon_display_coupon',
+                    'type' => 'true_false',
+                    'instructions' => 'クーポンページに表示する場合はチェックしてください',
+                    'required' => 0,
+                    'default_value' => 1,
+                    'ui' => 1,
+                    'ui_on_text' => '表示する',
+                    'ui_off_text' => '表示しない'
                 ),
             ),
             'location' => array(
@@ -526,6 +566,7 @@ function fascina_add_gallery_columns($columns) {
             $new_columns['menu_order'] = '表示順';
         }
     }
+    $new_columns['display_settings'] = '表示設定';
     $new_columns['main_category'] = 'メインカテゴリー';
     $new_columns['sub_category'] = 'サブカテゴリー';
     $new_columns['bridal'] = 'ブライダル';
@@ -577,6 +618,17 @@ function fascina_gallery_column_content($column_name, $post_id) {
             'color' => 'カラー'
         );
         echo isset($categories[$sub_category]) ? $categories[$sub_category] : '';
+    } elseif ($column_name === 'display_settings') {
+        $display_top = get_field('gallery_display_top', $post_id);
+        $display_gallery = get_field('gallery_display_gallery', $post_id);
+        $display_text = array();
+        if ($display_top) {
+            $display_text[] = 'トップページ';
+        }
+        if ($display_gallery) {
+            $display_text[] = 'ギャラリーページ';
+        }
+        echo implode(' / ', $display_text);
     } elseif ($column_name === 'bridal') {
         $is_bridal = get_field('gallery_is_bridal', $post_id);
         echo $is_bridal ? '✓' : '－';
@@ -605,6 +657,7 @@ function fascina_add_coupon_columns($columns) {
             $new_columns['menu_order'] = '表示順';
         }
     }
+    $new_columns['display_settings'] = '表示設定';
     $new_columns['period'] = '表示期間';
     $new_columns['price'] = 'クーポン価格';
     $new_columns['guidance'] = '案内文';
@@ -639,6 +692,17 @@ function fascina_coupon_column_content($column_name, $post_id) {
         echo get_field('coupon_guidance', $post_id);
     } elseif ($column_name === 'description') {
         echo get_field('coupon_description', $post_id);
+    } elseif ($column_name === 'display_settings') {
+        $display_top = get_field('coupon_display_top', $post_id);
+        $display_coupon = get_field('coupon_display_coupon', $post_id);
+        $display_text = array();
+        if ($display_top) {
+            $display_text[] = 'トップページ';
+        }
+        if ($display_coupon) {
+            $display_text[] = 'クーポンページ';
+        }
+        echo implode(' / ', $display_text);
     }
 }
 add_action('manage_coupon_posts_custom_column', 'fascina_coupon_column_content', 10, 2);
@@ -726,12 +790,19 @@ function fascina_admin_columns_style() {
             height: 60px;
             object-fit: cover;
         }
+        .column-menu_order {
+            width: 100px;
+        }
         .column-main_category,
         .column-sub_category,
         .column-price,
         .column-bridal { 
             width: 150px; 
         }
+        .column-display_settings {
+            width: 200px;
+        }
+        .column-title,
         .column-period,
         .column-guidance,
         .column-position,
@@ -1063,3 +1134,232 @@ function fascina_admin_filters_style() {
     }
 }
 add_action('admin_head', 'fascina_admin_filters_style');
+
+// トップページのギャラリー表示制御
+function fascina_get_top_gallery_posts($limit = 9) {
+    $args = array(
+        'post_type' => 'gallery',
+        'posts_per_page' => $limit,
+        'meta_query' => array(
+            'relation' => 'AND',
+            array(
+                'key' => 'gallery_display_top',
+                'value' => '1',
+                'compare' => '='
+            )
+        ),
+        'orderby' => array(
+            'menu_order' => 'ASC',
+            'date' => 'DESC'
+        )
+    );
+    return new WP_Query($args);
+}
+
+// ギャラリーページのギャラリー表示制御
+function fascina_get_gallery_page_posts($main_category = '', $sub_category = '', $posts_per_page = 20, $paged = 1) {
+    $meta_query = array('relation' => 'AND');
+    
+    // 表示設定の条件
+    $meta_query[] = array(
+        'key' => 'gallery_display_gallery',
+        'value' => '1',
+        'compare' => '='
+    );
+    
+    // メインカテゴリーの条件
+    if (!empty($main_category)) {
+        $meta_query[] = array(
+            'key' => 'gallery_main_category',
+            'value' => $main_category,
+            'compare' => '='
+        );
+    }
+    
+    // サブカテゴリーの条件
+    if (!empty($sub_category) && $main_category !== 'guest') {
+        $meta_query[] = array(
+            'key' => 'gallery_sub_category',
+            'value' => $sub_category,
+            'compare' => '='
+        );
+    }
+    
+    $args = array(
+        'post_type' => 'gallery',
+        'posts_per_page' => $posts_per_page,
+        'paged' => $paged,
+        'meta_query' => $meta_query,
+        'orderby' => array(
+            'menu_order' => 'ASC',
+            'date' => 'DESC'
+        )
+    );
+    
+    return new WP_Query($args);
+}
+
+// トップページのクーポン表示制御
+function fascina_get_top_coupon_posts($limit = 9) {
+    $args = array(
+        'post_type' => 'coupon',
+        'posts_per_page' => $limit,
+        'meta_query' => array(
+            'relation' => 'AND',
+            array(
+                'key' => 'coupon_display_top',
+                'value' => '1',
+                'compare' => '='
+            )
+        ),
+        'orderby' => array(
+            'menu_order' => 'ASC',
+            'date' => 'DESC'
+        )
+    );
+    return new WP_Query($args);
+}
+
+// クーポンページのクーポン表示制御
+function fascina_get_coupon_page_posts($posts_per_page = 9, $paged = 1) {
+    $args = array(
+        'post_type' => 'coupon',
+        'posts_per_page' => $posts_per_page,
+        'paged' => $paged,
+        'meta_query' => array(
+            array(
+                'key' => 'coupon_display_coupon',
+                'value' => '1',
+                'compare' => '='
+            )
+        ),
+        'orderby' => array(
+            'menu_order' => 'ASC',
+            'date' => 'DESC'
+        )
+    );
+    return new WP_Query($args);
+}
+
+// クイック編集フィールドの追加
+function fascina_add_quick_edit_fields($column_name, $post_type) {
+    if (!in_array($post_type, ['gallery', 'coupon']) || $column_name !== 'display_settings') return;
+    
+    $post_type_label = $post_type === 'gallery' ? 'ギャラリー' : 'クーポン';
+    $field_name = $post_type . '_display_settings';
+    ?>
+    <fieldset class="inline-edit-col-display">
+        <div class="inline-edit-col">
+            <label class="alignleft">
+                <span class="title">表示設定</span>
+                <span class="input-text-wrap">
+                    <select name="<?php echo esc_attr($field_name); ?>">
+                        <option value="both">両方に表示</option>
+                        <option value="top">トップページのみ</option>
+                        <option value="<?php echo esc_attr($post_type); ?>"><?php echo esc_html($post_type_label); ?>ページのみ</option>
+                        <option value="none">両方非表示</option>
+                    </select>
+                </span>
+            </label>
+        </div>
+    </fieldset>
+    <?php
+}
+add_action('quick_edit_custom_box', 'fascina_add_quick_edit_fields', 10, 2);
+
+// クイック編集用のJavaScript
+function fascina_quick_edit_script() {
+    global $post_type;
+    if (!in_array($post_type, ['gallery', 'coupon'])) return;
+    
+    $post_type_label = $post_type === 'gallery' ? 'ギャラリー' : 'クーポン';
+    $field_name = $post_type . '_display_settings';
+    ?>
+    <script>
+    jQuery(document).ready(function($) {
+        var $wp_inline_edit = inlineEditPost.edit;
+        
+        inlineEditPost.edit = function(id) {
+            $wp_inline_edit.apply(this, arguments);
+            
+            var post_id = 0;
+            if (typeof(id) == 'object') {
+                post_id = parseInt(this.getId(id));
+            }
+            
+            if (post_id > 0) {
+                var $post_row = $('#post-' + post_id);
+                var $edit_row = $('#edit-' + post_id);
+                
+                // 表示設定の値を取得
+                var display_text = $post_row.find('.column-display_settings').text();
+                var display_top = display_text.indexOf('トップページ') !== -1;
+                var display_page = display_text.indexOf('<?php echo esc_js($post_type_label); ?>ページ') !== -1;
+                
+                // 表示設定の選択値を設定
+                var display_value = 'both';
+                if (display_top && !display_page) {
+                    display_value = 'top';
+                } else if (!display_top && display_page) {
+                    display_value = '<?php echo esc_js($post_type); ?>';
+                } else if (!display_top && !display_page) {
+                    display_value = 'none';
+                }
+                
+                $edit_row.find('select[name="<?php echo esc_js($field_name); ?>"]').val(display_value);
+            }
+        };
+    });
+    </script>
+    <?php
+}
+add_action('admin_footer-edit.php', 'fascina_quick_edit_script');
+
+// クイック編集の保存処理
+function fascina_save_quick_edit($post_id) {
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+    if (!current_user_can('edit_post', $post_id)) return;
+    
+    $post_type = get_post_type($post_id);
+    if (!in_array($post_type, ['gallery', 'coupon'])) return;
+
+    $field_name = $post_type . '_display_settings';
+    if (isset($_POST[$field_name])) {
+        $display_settings = $_POST[$field_name];
+        
+        // トップページ表示設定
+        $display_top = ($display_settings === 'both' || $display_settings === 'top') ? '1' : '0';
+        update_field($post_type . '_display_top', $display_top, $post_id);
+        
+        // ページ表示設定
+        $display_page = ($display_settings === 'both' || $display_settings === $post_type) ? '1' : '0';
+        update_field($post_type . '_display_' . $post_type, $display_page, $post_id);
+    }
+}
+add_action('save_post', 'fascina_save_quick_edit');
+
+// クイック編集のスタイル調整
+function fascina_quick_edit_style() {
+    global $post_type;
+    if (!in_array($post_type, ['gallery', 'coupon'])) return;
+    ?>
+    <style>
+        .inline-edit-col-left .inline-edit-col,
+        .inline-edit-col-display .inline-edit-col {
+            margin: 0 0 0 10px;
+        }
+        .inline-edit-col-left .inline-edit-col select,
+        .inline-edit-col-display .inline-edit-col select {
+            width: 100%;
+            max-width: 200px;
+        }
+        /* 順序,ステータスフィールドとスラッグ,日付,パスワードフィールド非表示 */
+        .inline-edit-col-right,
+        .inline-edit-col-left .inline-edit-col fieldset,
+        .inline-edit-col-left .inline-edit-col div {
+            display: none;
+        }
+    </style>
+    <?php
+}
+add_action('admin_head', 'fascina_quick_edit_style');

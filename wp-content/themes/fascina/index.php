@@ -90,9 +90,15 @@
                 'post_type' => 'gallery',
                 'posts_per_page' => 9,
                 'meta_query' => array(
+                    'relation' => 'AND',
                     array(
                         'key' => 'gallery_main_category',
                         'value' => 'hand',
+                        'compare' => '='
+                    ),
+                    array(
+                        'key' => 'gallery_display_top',
+                        'value' => '1',
                         'compare' => '='
                     )
                 ),
@@ -137,9 +143,15 @@
                 'post_type' => 'gallery',
                 'posts_per_page' => 9,
                 'meta_query' => array(
+                    'relation' => 'AND',
                     array(
                         'key' => 'gallery_main_category',
                         'value' => 'guest',
+                        'compare' => '='
+                    ),
+                    array(
+                        'key' => 'gallery_display_top',
+                        'value' => '1',
                         'compare' => '='
                     )
                 ),
@@ -180,15 +192,7 @@
         <h2 class="fascina-section-title">クーポン</h2>
         <div class="design-box">
             <?php
-            $coupon_args = array(
-                'post_type' => 'coupon',
-                'posts_per_page' => 9,
-                'orderby' => array(
-                    'menu_order' => 'ASC',
-                    'date' => 'DESC'
-                )
-            );
-            $coupon_query = new WP_Query($coupon_args);
+            $coupon_query = fascina_get_top_coupon_posts(9);
 
             if ($coupon_query->have_posts()) :
                 while ($coupon_query->have_posts()) : $coupon_query->the_post();
