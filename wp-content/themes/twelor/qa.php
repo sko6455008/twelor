@@ -412,7 +412,7 @@ get_header();
         font-weight: bold;
     }
     .accordion-button:not(.collapsed) {
-        background-color: rgba(231,73,149,0.4);
+        background-color: #95bac3;
         color: #fff;
     }
     .accordion-button:focus {

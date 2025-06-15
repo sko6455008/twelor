@@ -14,7 +14,7 @@
     <header>
         <div class="backstretch">
             <div id="sns_pc">
-                <a href="https://www.instagram.com/fascinanailsalon/" target="_blank">
+                <a href="https://www.instagram.com/twelornailsalon/" target="_blank">
                     <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/images/instagram-icon.png" alt="Instagram">
                 </a>
             </div>
@@ -22,10 +22,10 @@
             <div class="headinfo">
                 <div class="info">
                     <div class="logo">
-                        <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/images/logo.png" alt="Fascinaロゴ">
+                        <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/images/logo.png" alt="Twelorロゴ">
                     </div>
                     <a href="https://071f0f.b-merit.jp/pJ3MHW/web" class="reservation-btn" target="_blank">ご予約</a>
-                    <a href="https://lin.ee/GOjVh5W" class="contact-btn" target="_blank">お問い合わせ</a>
+                    <a href="https://lin.ee/yW1QATC" class="contact-btn" target="_blank">お問い合わせ</a>
                     <div class="phone-number">050-5305-3298</div>
                 </div>
 
@@ -44,7 +44,7 @@
             </div>
 
             <div class="main-visual">
-                <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/images/slide.jpg" alt="Fascinaメインビジュアル">
+                <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/images/slide3.jpg" alt="Twelorメインビジュアル">
             </div>
         </div>
     </header>
@@ -62,14 +62,14 @@
             <li><a href="<?php echo esc_url(home_url('/recruit/')); ?>">リクルート</a></li>
             <li><a href="<?php echo esc_url(home_url('/gallery_hand_design/simple/')); ?>">HAND定額コース</a></li>
             <li><a href="<?php echo esc_url(home_url('/gallery_foot_design/simple/')); ?>">FOOT定額コース</a></li>
-            <li><a href="<?php echo esc_url(home_url('/gallery_guest_nail/')); ?>">GUESTギャラリー</a></li>
+            <li><a href="<?php echo esc_url(home_url('/gallery_guest_nail/simple-guest')); ?>">GUESTギャラリー</a></li>
             <li><a href="<?php echo esc_url(home_url('/gallery_arts_parts/lame-holo-seal/')); ?>">アート・パーツ</a></li>
             <li><a href="<?php echo esc_url(home_url('/coupon/')); ?>">月替わりクーポン</a></li>
             <li><a href="<?php echo esc_url(home_url('/care/')); ?>">グリーンネイルについて</a></li>
         </ul>
 
         <div class="sns-icons">
-            <a href="https://www.instagram.com/fascinanailsalon/" target="_blank">
+            <a href="https://www.instagram.com/twelornailsalon/" target="_blank">
                 <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/images/instagram-icon.png" alt="Instagram">
             </a>
         </div>
@@ -88,7 +88,7 @@
             <li><a href="<?php echo esc_url(home_url('/recruit/')); ?>">リクルート</a></li>
             <li><a href="<?php echo esc_url(home_url('/gallery_hand_design/simple/')); ?>">HAND定額コース</a></li>
             <li><a href="<?php echo esc_url(home_url('/gallery_foot_design/simple/')); ?>">FOOT定額コース</a></li>
-            <li><a href="<?php echo esc_url(home_url('/gallery_guest_nail/')); ?>">GUESTギャラリー</a></li>
+            <li><a href="<?php echo esc_url(home_url('/gallery_guest_nail/simple-guest')); ?>">GUESTギャラリー</a></li>
             <li><a href="<?php echo esc_url(home_url('/gallery_arts_parts/lame-holo-seal/')); ?>">アート・パーツ</a></li>
             <li><a href="<?php echo esc_url(home_url('/coupon/')); ?>">月替わりクーポン</a></li>
             <li><a href="<?php echo esc_url(home_url('/care/')); ?>">グリーンネイルについて</a></li>

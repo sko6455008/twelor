@@ -1,4 +1,11 @@
-/* Fascinaテーマ カスタムCSS */
+/* Reset CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Twelorテーマ カスタムCSS */
 
 /* 全体 */
 html, body {
@@ -42,7 +49,7 @@ header {
 }
 
 .headinfo {
-    background-color: rgba(231, 73, 149, 0.4);
+    background-color:  rgba(255, 255, 255, 0.4);
     position: absolute;
     height: 100%;
     left: 13%;
@@ -62,8 +69,8 @@ header {
     margin: 0 auto;
 }
 
-.reservation-btn, .contact-btn {
-    background-color: #e64893;
+.reservation-btn {
+    background-color: #95bac3;
     border-radius: 10px;
     color: #fff;
     display: block;
@@ -75,9 +82,17 @@ header {
     transition: background-color 0.3s;
 }
 
-.reservation-btn:hover, .contact-btn:hover {
-    background-color: #ff6ec7;
-    color: white;
+.contact-btn {
+    background-color: #00B900;
+    border-radius: 10px;
+    color: #fff;
+    display: block;
+    margin: 0.5rem auto 0;
+    padding: 2%;
+    text-align: center;
+    text-decoration: none;
+    width: 200px;
+    transition: background-color 0.3s;
 }
 
 .phone-number {
@@ -85,7 +100,7 @@ header {
     line-height: 185%;
     text-align: center;
     margin-bottom: 0.5rem;
-    color: white;
+    color: #95bac3;
 }
 
 address {
@@ -93,6 +108,7 @@ address {
     font-weight: normal;
     padding: 5% 10%;
     margin-bottom: 0.5rem;
+    color: #333;
 }
 
 .open-close, .contact-top {
@@ -100,6 +116,7 @@ address {
     font-weight: normal;
     padding: 5% 10%;
     margin-bottom: 0.5rem;
+    color: #333;
 }
 
 .main-visual {
@@ -139,7 +156,7 @@ address {
 }
 
 .global-nav a {
-    color: #e64893;
+    color: #95bac3;
     text-decoration: none;
     padding: 5px 10px;
     font-size: 14px;
@@ -162,7 +179,7 @@ address {
     background: none;
     border: none;
     font-size: 40px;
-    color: rgba(230, 72, 147, 0.7);
+    color: rgba(149, 186, 195, 0.7);
     cursor: pointer;
 }
 
@@ -192,13 +209,13 @@ address {
 }
 
 .sp-menu li {
-    border-bottom: 1px solid #e64893;
+    border-bottom: 1px solid #95bac3;
     padding: 15px 10px;
     text-align: left;
 }
 
 .sp-menu a {
-    color: #e64893;
+    color: #95bac3;
     font-size: 18px;
     text-decoration: none;
     display: block;
@@ -235,7 +252,7 @@ address {
 }
 
 /* セクションタイトル */
-.fascina-section-title {
+.twelor-section-title {
     display: table;
     text-align: center;
     color: #333333;
@@ -246,7 +263,7 @@ address {
     margin-bottom: 20px;
 }
 
-.fascina-section-title::before, .fascina-section-title::after {
+.twelor-section-title::before, .twelor-section-title::after {
     content: '';
     display: table-cell;
     width: 50%;
@@ -256,7 +273,7 @@ address {
 
 /* ランキングセクション */
 .ranking-section {
-    background-color: #ffd1e0;
+    background-color:  #f5fff9;
     padding: 30px 0;
     position: relative;
 }
@@ -306,7 +323,7 @@ address {
     position: absolute;
     top: 0;
     left: 0;
-    background-color: #ff69b4;
+    background-color: #95bac3;
     color: white;
     padding: 5px 10px;
     font-weight: bold;
@@ -320,7 +337,7 @@ address {
     top: 50%;
     transform: translateY(-50%);
     background-color: rgba(255, 255, 255, 0.7);
-    color: #ff69b4;
+    color: #95bac3;
     border: none;
     width: 40px;
     height: 40px;
@@ -335,7 +352,7 @@ address {
 }
 
 .ranking-prev:hover,.ranking-next:hover {
-    background-color: #ff69b4;
+    background-color: #95bac3;
     color: white;
 }
 
@@ -350,11 +367,10 @@ address {
 /* お知らせセクション */
 .info-section {
     margin: 50px 0;
-    padding: 0px 10%;
 }
 
 .info-box {
-    max-width: 800px;
+    padding: 0px 10%;
 }
 
 .info-item {
@@ -377,7 +393,7 @@ address {
 
 /* HAND定額コースセクション */
 .hand-design-section {
-    background-color: #f5dfee;
+    background-color: #dff5e9;
 }
 
 .design-box {
@@ -424,7 +440,7 @@ address {
 
 /* クーポンセクション */
 .coupon-section {
-    background-color: #F9C1CF;
+    background-color: #e0fff0;
 }
 
 .coupon {
@@ -440,14 +456,14 @@ address {
 }
 
 .coupon-title {
-    font-size: 20px;
+    font-size: 15px;
     text-align: center;
     font-weight: bold;
 }
 
 .coupon-guidance {
     font-size: 15px;
-    background-color: #ff69b4;
+    background-color: #95bac3;
     color: #fff;
     margin: 0 auto;
     text-align: center;
@@ -459,7 +475,7 @@ address {
 }
 
 .coupon-price {
-    font-size: 20px;
+    font-size: 15px;
     text-align: end;
     font-weight: bold;
     padding: 0 10px;
@@ -473,9 +489,9 @@ address {
 }
 
 .coupon-period {
-    font-size: 15px;
-    color: #888;
-    padding: 0 10px 10px;
+    font-size: 14px;
+    color: #666;
+    text-align: center;
 }
 
 /* 全体のセクション */
@@ -486,7 +502,7 @@ address {
 }
 
 .more-button {
-    background-color: #ff69b4;
+    background-color: #95bac3;
     color: white;
     padding: 10px 20px;
     font-size: 14px;
@@ -496,7 +512,7 @@ address {
 }
 
 .more-button:hover {
-    background-color: #e757a3;
+    background-color: #95bac3;
     color: white;
 }
 
@@ -533,15 +549,11 @@ address {
 .footer-contact-btn {
     display: inline-block;
     padding: 10px 30px;
-    background-color: #e64893;
+    background-color: #00B900;
     color: white;
     text-decoration: none;
     border-radius: 20px;
-}
-
-.footer-contact-btn:hover {
-    background-color: #ff6ec7;
-    color: white;
+    margin-top: 20px;
 }
 
 .footer-middle {
@@ -605,8 +617,8 @@ address {
     color: #ccc;
 }
 
-/* レスポンシブ対応 タブレット横向き・小型PC*/
-@media (max-width: 1024px) {
+/* レスポンシブ対応 iPad第８世代横向き対応*/
+@media (max-width: 1080px) {
     /* ヘッダー */
     .headinfo {
         position: relative;
@@ -626,7 +638,8 @@ address {
 
     .phone-number {
         font-size: 30px;
-        color: #e64893;
+        color: #95bac3;
+        text-decoration: none;
     }
 
     address{
@@ -679,8 +692,8 @@ address {
     .menu-toggle {
         display: block;
         position: fixed;
-        top: 1%;
-        right: 1%;
+        top: 1.5%;
+        right: 1.5%;
         z-index: 200;
     }
 
@@ -699,7 +712,10 @@ address {
         transition: transform 0.3s ease;
         z-index: 999;
     }
+}
 
+/* レスポンシブ対応 タブレット横向き・小型PC*/
+@media (max-width: 1024px) {
     /* お知らせセクション */
     .info-item {
         flex-direction: column;

@@ -7,7 +7,7 @@
 get_header();
 ?>
 
-<section class="container">
+<div class="container py-5">
     <h1 class="first-section-title">初めての方へ</h1>
     
     <div class="first-features">
@@ -76,20 +76,14 @@ get_header();
             <li>全席禁煙とさせて頂いております。</li>
         </ul>
     </div>
-</section>
+</div>
 
 <style>
-.first-page {
-    padding: 60px 0;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
 .first-section-title {
     text-align: center;
     color: #333;
     font-size: 24px;
-    margin-bottom: 50px;
+    margin: 30px auto;
     padding-bottom: 10px;
     width: 100%;
     border-bottom: 1px solid #ddd;
@@ -186,11 +180,7 @@ get_header();
     color: #333;
 }
 
-@media (max-width: 768px) {
-    .first-page {
-        padding: 30px 15px;
-    }
-
+@media (max-width: 768px) {   
     .first-section-title {
         font-size: 24px;
         margin: 30px auto;
@@ -200,7 +190,6 @@ get_header();
         font-size: 20px;
         margin: 30px 0 15px;
     }
-
     .feature-list {
         gap: 35px;
     }

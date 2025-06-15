@@ -1,5 +1,5 @@
 /**
- * Fascinaテーマ カスタムJavaScript
+ * Twelorテーマ カスタムJavaScript
  */
 
 (function($) {
@@ -104,7 +104,7 @@
         
         // モバイルメニューのスクロール対応
         if (window.innerWidth < 768) {
-            var $nav = $('.fascina-nav');
+            var $nav = $('.twelor-nav');
             var activeLink = $nav.find('a.active');
             
             if (activeLink.length) {

@@ -12,7 +12,7 @@ $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 $current_time = current_time('mysql');
 
 // クーポンの投稿を取得
-$coupon_query = fascina_get_coupon_page_posts(9, $paged);
+$coupon_query = twelor_get_coupon_page_posts(9, $paged);
 ?>
 
 <div class="coupon-container">
@@ -51,8 +51,8 @@ $coupon_query = fascina_get_coupon_page_posts(9, $paged);
                                 $start_date = get_field('coupon_period_start_date', get_the_ID());
                                 $end_date = get_field('coupon_period_end_date', get_the_ID());
                                 if ($start_date && $end_date) : 
-                                    $start_date_formatted = date_i18n('Y年m月d日H時i分', strtotime($start_date));
-                                    $end_date_formatted = date_i18n('Y年m月d日H時i分', strtotime($end_date));
+                                    $start_date_formatted = date_i18n('Y年m月d日', strtotime($start_date));
+                                    $end_date_formatted = date_i18n('Y年m月d日', strtotime($end_date));
                                 ?>
                                     <p class="coupon-period"><?php echo esc_html($start_date_formatted); ?>～<?php echo esc_html($end_date_formatted); ?>迄</p>
                                 <?php endif; ?>
@@ -147,6 +147,7 @@ $coupon_query = fascina_get_coupon_page_posts(9, $paged);
         font-size: 16px;
         margin: 0 0 5px;
         color: #333;
+        text-align: center;
     }
     .coupon-period {
         font-size: 14px;
@@ -155,7 +156,6 @@ $coupon_query = fascina_get_coupon_page_posts(9, $paged);
     }
     .coupon-price {
         font-size: 18px;
-        color: #e75a87;
         font-weight: bold;
         margin-bottom: 10px;
     }
@@ -192,8 +192,8 @@ $coupon_query = fascina_get_coupon_page_posts(9, $paged);
         height: 40px;
         padding: 0 12px;
         background-color: #fff;
-        border: 1px solid #e75a87;
-        color: #e75a87;
+        border: 1px solid #95bac3;
+        color: #95bac3;
         font-size: 16px;
         font-weight: 500;
         text-decoration: none;
@@ -201,14 +201,14 @@ $coupon_query = fascina_get_coupon_page_posts(9, $paged);
         transition: all 0.2s ease;
     }
     .pagination-link:hover {
-        background-color: #e75a87;
+        background-color: #95bac3;
         color: #fff;
-        border-color: #e75a87;
+        border-color: #95bac3;
     }
     .pagination-link.active {
-        background-color: #e75a87;
+        background-color: #95bac3;
         color: #fff;
-        border-color: #e75a87;
+        border-color: #95bac3;
         font-weight: 600;
     }
     .pagination-link:active {

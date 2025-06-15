@@ -69,7 +69,7 @@ get_header();
 .care-section-title {
     text-align: center;
     color: #333;
-    font-size: 20px;
+    font-size: 24px;
     margin-bottom: 50px;
     padding-bottom: 10px;
     width: 100%;

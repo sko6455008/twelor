@@ -566,7 +566,7 @@ get_header();
         transform: translateY(-5px);
     }
     .card-header {
-        background-color: rgb(231,73,149,0.4);
+        background-color: #95bac3;
         color: #fff;
         border-bottom: 2px solid #e9ecef;
     }

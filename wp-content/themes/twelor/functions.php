@@ -1,10 +1,10 @@
 <?php
 /**
- * Fascina テーマの機能
+ * Twelor テーマの機能
  */
 
 // テーマのセットアップ
-function fascina_setup() {
+function twelor_setup() {
     // タイトルタグのサポート
     add_theme_support('title-tag');
     
@@ -13,41 +13,41 @@ function fascina_setup() {
     
     // メニューの登録
     register_nav_menus(array(
-        'primary' => __('メインメニュー', 'fascina'),
-        'footer' => __('フッターメニュー', 'fascina'),
+        'primary' => __('メインメニュー', 'twelor'),
+        'footer' => __('フッターメニュー', 'twelor'),
     ));
 }
-add_action('after_setup_theme', 'fascina_setup');
+add_action('after_setup_theme', 'twelor_setup');
 
 // スタイルシートとスクリプトの読み込み
-function fascina_scripts() {
+function twelor_scripts() {
     // Bootstrap CSS
     wp_enqueue_style('bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css');
     
     // テーマのスタイルシート
-    wp_enqueue_style('fascina-style', get_stylesheet_uri(), array(), '1.0.0');
+    wp_enqueue_style('twelor-style', get_stylesheet_uri(), array(), '1.0.0');
     
     // カスタムCSS
-    wp_enqueue_style('fascina-custom', get_template_directory_uri() . '/assets/css/custom.css', array(), '1.0.0');
+    wp_enqueue_style('twelor-custom', get_template_directory_uri() . '/assets/css/custom.css', array(), '1.0.0');
     
     // Bootstrap JavaScript
     wp_enqueue_script('bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js', array('jquery'), '5.3.0', true);
     
     // カスタムJavaScript
-    wp_enqueue_script('fascina-custom', get_template_directory_uri() . '/assets/js/custom.js', array('jquery'), '1.0.0', true);
+    wp_enqueue_script('twelor-custom', get_template_directory_uri() . '/assets/js/custom.js', array('jquery'), '1.0.0', true);
 }
-add_action('wp_enqueue_scripts', 'fascina_scripts');
+add_action('wp_enqueue_scripts', 'twelor_scripts');
 
 // デフォルトの管理メニューを削除
-function fascina_remove_default_menu_items() {
+function twelor_remove_default_menu_items() {
     remove_menu_page('edit.php');           // 投稿
     remove_menu_page('upload.php');         // メディア
     remove_menu_page('edit-comments.php');  // コメント
 }
-add_action('admin_menu', 'fascina_remove_default_menu_items');
+add_action('admin_menu', 'twelor_remove_default_menu_items');
 
 // タイトルプレイスホルダーのカスタマイズ
-function fascina_change_title_placeholder($title, $post) {
+function twelor_change_title_placeholder($title, $post) {
     if ($post->post_type === 'gallery') {
         $title = 'ギャラリー名を入力';
     } elseif ($post->post_type === 'coupon') {
@@ -57,19 +57,18 @@ function fascina_change_title_placeholder($title, $post) {
     }
     return $title;
 }
-add_filter('enter_title_here', 'fascina_change_title_placeholder', 10, 2);
+add_filter('enter_title_here', 'twelor_change_title_placeholder', 10, 2);
 
 // Intuitive Custom Post Order プラグインのサポート
-function fascina_enable_custom_post_order() {
+function twelor_enable_custom_post_order() {
     // ギャラリー投稿タイプでカスタムオーダーを有効化
     add_post_type_support('gallery', 'page-attributes');
     add_post_type_support('coupon', 'page-attributes');
-    add_post_type_support('ranking', 'page-attributes');
 }
-add_action('init', 'fascina_enable_custom_post_order');
+add_action('init', 'twelor_enable_custom_post_order');
 
 // カスタム投稿タイプ: ギャラリー
-function fascina_register_gallery_post_type() {
+function twelor_register_gallery_post_type() {
     $args = array(
         'public' => true,
         'label'  => 'ギャラリー',
@@ -89,10 +88,10 @@ function fascina_register_gallery_post_type() {
     );
     register_post_type('gallery', $args);
 }
-add_action('init', 'fascina_register_gallery_post_type');
+add_action('init', 'twelor_register_gallery_post_type');
 
 // カスタム投稿タイプ: クーポン
-function fascina_register_coupon_post_type() {
+function twelor_register_coupon_post_type() {
     $args = array(
         'public' => true,
         'label'  => 'クーポン',
@@ -110,10 +109,10 @@ function fascina_register_coupon_post_type() {
     );
     register_post_type('coupon', $args);
 }
-add_action('init', 'fascina_register_coupon_post_type');
+add_action('init', 'twelor_register_coupon_post_type');
 
 // カスタム投稿タイプ: ランキング
-function fascina_register_ranking_post_type() {
+function twelor_register_ranking_post_type() {
     $args = array(
         'public' => true,
         'label'  => 'ランキング',
@@ -124,16 +123,16 @@ function fascina_register_ranking_post_type() {
             'add_new_item' => '新規ランキングを追加',
             'edit_item' => 'ランキングを編集',
         ),
-        'supports' => array('title', 'thumbnail', 'page-attributes'),
+        'supports' => array('title', 'thumbnail'),
         'menu_icon' => 'dashicons-awards',
         'has_archive' => false,
     );
     register_post_type('ranking', $args);
 }
-add_action('init', 'fascina_register_ranking_post_type');
+add_action('init', 'twelor_register_ranking_post_type');
 
 // カスタム投稿タイプ: お知らせ
-function fascina_register_info_post_type() {
+function twelor_register_info_post_type() {
     $args = array(
         'public' => true,
         'label'  => 'お知らせ',
@@ -151,10 +150,10 @@ function fascina_register_info_post_type() {
     );
     register_post_type('info', $args);
 }
-add_action('init', 'fascina_register_info_post_type');
+add_action('init', 'twelor_register_info_post_type');
 
 // ACFフィールドの登録
-function fascina_register_acf_fields() {
+function twelor_register_acf_fields() {
     if (function_exists('acf_add_local_field_group')) {
         // ギャラリー用フィールド
         acf_add_local_field_group(array(
@@ -195,7 +194,12 @@ function fascina_register_acf_fields() {
                         'nuance-m' => 'ニュアンスM定額コース',
                         'nuance-l' => 'ニュアンスL定額コース',
                         'nuance-xl' => 'ニュアンスXL定額コース',
-                        // アートパーツ用
+                        'simple-guest' => 'シンプル',
+                        'magnet' => 'マグネット',
+                        'long' => '長さだし',
+                        'short' => 'ショートネイル',
+                        'foot' => 'フットネイル',
+                        'hand-art' => '手書きアート',
                         'lame-holo-seal' => 'ラメ・ホロ・シール',
                         'stone-studs-pearl' => 'ストーン・スタッズ・パール',
                         'parts' => 'パーツ',
@@ -382,17 +386,19 @@ function fascina_register_acf_fields() {
                 ),
                 array(
                     'key' => 'field_coupon_guidance',
-                    'label' => '案内文',
+                    'label' => '料金案内',
                     'name' => 'coupon_guidance',
                     'type' => 'textarea',
                     'required' => 1,
+                    'instructions' => '例: 初回5510円/リピ6510円',
                 ),
                 array(
                     'key' => 'field_coupon_description',
-                    'label' => '説明文',
+                    'label' => '詳細',
                     'name' => 'coupon_description',
                     'type' => 'textarea',
                     'required' => 1,
+                     'instructions' => '例: お色変更無料',
                 ),
                 array(
                     'key' => 'field_coupon_display_top',
@@ -441,7 +447,7 @@ function fascina_register_acf_fields() {
 }
 
 // デフォルトのクエリでカスタムオーダーを使用
-function fascina_set_default_gallery_order($query) {
+function twelor_set_default_gallery_order($query) {
     // 管理画面ではない場合のみ適用
     if (!is_admin() && $query->is_main_query()) {
         // ギャラリーのアーカイブページまたはカスタムクエリの場合
@@ -461,10 +467,10 @@ function fascina_set_default_gallery_order($query) {
         }
     }
 }
-add_action('pre_get_posts', 'fascina_set_default_gallery_order');
+add_action('pre_get_posts', 'twelor_set_default_gallery_order');
 
 // 明示的な並び順指定がないときでも管理画面の投稿一覧でカスタムオーダーを適用
-function fascina_admin_gallery_order($query) {
+function twelor_admin_gallery_order($query) {
     if (is_admin() && $query->is_main_query()) {
         $post_type = $query->get('post_type');
         
@@ -476,22 +482,26 @@ function fascina_admin_gallery_order($query) {
         }
     }
 }
-add_action('pre_get_posts', 'fascina_admin_gallery_order');
+add_action('pre_get_posts', 'twelor_admin_gallery_order');
 
 // ギャラリーのカテゴリー,サブカテゴリー連動機能用JavaScript
-function fascina_gallery_category_script() {
+function twelor_gallery_category_script() {
     if (get_post_type() !== 'gallery') return;
     ?>
     <script>
     jQuery(document).ready(function($) {
         const handCategories = [
-            'simple', 'popular', 'special', 'clean',
-            'onehon-s', 'onehon-m', 'onehon-l', 'bridal',
-            'nuance-s', 'nuance-m', 'nuance-l', 'nuance-xl'
+            'simple','popular','special','clean',
+            'onehon-s','onehon-m','onehon-l','bridal',
+            'nuance-s','nuance-m','nuance-l','nuance-xl'
         ];
         
         const footCategories = [
-            'simple', 'popular', 'special', 'clean'
+            'simple','popular','special','clean'
+        ];
+        
+        const guestCategories = [
+            'simple-guest','magnet','long','short','foot', 'hand-art'
         ];
         
         const artPartsCategories = [
@@ -502,6 +512,7 @@ function fascina_gallery_category_script() {
         function updateSubCategories() {
             const mainSelected = $('[name="acf[field_gallery_main_category]"]:checked').val();
             const $subCategories = $('[name="acf[field_gallery_sub_category]"]');
+            let defaultSubCategory = '';
 
             // すべてのラジオボタンを一旦無効化
             $subCategories.prop('disabled', true).closest('li').hide();
@@ -514,6 +525,7 @@ function fascina_gallery_category_script() {
                         .closest('li')
                         .show();
                 });
+                defaultSubCategory = 'simple';
             }
             else if (mainSelected === 'foot') {
                 // FOOT定額コースが選択された場合
@@ -523,6 +535,17 @@ function fascina_gallery_category_script() {
                         .closest('li')
                         .show();
                 });
+                defaultSubCategory = 'simple';
+            }
+            else if (mainSelected === 'guest') {
+                // GUESTギャラリーが選択された場合
+                guestCategories.forEach(category => {
+                    $(`[name="acf[field_gallery_sub_category]"][value="${category}"]`)
+                        .prop('disabled', false)
+                        .closest('li')
+                        .show();
+                });
+                defaultSubCategory = 'simple-guest';
             }
             else if (mainSelected === 'arts-parts') {
                 // アートパーツが選択された場合
@@ -532,11 +555,17 @@ function fascina_gallery_category_script() {
                         .closest('li')
                         .show();
                 });
+                defaultSubCategory = 'lame-holo-seal';
             }
 
             // 非表示のラジオボタンが選択されている場合、選択を解除
             if ($subCategories.filter(':checked').prop('disabled')) {
                 $subCategories.prop('checked', false);
+            }
+
+            // デフォルト値を設定（選択されていない場合のみ）
+            if (!$subCategories.filter(':checked').length && defaultSubCategory) {
+                $(`[name="acf[field_gallery_sub_category]"][value="${defaultSubCategory}"]`).prop('checked', true);
             }
         }
 
@@ -549,13 +578,13 @@ function fascina_gallery_category_script() {
     </script>
     <?php
 }
-add_action('admin_footer', 'fascina_gallery_category_script');
+add_action('admin_footer', 'twelor_gallery_category_script');
 
 # -------------------------------
 # 管理画面一覧のカスタマイズ
 # -------------------------------
 // ギャラリー一覧のカラムをカスタマイズ
-function fascina_add_gallery_columns($columns) {
+function twelor_add_gallery_columns($columns) {
     $new_columns = array();
     foreach ($columns as $key => $value) {
         if ($key === 'title') {
@@ -578,10 +607,10 @@ function fascina_add_gallery_columns($columns) {
     }
     return $new_columns;
 }
-add_filter('manage_gallery_posts_columns', 'fascina_add_gallery_columns');
+add_filter('manage_gallery_posts_columns', 'twelor_add_gallery_columns');
 
 // ギャラリー一覧のカラム内容を表示
-function fascina_gallery_column_content($column_name, $post_id) {
+function twelor_gallery_column_content($column_name, $post_id) {
     if ($column_name === 'thumbnail') {
         if (has_post_thumbnail($post_id)) {
             echo get_the_post_thumbnail($post_id, array(60, 60));
@@ -612,6 +641,12 @@ function fascina_gallery_column_content($column_name, $post_id) {
             'nuance-m' => 'ニュアンスM定額コース',
             'nuance-l' => 'ニュアンスL定額コース',
             'nuance-xl' => 'ニュアンスXL定額コース',
+            'simple-guest' => 'シンプル',
+            'magnet' => 'マグネット',
+            'long' => '長さだし',
+            'short' => 'ショートネイル',
+            'foot' => 'フットネイル',
+            'hand-art' => '手書きアート',
             'lame-holo-seal' => 'ラメ・ホロ・シール',
             'stone-studs-pearl' => 'ストーン・スタッズ・パール',
             'parts' => 'パーツ',
@@ -636,17 +671,17 @@ function fascina_gallery_column_content($column_name, $post_id) {
         echo get_field('gallery_description', $post_id);
     }
 }
-add_action('manage_gallery_posts_custom_column', 'fascina_gallery_column_content', 10, 2);
+add_action('manage_gallery_posts_custom_column', 'twelor_gallery_column_content', 10, 2);
 
 // 表示順列をソート可能にする
-function fascina_sortable_gallery_columns($columns) {
+function twelor_sortable_gallery_columns($columns) {
     $columns['menu_order'] = 'menu_order';
     return $columns;
 }
-add_filter('manage_edit-gallery_sortable_columns', 'fascina_sortable_gallery_columns');
+add_filter('manage_edit-gallery_sortable_columns', 'twelor_sortable_gallery_columns');
 
 // クーポン一覧のカラムをカスタマイズ
-function fascina_add_coupon_columns($columns) {
+function twelor_add_coupon_columns($columns) {
     $new_columns = array();
     foreach ($columns as $key => $value) {
         if ($key === 'title') {
@@ -669,10 +704,10 @@ function fascina_add_coupon_columns($columns) {
     }
     return $new_columns;
 }
-add_filter('manage_coupon_posts_columns', 'fascina_add_coupon_columns');
+add_filter('manage_coupon_posts_columns', 'twelor_add_coupon_columns');
 
 // クーポン一覧のカラム内容を表示
-function fascina_coupon_column_content($column_name, $post_id) {
+function twelor_coupon_column_content($column_name, $post_id) {
     if ($column_name === 'thumbnail') {
         if (has_post_thumbnail($post_id)) {
             echo get_the_post_thumbnail($post_id, array(60, 60));
@@ -705,10 +740,10 @@ function fascina_coupon_column_content($column_name, $post_id) {
         echo implode(' / ', $display_text);
     }
 }
-add_action('manage_coupon_posts_custom_column', 'fascina_coupon_column_content', 10, 2);
+add_action('manage_coupon_posts_custom_column', 'twelor_coupon_column_content', 10, 2);
 
 // お知らせ一覧のカラムをカスタマイズ
-function fascina_add_info_columns($columns) {
+function twelor_add_info_columns($columns) {
     unset($columns['title']); // タイトルカラムを非表示
     $new_columns = array();
     $new_columns['description'] = '案内文';
@@ -720,29 +755,26 @@ function fascina_add_info_columns($columns) {
     }
     return $new_columns;
 }
-add_filter('manage_info_posts_columns', 'fascina_add_info_columns');
+add_filter('manage_info_posts_columns', 'twelor_add_info_columns');
 
 // お知らせ一覧のカラム内容を表示
-function fascina_info_column_content($column_name, $post_id) {
+function twelor_info_column_content($column_name, $post_id) {
     if ($column_name === 'period') {
         echo get_field('info_period', $post_id);
     } elseif ($column_name === 'description') {
         echo get_field('info_description', $post_id);
     }
 }
-add_action('manage_info_posts_custom_column', 'fascina_info_column_content', 10, 2);
+add_action('manage_info_posts_custom_column', 'twelor_info_column_content', 10, 2);
 
 // ランキング一覧のカラムをカスタマイズ
-function fascina_add_ranking_columns($columns) {
+function twelor_add_ranking_columns($columns) {
     $new_columns = array();
     foreach ($columns as $key => $value) {
         if ($key === 'title') {
             $new_columns['thumbnail'] = '画像';
         }
         $new_columns[$key] = $value;
-        if ($key === 'title') {
-            $new_columns['menu_order'] = '表示順';
-        }
     }
     $new_columns['position'] = '順位';
     if (isset($new_columns['date'])) {
@@ -752,17 +784,14 @@ function fascina_add_ranking_columns($columns) {
     }
     return $new_columns;
 }
-add_filter('manage_ranking_posts_columns', 'fascina_add_ranking_columns');
+add_filter('manage_ranking_posts_columns', 'twelor_add_ranking_columns');
 
 // ランキング一覧のカラム内容を表示
-function fascina_ranking_column_content($column_name, $post_id) {
+function twelor_ranking_column_content($column_name, $post_id) {
     if ($column_name === 'thumbnail') {
         if (has_post_thumbnail($post_id)) {
             echo get_the_post_thumbnail($post_id, array(60, 60));
         }
-    } elseif ($column_name === 'menu_order') {
-        $post = get_post($post_id);
-        echo $post->menu_order;
     } elseif ($column_name === 'position') {
         $position = get_field('ranking_position', $post_id);
         if ($position) {
@@ -770,18 +799,18 @@ function fascina_ranking_column_content($column_name, $post_id) {
         }
     }
 }
-add_action('manage_ranking_posts_custom_column', 'fascina_ranking_column_content', 10, 2);
+add_action('manage_ranking_posts_custom_column', 'twelor_ranking_column_content', 10, 2);
 
 // 表示順列をソート可能にする
-function fascina_sortable_columns($columns) {
+function twelor_sortable_columns($columns) {
     $columns['menu_order'] = 'menu_order';
     return $columns;
 }
-add_filter('manage_edit-coupon_sortable_columns', 'fascina_sortable_columns');
-add_filter('manage_edit-ranking_sortable_columns', 'fascina_sortable_columns');
+add_filter('manage_edit-coupon_sortable_columns', 'twelor_sortable_columns');
+add_filter('manage_edit-ranking_sortable_columns', 'twelor_sortable_columns');
 
 // 管理画面の一覧のスタイル調整
-function fascina_admin_columns_style() {
+function twelor_admin_columns_style() {
     echo '<style>
         .column-thumbnail { width: 80px; }
         .column-thumbnail img { 
@@ -821,14 +850,14 @@ function fascina_admin_columns_style() {
         }
     </style>';
 }
-add_action('admin_head', 'fascina_admin_columns_style');
+add_action('admin_head', 'twelor_admin_columns_style');
 
 // 管理画面カスタムオーダー用のスタイル
-function fascina_custom_order_admin_script() {
+function twelor_custom_order_admin_script() {
     global $post_type;
     
-    // ギャラリー、クーポン、ランキングの一覧ページでのみ読み込み
-    if (in_array($post_type, array('gallery', 'coupon', 'ranking'))) {
+    // ギャラリー、クーポンの一覧ページでのみ読み込み
+    if (in_array($post_type, array('gallery', 'coupon'))) {
         ?>
         <script>
         jQuery(document).ready(function($) {
@@ -847,27 +876,27 @@ function fascina_custom_order_admin_script() {
         <?php
     }
 }
-add_action('admin_footer', 'fascina_custom_order_admin_script');
+add_action('admin_footer', 'twelor_custom_order_admin_script');
 
 # -------------------------------
 # バリデーション
 # -------------------------------
 // ACFプラグインが有効かチェック
-function fascina_check_acf() {
+function twelor_check_acf() {
     if (!function_exists('acf_add_local_field_group')) {
-        add_action('admin_notices', 'fascina_acf_notice');
+        add_action('admin_notices', 'twelor_acf_notice');
     } else {
         // ACFフィールドの登録
-        fascina_register_acf_fields();
+        twelor_register_acf_fields();
     }
 }
-add_action('admin_init', 'fascina_check_acf');
+add_action('admin_init', 'twelor_check_acf');
 
 // ACF通知
-function fascina_acf_notice() {
+function twelor_acf_notice() {
     ?>
     <div class="notice notice-warning is-dismissible">
-        <p><?php _e('Fascinaテーマは Advanced Custom Fields プラグインが必要です。インストールして有効化してください。', 'fascina'); ?></p>
+        <p><?php _e('Twelorテーマは Advanced Custom Fields プラグインが必要です。インストールして有効化してください。', 'twelor'); ?></p>
     </div>
     <?php
 }
@@ -876,7 +905,7 @@ function fascina_acf_notice() {
 # その他
 # -------------------------------
 // SEO対策
-function fascina_meta_description() {
+function twelor_meta_description() {
     global $post;
     if (is_singular()) {
         $description = strip_tags(get_the_excerpt());
@@ -885,10 +914,10 @@ function fascina_meta_description() {
     }
     echo '<meta name="description" content="' . esc_attr($description) . '">' . "\n";
 }
-add_action('wp_head', 'fascina_meta_description');
+add_action('wp_head', 'twelor_meta_description');
 
 // OGPタグの追加
-function fascina_add_ogp() {
+function twelor_add_ogp() {
     global $post;
     
     if (is_singular()) {
@@ -925,10 +954,10 @@ function fascina_add_ogp() {
     echo '<meta name="twitter:description" content="' . esc_attr($ogp_description) . '">' . "\n";
     echo '<meta name="twitter:image" content="' . esc_url($ogp_image) . '">' . "\n";
 }
-add_action('wp_head', 'fascina_add_ogp');
+add_action('wp_head', 'twelor_add_ogp');
 
 // ギャラリーページのリライトルール
-function fascina_add_gallery_rewrite_rules() {
+function twelor_add_gallery_rewrite_rules() {
     // HAND定額コース
     add_rewrite_rule(
         'gallery_hand_design/([^/]+)/page/([0-9]+)/?$',
@@ -955,13 +984,13 @@ function fascina_add_gallery_rewrite_rules() {
 
     // GUESTギャラリー
     add_rewrite_rule(
-        'gallery_guest_nail/page/([0-9]+)/?$',
-        'index.php?pagename=gallery-template&gallery_main_category=guest&paged=$matches[1]',
+        'gallery_guest_nail/([^/]+)/page/([0-9]+)/?$',
+        'index.php?pagename=gallery-template&gallery_main_category=guest&gallery_sub_category=$matches[1]&paged=$matches[2]',
         'top'
     );
     add_rewrite_rule(
-        'gallery_guest_nail/?$',
-        'index.php?pagename=gallery-template&gallery_main_category=guest',
+        'gallery_guest_nail/([^/]+)/?$',
+        'index.php?pagename=gallery-template&gallery_main_category=guest&gallery_sub_category=$matches[1]',
         'top'
     );
 
@@ -977,26 +1006,26 @@ function fascina_add_gallery_rewrite_rules() {
         'top'
     );
 }
-add_action('init', 'fascina_add_gallery_rewrite_rules');
+add_action('init', 'twelor_add_gallery_rewrite_rules');
 
 // クエリ変数の追加
-function fascina_add_gallery_query_vars($vars) {
+function twelor_add_gallery_query_vars($vars) {
     $vars[] = 'gallery_main_category';
     $vars[] = 'gallery_sub_category';
     $vars[] = 'paged';
     return $vars;
 }
-add_filter('query_vars', 'fascina_add_gallery_query_vars');
+add_filter('query_vars', 'twelor_add_gallery_query_vars');
 
 // リライトルールの更新
-function fascina_flush_gallery_rewrite_rules() {
-    fascina_add_gallery_rewrite_rules();
+function twelor_flush_gallery_rewrite_rules() {
+    twelor_add_gallery_rewrite_rules();
     flush_rewrite_rules();
 }
-register_activation_hook(__FILE__, 'fascina_flush_gallery_rewrite_rules');
+register_activation_hook(__FILE__, 'twelor_flush_gallery_rewrite_rules');
 
 // 管理画面のギャラリー一覧にフィルターを追加
-function fascina_add_gallery_filters() {
+function twelor_add_gallery_filters() {
     global $typenow;
     if ($typenow === 'gallery') {
         // メインカテゴリーの選択肢
@@ -1016,11 +1045,16 @@ function fascina_add_gallery_filters() {
             'onehon-s' => 'ワンホンS定額コース',
             'onehon-m' => 'ワンホンM定額コース',
             'onehon-l' => 'ワンホンL定額コース',
-            'bridal' => 'ブライダルデザイン',
             'nuance-s' => 'ニュアンスS定額コース',
             'nuance-m' => 'ニュアンスM定額コース',
             'nuance-l' => 'ニュアンスL定額コース',
             'nuance-xl' => 'ニュアンスXL定額コース',
+            'simple-guest' => 'シンプル',
+            'magnet' => 'マグネット',
+            'long' => '長さだし',
+            'short' => 'ショートネイル',
+            'foot' => 'フットネイル',
+            'hand-art' => '手書きアート',
             'lame-holo-seal' => 'ラメ・ホロ・シール',
             'stone-studs-pearl' => 'ストーン・スタッズ・パール',
             'parts' => 'パーツ',
@@ -1058,10 +1092,10 @@ function fascina_add_gallery_filters() {
         echo '</select>';
     }
 }
-add_action('restrict_manage_posts', 'fascina_add_gallery_filters');
+add_action('restrict_manage_posts', 'twelor_add_gallery_filters');
 
 // フィルター条件を適用
-function fascina_apply_gallery_filters($query) {
+function twelor_apply_gallery_filters($query) {
     global $pagenow, $typenow;
     
     if ($pagenow === 'edit.php' && $typenow === 'gallery') {
@@ -1090,10 +1124,10 @@ function fascina_apply_gallery_filters($query) {
         }
     }
 }
-add_action('pre_get_posts', 'fascina_apply_gallery_filters');
+add_action('pre_get_posts', 'twelor_apply_gallery_filters');
 
 // フィルターのスタイルを追加
-function fascina_admin_filters_style() {
+function twelor_admin_filters_style() {
     global $typenow;
     if ($typenow === 'gallery') {
         ?>
@@ -1133,10 +1167,10 @@ function fascina_admin_filters_style() {
         <?php
     }
 }
-add_action('admin_head', 'fascina_admin_filters_style');
+add_action('admin_head', 'twelor_admin_filters_style');
 
 // トップページのギャラリー表示制御
-function fascina_get_top_gallery_posts($limit = 9) {
+function twelor_get_top_gallery_posts($limit = 9) {
     $args = array(
         'post_type' => 'gallery',
         'posts_per_page' => $limit,
@@ -1157,7 +1191,7 @@ function fascina_get_top_gallery_posts($limit = 9) {
 }
 
 // ギャラリーページのギャラリー表示制御
-function fascina_get_gallery_page_posts($main_category = '', $sub_category = '', $posts_per_page = 20, $paged = 1) {
+function twelor_get_gallery_page_posts($main_category = '', $sub_category = '', $posts_per_page = 20, $paged = 1) {
     $meta_query = array('relation' => 'AND');
     
     // 表示設定の条件
@@ -1176,11 +1210,20 @@ function fascina_get_gallery_page_posts($main_category = '', $sub_category = '',
         );
     }
     
-    // サブカテゴリーの条件
-    if (!empty($sub_category) && $main_category !== 'guest') {
+    // サブカテゴリーの条件（サブカテゴリーがbridalの場合はセットしない)
+    if (!empty($sub_category) && $sub_category !== 'bridal') {
         $meta_query[] = array(
             'key' => 'gallery_sub_category',
             'value' => $sub_category,
+            'compare' => '='
+        );
+    }
+
+    // ブライダルデザインの条件
+    if ($sub_category === 'bridal') {
+        $meta_query[] = array(
+            'key' => 'gallery_is_bridal',
+            'value' => '1',
             'compare' => '='
         );
     }
@@ -1200,7 +1243,7 @@ function fascina_get_gallery_page_posts($main_category = '', $sub_category = '',
 }
 
 // トップページのクーポン表示制御
-function fascina_get_top_coupon_posts($limit = 9) {
+function twelor_get_top_coupon_posts($limit = 9) {
     $args = array(
         'post_type' => 'coupon',
         'posts_per_page' => $limit,
@@ -1221,7 +1264,7 @@ function fascina_get_top_coupon_posts($limit = 9) {
 }
 
 // クーポンページのクーポン表示制御
-function fascina_get_coupon_page_posts($posts_per_page = 9, $paged = 1) {
+function twelor_get_coupon_page_posts($posts_per_page = 9, $paged = 1) {
     $args = array(
         'post_type' => 'coupon',
         'posts_per_page' => $posts_per_page,
@@ -1242,7 +1285,7 @@ function fascina_get_coupon_page_posts($posts_per_page = 9, $paged = 1) {
 }
 
 // クイック編集フィールドの追加
-function fascina_add_quick_edit_fields($column_name, $post_type) {
+function twelor_add_quick_edit_fields($column_name, $post_type) {
     if (!in_array($post_type, ['gallery', 'coupon']) || $column_name !== 'display_settings') return;
     
     $post_type_label = $post_type === 'gallery' ? 'ギャラリー' : 'クーポン';
@@ -1265,10 +1308,10 @@ function fascina_add_quick_edit_fields($column_name, $post_type) {
     </fieldset>
     <?php
 }
-add_action('quick_edit_custom_box', 'fascina_add_quick_edit_fields', 10, 2);
+add_action('quick_edit_custom_box', 'twelor_add_quick_edit_fields', 10, 2);
 
 // クイック編集用のJavaScript
-function fascina_quick_edit_script() {
+function twelor_quick_edit_script() {
     global $post_type;
     if (!in_array($post_type, ['gallery', 'coupon'])) return;
     
@@ -1313,10 +1356,10 @@ function fascina_quick_edit_script() {
     </script>
     <?php
 }
-add_action('admin_footer-edit.php', 'fascina_quick_edit_script');
+add_action('admin_footer-edit.php', 'twelor_quick_edit_script');
 
 // クイック編集の保存処理
-function fascina_save_quick_edit($post_id) {
+function twelor_save_quick_edit($post_id) {
     if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
     if (!current_user_can('edit_post', $post_id)) return;
     
@@ -1336,10 +1379,10 @@ function fascina_save_quick_edit($post_id) {
         update_field($post_type . '_display_' . $post_type, $display_page, $post_id);
     }
 }
-add_action('save_post', 'fascina_save_quick_edit');
+add_action('save_post', 'twelor_save_quick_edit');
 
 // クイック編集のスタイル調整
-function fascina_quick_edit_style() {
+function twelor_quick_edit_style() {
     global $post_type;
     if (!in_array($post_type, ['gallery', 'coupon'])) return;
     ?>
@@ -1362,4 +1405,40 @@ function fascina_quick_edit_style() {
     </style>
     <?php
 }
-add_action('admin_head', 'fascina_quick_edit_style');
+add_action('admin_head', 'twelor_quick_edit_style');
+
+// ギャラリー、クーポン登録時にmenu_orderの自動設定
+function twelor_auto_set_menu_order($data, $postarr) {
+    if (!in_array($data['post_type'], array('gallery', 'coupon'))) {
+        return $data;
+    }
+    
+    if ($data['post_status'] !== 'auto-draft' && 
+        (!isset($postarr['menu_order']) || $postarr['menu_order'] == 0)) {
+        
+        global $wpdb;
+        $max_order = $wpdb->get_var($wpdb->prepare(
+            "SELECT MAX(menu_order) FROM {$wpdb->posts} WHERE post_type = %s AND post_status != 'trash'",
+            $data['post_type']
+        ));
+        
+        $data['menu_order'] = max(1, intval($max_order) + 1);
+    }
+    
+    return $data;
+}
+add_filter('wp_insert_post_data', 'twelor_auto_set_menu_order', 10, 2);
+
+// 新規登録、更新時の表示順フィールド削除
+function twelor_hide_menu_order_field() {
+    global $post_type;
+    if (in_array($post_type, array('gallery', 'coupon'))) {
+        echo '<style>
+            #pageparentdiv,
+            #pageparentdiv .inside {
+                display: none !important;
+            }
+        </style>';
+    }
+}
+add_action('admin_head', 'twelor_hide_menu_order_field');

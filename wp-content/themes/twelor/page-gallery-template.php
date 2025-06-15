@@ -18,7 +18,7 @@ $sub_category = get_query_var('gallery_sub_category');
 $posts_per_page = 20;
 
 // ギャラリー投稿を取得
-$gallery_query = fascina_get_gallery_page_posts($main_category, $sub_category, $posts_per_page, $current_page);
+$gallery_query = twelor_get_gallery_page_posts($main_category, $sub_category, $posts_per_page, $current_page);
 
 // 総ページ数を計算
 $total_posts = $gallery_query->found_posts;
@@ -79,6 +79,24 @@ switch ($sub_category) {
     case 'nuance-xl':
         $sub_category_name = 'ニュアンスXL定額コース';
         break;
+    case 'simple-guest':
+        $sub_category_name = 'シンプル';
+        break;
+    case 'magnet':
+        $sub_category_name = 'マグネット';
+        break;
+    case 'long':
+        $sub_category_name = '長さだし';
+        break;
+    case 'short':
+        $sub_category_name = 'ショートネイル';
+        break;
+    case 'foot':
+        $sub_category_name = 'フットネイル';
+        break;
+    case 'hand-art':
+        $sub_category_name = '手書きアート';
+        break;
     case 'lame-holo-seal':
         $sub_category_name = 'ラメ・ホロ・シール';
         break;
@@ -102,7 +120,7 @@ switch ($sub_category) {
 
     <!-- オーダーメイドボタン -->
     <div class="custom-order-button">
-        <a href="<?php echo home_url('/order-made'); ?>" class="btn btn-primary">オーダーメイドのコースはこちらから</a>
+        <a href="<?php echo home_url('/gallery_guest_nail/simple-guest/'); ?>" class="btn btn-primary">オーダーメイドのコースはこちらから</a>
     </div>
 
     <!-- 無料お色変更の案内 -->
@@ -201,6 +219,41 @@ switch ($sub_category) {
             <div class="col-md-3 col-6">
                 <a href="<?php echo home_url('/gallery_' . $main_category . '_design/clean/'); ?>" class="course-nav-item <?php echo ($sub_category == 'clean') ? 'active' : ''; ?>">
                     キレイめ定額コース
+                </a>
+            </div>
+        </div>
+    </div>
+    <?php elseif ($main_category === 'guest'): ?>
+    <div class="course-navigation">
+        <div class="row">
+            <div class="col-md-3 col-6">
+                <a href="<?php echo home_url('/gallery_guest_nail/simple-guest/'); ?>" class="course-nav-item <?php echo ($sub_category == 'simple-guest') ? 'active' : ''; ?>">
+                    シンプル
+                </a>
+            </div>
+            <div class="col-md-3 col-6">
+                <a href="<?php echo home_url('/gallery_guest_nail/magnet/'); ?>" class="course-nav-item <?php echo ($sub_category == 'magnet') ? 'active' : ''; ?>">
+                    マグネット
+                </a>
+            </div>
+            <div class="col-md-3 col-6">
+                <a href="<?php echo home_url('/gallery_guest_nail/long/'); ?>" class="course-nav-item <?php echo ($sub_category == 'long') ? 'active' : ''; ?>">
+                    長さだし
+                </a>
+            </div>
+            <div class="col-md-3 col-6">
+                <a href="<?php echo home_url('/gallery_guest_nail/short/'); ?>" class="course-nav-item <?php echo ($sub_category == 'short') ? 'active' : ''; ?>">
+                    ショートネイル
+                </a>
+            </div>
+            <div class="col-md-3 col-6">
+                <a href="<?php echo home_url('/gallery_guest_nail/foot/'); ?>" class="course-nav-item <?php echo ($sub_category == 'foot') ? 'active' : ''; ?>">
+                    フットネイル
+                </a>
+            </div>
+            <div class="col-md-3 col-6">
+                <a href="<?php echo home_url('/gallery_guest_nail/hand-art/'); ?>" class="course-nav-item <?php echo ($sub_category == 'hand-art') ? 'active' : ''; ?>">
+                    手書きアート
                 </a>
             </div>
         </div>
@@ -307,7 +360,7 @@ switch ($sub_category) {
                     // カテゴリーに応じてベースURLを設定
                     $base_url = '';
                     if ($main_category === 'guest') {
-                        $base_url = home_url("gallery_guest_nail/page/%#%/");
+                        $base_url = home_url("gallery_guest_nail/{$sub_category}/page/%#%/");
                     } elseif ($main_category === 'arts-parts') {
                         $base_url = home_url("gallery_arts_parts/{$sub_category}/page/%#%/");
                     } else {
@@ -365,7 +418,7 @@ switch ($sub_category) {
         margin-bottom: 20px;
     }
     .custom-order-button .btn {
-        background-color: #e75a87;
+        background-color: #95bac3;
         border: none;
         padding: 10px 20px;
         font-size: 16px;
@@ -373,9 +426,6 @@ switch ($sub_category) {
         text-decoration: none;
         border-radius: 4px;
         transition: background-color 0.3s;
-    }
-    .custom-order-button .btn:hover {
-        background-color: #d44d7a;
     }
     .color-change-notice {
         text-align: center;
@@ -400,9 +450,9 @@ switch ($sub_category) {
         border: 1px solid #eee;
     }
     .course-nav-item:hover, .course-nav-item.active {
-        background-color: #e75a87;
+        background-color: #95bac3;
         color: #fff;
-        border-color: #e75a87;
+        border-color: #95bac3;
     }
     .category-title {
         display: flex;
@@ -468,8 +518,8 @@ switch ($sub_category) {
         height: 40px;
         padding: 0 12px;
         background-color: #fff;
-        border: 1px solid #e75a87;
-        color: #e75a87;
+        border: 1px solid #95bac3;
+        color: #95bac3;
         font-size: 16px;
         font-weight: 500;
         text-decoration: none;
@@ -477,14 +527,14 @@ switch ($sub_category) {
         transition: all 0.2s ease;
     }
     .pagination-link:hover {
-        background-color: #e75a87;
+        background-color: #95bac3;
         color: #fff;
-        border-color: #e75a87;
+        border-color: #95bac3;
     }
     .pagination-link.active {
-        background-color: #e75a87;
+        background-color: #95bac3;
         color: #fff;
-        border-color: #e75a87;
+        border-color: #95bac3;
         font-weight: 600;
     }
     .pagination-link:active {

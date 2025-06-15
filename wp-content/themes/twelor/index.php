@@ -2,7 +2,7 @@
 
     <!-- ランキングセクション -->
     <section class="ranking-section">
-        <h3 class="fascina-section-title">
+        <h3 class="twelor-section-title">
             <span class="ranking-title">ランキング</span>
         </h3>
 
@@ -13,10 +13,8 @@
                     'post_type' => 'ranking',
                     'posts_per_page' => 10,
                     'meta_key' => 'ranking_position',
-                    'orderby' => array(
-                        'menu_order' => 'ASC',
-                        'date' => 'DESC'
-                    ),
+                    'orderby' => 'meta_value_num',
+                    'order' => 'ASC'
                 );
                 $ranking_query = new WP_Query($ranking_args);
 
@@ -51,7 +49,7 @@
 
     <!-- お知らせセクション -->
     <section class="info-section">
-        <h2 class="fascina-section-title">お知らせ</h2>
+        <h2 class="twelor-section-title">お知らせ</h2>
         <div class="info-box">
             <?php
             $info_args = array(
@@ -83,7 +81,7 @@
 
     <!-- HAND定額コースセクション -->
     <section class="hand-design-section">
-        <h2 class="fascina-section-title">HAND定額コース</h2>
+        <h2 class="twelor-section-title">HAND定額コース</h2>
         <div class="design-box">
             <?php
             $hand_args = array(
@@ -136,7 +134,7 @@
 
     <!-- GUESTギャラリーセクション -->
     <section class="guest-design-section">
-        <h2 class="fascina-section-title">GUESTギャラリー</h2>
+        <h2 class="twelor-section-title">GUESTギャラリー</h2>
         <div class="design-box">
             <?php
             $guest_args = array(
@@ -189,10 +187,10 @@
 
     <!-- クーポンセクション -->
     <section class="coupon-section">
-        <h2 class="fascina-section-title">クーポン</h2>
+        <h2 class="twelor-section-title">クーポン</h2>
         <div class="design-box">
             <?php
-            $coupon_query = fascina_get_top_coupon_posts(9);
+            $coupon_query = twelor_get_top_coupon_posts(9);
 
             if ($coupon_query->have_posts()) :
                 while ($coupon_query->have_posts()) : $coupon_query->the_post();
@@ -207,15 +205,16 @@
                         <div class="coupon-description"><?php echo nl2br(esc_html($coupon_description)); ?></div>   
                         <div class="coupon-price"><?php echo esc_html($coupon_price); ?></div>
                         <div class="coupon-image-box">
-                            <a href="<?php the_permalink(); ?>">
-                                <?php the_post_thumbnail('large', array('class' => 'coupon-image')); ?>
-                            </a>
+                            <?php the_post_thumbnail('large', array('class' => 'coupon-image')); ?>
                         </div>
-                        <?php if ($coupon_period) : 
-                            $start_date = date_i18n('Y年m月d日H時i分', strtotime($coupon_period['start_date']));
-                            $end_date = date_i18n('Y年m月d日H時i分', strtotime($coupon_period['end_date']));
+                        <?php 
+                        $start_date = get_field('coupon_period_start_date', get_the_ID());
+                        $end_date = get_field('coupon_period_end_date', get_the_ID());
+                        if ($start_date && $end_date) : 
+                            $start_date_formatted = date_i18n('Y年m月d日', strtotime($start_date));
+                            $end_date_formatted = date_i18n('Y年m月d日', strtotime($end_date));
                         ?>
-                            <p class="coupon-period">期間:<?php echo esc_html($start_date); ?>～<?php echo esc_html($end_date); ?>迄</p>
+                            <p class="coupon-period">期間:<?php echo esc_html($start_date_formatted); ?>～<?php echo esc_html($end_date_formatted); ?>迄</p>
                         <?php endif; ?>
                     </div>
             <?php

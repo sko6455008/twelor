@@ -73,7 +73,7 @@ get_header();
                 <h2 class="section-title">マップ</h2>
                 <div class="map-container">
                     <iframe 
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3238.7086482756745!2d139.70674961534667!3d35.73338328018222!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188d5ef5ffc2e9%3A0x45a6139e479940e8!2z77ymYXNjaW5h!5e0!3m2!1sja!2sjp!4v1561524155592!5m2!1sja!2sjp" 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3238.7935529973183!2d139.70349811534672!3d35.73129548018266!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188d5945aebebb%3A0xbeeafaa25aa813f7!2stwelor!5e0!3m2!1sja!2sjp!4v1564540531876!5m2!1sja!2sjp" 
                         width="100%" 
                         height="500" 
                         style="border:0;" 
@@ -108,11 +108,11 @@ get_header();
 
 .store-name {
     font-size: 1.8rem;
-    color: #ff69b4;
+    color: #95bac3;
     text-align: center;
     margin-bottom: 30px;
     padding-bottom: 15px;
-    border-bottom: 2px solid #ff69b4;
+    border-bottom: 2px solid #95bac3;
 }
 
 .info-section {
@@ -129,7 +129,7 @@ get_header();
 }
 
 .info-title i {
-    color: #ff69b4;
+    color: #95bac3;
     margin-right: 10px;
     width: 20px;
 }
@@ -141,14 +141,10 @@ get_header();
 }
 
 .phone-link {
-    color: #ff69b4;
+    color: #95bac3;
     text-decoration: none;
     font-weight: 600;
     font-size: 1.1rem;
-}
-
-.phone-link:hover {
-    color: #ff1493;
 }
 
 .hours-row {
@@ -181,7 +177,7 @@ get_header();
 }
 
 .payment-item {
-    background: #e64893;
+    background: #95bac3;
     color: #fff;
     padding: 5px 12px;
     border-radius: 15px;
