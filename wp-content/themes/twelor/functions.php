@@ -13,8 +13,9 @@ function twelor_setup() {
     
     // メニューの登録
     register_nav_menus(array(
-        'primary' => __('メインメニュー', 'twelor'),
-        'footer' => __('フッターメニュー', 'twelor'),
+        'primary' => __('ヘッダーメニュー', 'fascina'),
+        'footer_menu' => __('フッターメニュー', 'fascina'),
+        'footer_design' => __('フッターデザイン', 'fascina'),
     ));
 }
 add_action('after_setup_theme', 'twelor_setup');
@@ -41,7 +42,6 @@ add_action('wp_enqueue_scripts', 'twelor_scripts');
 // デフォルトの管理メニューを削除
 function twelor_remove_default_menu_items() {
     remove_menu_page('edit.php');           // 投稿
-    remove_menu_page('upload.php');         // メディア
     remove_menu_page('edit-comments.php');  // コメント
 }
 add_action('admin_menu', 'twelor_remove_default_menu_items');
@@ -904,57 +904,6 @@ function twelor_acf_notice() {
 # -------------------------------
 # その他
 # -------------------------------
-// SEO対策
-function twelor_meta_description() {
-    global $post;
-    if (is_singular()) {
-        $description = strip_tags(get_the_excerpt());
-    } else {
-        $description = get_bloginfo('description');
-    }
-    echo '<meta name="description" content="' . esc_attr($description) . '">' . "\n";
-}
-add_action('wp_head', 'twelor_meta_description');
-
-// OGPタグの追加
-function twelor_add_ogp() {
-    global $post;
-    
-    if (is_singular()) {
-        // 記事のパーマリンク
-        $ogp_url = get_permalink();
-        // 記事のタイトル
-        $ogp_title = get_the_title();
-        // 記事の抜粋
-        $ogp_description = strip_tags(get_the_excerpt());
-        // アイキャッチ画像
-        if (has_post_thumbnail()) {
-            $ogp_image = get_the_post_thumbnail_url(get_the_ID(), 'large');
-        } else {
-            $ogp_image = get_template_directory_uri() . '/assets/images/default-ogp.jpg';
-        }
-    } else {
-        // トップページなど
-        $ogp_url = home_url('/');
-        $ogp_title = get_bloginfo('name');
-        $ogp_description = get_bloginfo('description');
-        $ogp_image = get_template_directory_uri() . '/assets/images/default-ogp.jpg';
-    }
-    
-    echo '<meta property="og:url" content="' . esc_url($ogp_url) . '">' . "\n";
-    echo '<meta property="og:title" content="' . esc_attr($ogp_title) . '">' . "\n";
-    echo '<meta property="og:description" content="' . esc_attr($ogp_description) . '">' . "\n";
-    echo '<meta property="og:image" content="' . esc_url($ogp_image) . '">' . "\n";
-    echo '<meta property="og:type" content="' . (is_singular() ? 'article' : 'website') . '">' . "\n";
-    echo '<meta property="og:site_name" content="' . esc_attr(get_bloginfo('name')) . '">' . "\n";
-    
-    // Twitter Card
-    echo '<meta name="twitter:card" content="summary_large_image">' . "\n";
-    echo '<meta name="twitter:title" content="' . esc_attr($ogp_title) . '">' . "\n";
-    echo '<meta name="twitter:description" content="' . esc_attr($ogp_description) . '">' . "\n";
-    echo '<meta name="twitter:image" content="' . esc_url($ogp_image) . '">' . "\n";
-}
-add_action('wp_head', 'twelor_add_ogp');
 
 // ギャラリーページのリライトルール
 function twelor_add_gallery_rewrite_rules() {

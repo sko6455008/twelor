@@ -15,7 +15,7 @@ $main_category = get_query_var('gallery_main_category');
 $sub_category = get_query_var('gallery_sub_category');
 
 // 1ページあたりの表示数
-$posts_per_page = 20;
+$posts_per_page = 50;
 
 // ギャラリー投稿を取得
 $gallery_query = twelor_get_gallery_page_posts($main_category, $sub_category, $posts_per_page, $current_page);
@@ -330,7 +330,8 @@ switch ($sub_category) {
                                     </div>
                                 <?php endif; ?>
                                 <div class="gallery-caption">
-                                    <h3 class="gallery-title"><?php echo $title; ?></h3>
+                                    <h2 class="gallery-title"><?php echo $title; ?></h2>
+                                    <p class="publish" style="display:none;"><?php echo get_the_date('Y/m/d H:i:s'); ?></p>
                                 </div>
                             </div>
                         </div>
@@ -495,7 +496,7 @@ switch ($sub_category) {
         padding-top: 10px;
         background: #fff;
     }
-    .gallery-caption h3 {
+    .gallery-caption h2 {
         font-size: 16px;
         margin: 0 0 5px;
         color: #333;
@@ -635,7 +636,7 @@ switch ($sub_category) {
         .category-title h2 {
             font-size: 18px;
         }
-        .gallery-caption h3 {
+        .gallery-caption h2 {
             font-size: 15px;
         }
     }
@@ -655,7 +656,7 @@ switch ($sub_category) {
         .category-title h2 {
             font-size: 16px;
         }
-        .gallery-caption h3 {
+        .gallery-caption h2 {
             font-size: 14px;
         }
         .gallery-description {

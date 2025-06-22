@@ -8,7 +8,7 @@ get_header();
 ?>
 
 <div class="container py-5">
-    <h1 class="first-section-title">初めての方へ</h1>
+    <h1 class="first-section-title"><?php echo esc_html(get_the_title()); ?></h1>
     
     <div class="first-features">
         <ul class="feature-list">

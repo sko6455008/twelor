@@ -12,12 +12,12 @@ $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 $current_time = current_time('mysql');
 
 // クーポンの投稿を取得
-$coupon_query = twelor_get_coupon_page_posts(9, $paged);
+$coupon_query = twelor_get_coupon_page_posts(51, $paged);
 ?>
 
 <div class="coupon-container">
     <div class="coupon-header">
-        <h2 class="coupon-title">月替わりクーポン</h2>
+        <h1 class="coupon-title"><?php echo esc_html(get_the_title()); ?></h1>
     </div>
 
     <?php if ($coupon_query->have_posts()) : ?>

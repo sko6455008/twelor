@@ -6,7 +6,7 @@ get_header();
 ?>
 
 <div class="container">
-    <h1 class="menu-section-title">料金メニュー</h1>
+    <h1 class="menu-section-title"><?php echo esc_html(get_the_title()); ?></h1>
     
     <div class="row mb-5">
         <div class="col-12 mb-4">

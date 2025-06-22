@@ -6,7 +6,7 @@ get_header();
 ?>
 
 <div class="container py-5">
-    <h1 class="care-section-title">グリーンネイルについて</h1>
+    <h1 class="care-section-title"><?php echo esc_html(get_the_title()); ?></h1>
 
     <div class="col-12 mb-5">
         <h3 class="care-section-subtitle">日本初！爪カビ・菌を防止する　ルビケイト</h3>

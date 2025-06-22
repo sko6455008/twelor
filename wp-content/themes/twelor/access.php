@@ -6,7 +6,7 @@ get_header();
 ?>
 
 <div class="container py-5">
-    <h1 class="access-section-title">アクセス</h1>
+    <h1 class="access-section-title"><?php echo esc_html(get_the_title()); ?></h1>
     
     <div class="row mb-5">
         <div class="col-lg-6 mb-4">
@@ -17,7 +17,7 @@ get_header();
                         住所
                     </h3>
                     <p class="info-content">
-                        東京都豊島区池袋2-40-13 VORT池袋ビル 3F
+                        東京都豊島区西池袋5-2-3　平凡立教前ビル6F
                     </p>
                 </div>
                 <div class="info-section">
@@ -26,7 +26,7 @@ get_header();
                         電話番号
                     </h3>
                     <p class="info-content">
-                        <a href="tel:050-5305-3298" class="phone-link">050-5305-3298</a>
+                        <a href="tel:050-5305-3298" class="phone-link">050-5305-3314</a>
                     </p>
                     <p class="info-content">
                         9時 ～ 22時（土日祝は10:00～）受付可

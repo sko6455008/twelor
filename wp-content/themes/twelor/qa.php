@@ -6,7 +6,7 @@ get_header();
 ?>
 
 <div class="container py-5">
-    <h1 class="qa-section-title">よくある質問</h1>
+    <h1 class="qa-section-title"><?php echo esc_html(get_the_title()); ?></h1>
     
     <div class="row">
         <div class="col-12">

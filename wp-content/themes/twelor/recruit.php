@@ -6,7 +6,7 @@ get_header();
 ?>
 
 <div class="container py-5">
-    <h1 class="recruit-section-title">リクルート</h1>
+    <h1 class="recruit-section-title"><?php echo esc_html(get_the_title()); ?></h1>
 
     <div class="col-12 position-relative">
         <img src="<?php echo get_template_directory_uri(); ?>/assets/images/recruit_bg.jpg" alt="求人募集背景" class="img-fluid recruit-bg">
