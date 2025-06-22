@@ -24,7 +24,7 @@
                     <div class="logo">
                         <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/images/logo.png" alt="Twelorロゴ">
                     </div>
-                    <a href="https://071f0f.b-merit.jp/pJ3MHW/web" class="reservation-btn" target="_blank">ご予約</a>
+                    <a href="https://071f0f.b-merit.jp/R3dKhM/web/" class="reservation-btn" target="_blank">ご予約</a>
                     <a href="https://lin.ee/yW1QATC" class="contact-btn" target="_blank">お問い合わせ</a>
                     <div class="phone-number">050-5305-3314</div>
                 </div>

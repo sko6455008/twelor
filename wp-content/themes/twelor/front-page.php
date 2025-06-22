@@ -8,7 +8,7 @@ get_header(); ?>
 
 <!-- ランキングセクション -->
 <section class="ranking-section">
-    <h1 class="fascina-section-title"><?php echo esc_html(get_field('ranking') ?: 'ランキング'); ?></h1>
+    <h1 class="twelor-section-title"><?php echo esc_html(get_field('ranking') ?: 'ランキング'); ?></h1>
 
     <div class="ranking-slider-container">
         <div class="ranking-slider">
@@ -53,7 +53,7 @@ get_header(); ?>
 
 <!-- お知らせセクション -->
 <section class="info-section">
-    <h1 class="fascina-section-title"><?php echo esc_html(get_field('info') ?: 'お知らせ'); ?></h1>
+    <h1 class="twelor-section-title"><?php echo esc_html(get_field('info') ?: 'お知らせ'); ?></h1>
     <div class="info-box">
         <?php
         $info_args = array(
@@ -85,7 +85,7 @@ get_header(); ?>
 
 <!-- HAND定額コースセクション -->
 <section class="hand-design-section">
-    <h1 class="fascina-section-title"><?php echo esc_html(get_field('hand') ?: 'HAND定額コース'); ?></h1>
+    <h1 class="twelor-section-title"><?php echo esc_html(get_field('hand') ?: 'HAND定額コース'); ?></h1>
     <div class="design-box">
         <?php
         $hand_args = array(
@@ -138,7 +138,7 @@ get_header(); ?>
 
 <!-- GUESTギャラリーセクション -->
 <section class="guest-design-section">
-    <h1 class="fascina-section-title"><?php echo esc_html(get_field('guest') ?: 'GUESTギャラリー'); ?></h1>
+    <h1 class="twelor-section-title"><?php echo esc_html(get_field('guest') ?: 'GUESTギャラリー'); ?></h1>
     <div class="design-box">
         <?php
         $guest_args = array(
@@ -191,10 +191,10 @@ get_header(); ?>
 
 <!-- クーポンセクション -->
 <section class="coupon-section">
-    <h1 class="fascina-section-title"><?php echo esc_html(get_field('coupon') ?: 'クーポン'); ?></h1>
+    <h1 class="twelor-section-title"><?php echo esc_html(get_field('coupon') ?: 'クーポン'); ?></h1>
     <div class="design-box">
         <?php
-        $coupon_query = fascina_get_top_coupon_posts(9);
+        $coupon_query = twelor_get_top_coupon_posts(9);
 
         if ($coupon_query->have_posts()) :
             while ($coupon_query->have_posts()) : $coupon_query->the_post();
