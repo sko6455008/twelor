@@ -201,24 +201,19 @@ switch ($sub_category) {
     <?php elseif ($main_category === 'foot'): ?>
     <div class="course-navigation">
         <div class="row">
-            <div class="col-md-3 col-6">
+            <div class="col-md-4 col-6">
                 <a href="<?php echo home_url('/gallery_' . $main_category . '_design/simple/'); ?>" class="course-nav-item <?php echo ($sub_category == 'simple') ? 'active' : ''; ?>">
                     シンプル定額コース
                 </a>
             </div>
-            <div class="col-md-3 col-6">
+            <div class="col-md-4 col-6">
                 <a href="<?php echo home_url('/gallery_' . $main_category . '_design/popular/'); ?>" class="course-nav-item <?php echo ($sub_category == 'popular') ? 'active' : ''; ?>">
                     一番人気定額コース
                 </a>
             </div>
-            <div class="col-md-3 col-6">
+            <div class="col-md-4 col-6">
                 <a href="<?php echo home_url('/gallery_' . $main_category . '_design/special/'); ?>" class="course-nav-item <?php echo ($sub_category == 'special') ? 'active' : ''; ?>">
                     こだわり定額コース
-                </a>
-            </div>
-            <div class="col-md-3 col-6">
-                <a href="<?php echo home_url('/gallery_' . $main_category . '_design/clean/'); ?>" class="course-nav-item <?php echo ($sub_category == 'clean') ? 'active' : ''; ?>">
-                    キレイめ定額コース
                 </a>
             </div>
         </div>

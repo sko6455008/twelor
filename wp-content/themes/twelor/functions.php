@@ -182,7 +182,6 @@ function twelor_register_acf_fields() {
                     'type' => 'radio',
                     'required' => 1,
                     'choices' => array(
-                        // HANDとFOOT定額コース用
                         'simple' => 'シンプル定額コース',
                         'popular' => '一番人気定額コース',
                         'special' => 'こだわり定額コース',
@@ -497,7 +496,7 @@ function twelor_gallery_category_script() {
         ];
         
         const footCategories = [
-            'simple','popular','special','clean'
+            'simple','popular','special'
         ];
         
         const guestCategories = [
