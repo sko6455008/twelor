@@ -13,9 +13,9 @@ function twelor_setup() {
     
     // メニューの登録
     register_nav_menus(array(
-        'primary' => __('ヘッダーメニュー', 'fascina'),
-        'footer_menu' => __('フッターメニュー', 'fascina'),
-        'footer_design' => __('フッターデザイン', 'fascina'),
+        'primary' => __('ヘッダーメニュー', 'twelor'),
+        'footer_menu' => __('フッターメニュー', 'twelor'),
+        'footer_design' => __('フッターデザイン', 'twelor'),
     ));
 }
 add_action('after_setup_theme', 'twelor_setup');
