@@ -119,8 +119,19 @@ switch ($sub_category) {
     </div>
 
     <!-- オーダーメイドボタン -->
-    <div class="custom-order-button">
-        <a href="<?php echo home_url('/gallery_guest_nail/simple-guest/'); ?>" class="btn btn-primary">オーダーメイドのコースはこちらから</a>
+    <div class="custom-order-button-container">
+        <div class="row justify-content-center">
+            <div class="col-auto">
+                <div class="custom-order-button">
+                    <a href="<?php echo home_url('/gallery_guest_nail/simple-guest/'); ?>" class="btn btn-primary">オーダーメイドはこちらから</a>
+                </div>
+            </div>
+            <div class="col-auto">
+                <div class="custom-order-button">
+                    <a href="<?php echo home_url('/coupon/'); ?>" class="btn btn-primary">月替わりクーポンはこちらから</a>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- 無料お色変更の案内 -->
@@ -134,39 +145,39 @@ switch ($sub_category) {
         <div class="row">
             <div class="col-md-3 col-6">
                 <a href="<?php echo home_url('/gallery_' . $main_category . '_design/simple/'); ?>" class="course-nav-item <?php echo ($sub_category == 'simple') ? 'active' : ''; ?>">
-                    シンプル定額コース
+                    シンプル 定額
                 </a>
             </div>
             <div class="col-md-3 col-6">
                 <a href="<?php echo home_url('/gallery_' . $main_category . '_design/popular/'); ?>" class="course-nav-item <?php echo ($sub_category == 'popular') ? 'active' : ''; ?>">
-                    一番人気定額コース
+                    一番人気 定額
                 </a>
             </div>
             <div class="col-md-3 col-6">
                 <a href="<?php echo home_url('/gallery_' . $main_category . '_design/special/'); ?>" class="course-nav-item <?php echo ($sub_category == 'special') ? 'active' : ''; ?>">
-                    こだわり定額コース
+                    こだわり 定額
                 </a>
             </div>
             <div class="col-md-3 col-6">
                 <a href="<?php echo home_url('/gallery_' . $main_category . '_design/clean/'); ?>" class="course-nav-item <?php echo ($sub_category == 'clean') ? 'active' : ''; ?>">
-                    キレイめ定額コース
+                    キレイめ 定額
                 </a>
             </div>
         </div>
         <div class="row">
             <div class="col-md-3 col-6">
                 <a href="<?php echo home_url('/gallery_' . $main_category . '_design/onehon-s/'); ?>" class="course-nav-item <?php echo ($sub_category == 'onehon-s') ? 'active' : ''; ?>">
-                    ワンホンS定額コース
+                    ワンホンS 定額
                 </a>
             </div>
             <div class="col-md-3 col-6">
                 <a href="<?php echo home_url('/gallery_' . $main_category . '_design/onehon-m/'); ?>" class="course-nav-item <?php echo ($sub_category == 'onehon-m') ? 'active' : ''; ?>">
-                    ワンホンM定額コース
+                    ワンホンM 定額
                 </a>
             </div>
             <div class="col-md-3 col-6">
                 <a href="<?php echo home_url('/gallery_' . $main_category . '_design/onehon-l/'); ?>" class="course-nav-item <?php echo ($sub_category == 'onehon-l') ? 'active' : ''; ?>">
-                    ワンホンL定額コース
+                    ワンホンL 定額
                 </a>
             </div>
             <div class="col-md-3 col-6">
@@ -178,22 +189,22 @@ switch ($sub_category) {
         <div class="row">
             <div class="col-md-3 col-6">
                 <a href="<?php echo home_url('/gallery_' . $main_category . '_design/nuance-s/'); ?>" class="course-nav-item <?php echo ($sub_category == 'nuance-s') ? 'active' : ''; ?>">
-                    ニュアンスS定額コース
+                    ニュアンスS 定額
                 </a>
             </div>
             <div class="col-md-3 col-6">
                 <a href="<?php echo home_url('/gallery_' . $main_category . '_design/nuance-m/'); ?>" class="course-nav-item <?php echo ($sub_category == 'nuance-m') ? 'active' : ''; ?>">
-                    ニュアンスM定額コース
+                    ニュアンスM 定額
                 </a>
             </div>
             <div class="col-md-3 col-6">
                 <a href="<?php echo home_url('/gallery_' . $main_category . '_design/nuance-l/'); ?>" class="course-nav-item <?php echo ($sub_category == 'nuance-l') ? 'active' : ''; ?>">
-                    ニュアンスL定額コース
+                    ニュアンスL 定額
                 </a>
             </div>
             <div class="col-md-3 col-6">
                 <a href="<?php echo home_url('/gallery_' . $main_category . '_design/nuance-xl/'); ?>" class="course-nav-item <?php echo ($sub_category == 'nuance-xl') ? 'active' : ''; ?>">
-                    ニュアンスXL定額コース
+                    ニュアンスXL 定額
                 </a>
             </div>
         </div>
@@ -203,17 +214,17 @@ switch ($sub_category) {
         <div class="row">
             <div class="col-md-4 col-6">
                 <a href="<?php echo home_url('/gallery_' . $main_category . '_design/simple/'); ?>" class="course-nav-item <?php echo ($sub_category == 'simple') ? 'active' : ''; ?>">
-                    シンプル定額コース
+                    シンプル 定額
                 </a>
             </div>
             <div class="col-md-4 col-6">
                 <a href="<?php echo home_url('/gallery_' . $main_category . '_design/popular/'); ?>" class="course-nav-item <?php echo ($sub_category == 'popular') ? 'active' : ''; ?>">
-                    一番人気定額コース
+                    一番人気 定額
                 </a>
             </div>
             <div class="col-md-4 col-6">
                 <a href="<?php echo home_url('/gallery_' . $main_category . '_design/special/'); ?>" class="course-nav-item <?php echo ($sub_category == 'special') ? 'active' : ''; ?>">
-                    こだわり定額コース
+                    こだわり 定額
                 </a>
             </div>
         </div>
@@ -409,6 +420,10 @@ switch ($sub_category) {
         font-size: 24px;
         color: #333;
     }
+    .custom-order-button-container{
+        max-width: 1200px;
+        margin: 0 auto;
+    }
     .custom-order-button {
         text-align: center;
         margin-bottom: 20px;
@@ -444,6 +459,7 @@ switch ($sub_category) {
         border-radius: 4px;
         transition: all 0.3s;
         border: 1px solid #eee;
+        font-size: 13px;
     }
     .course-nav-item:hover, .course-nav-item.active {
         background-color: #95bac3;
@@ -646,7 +662,8 @@ switch ($sub_category) {
         }
         .custom-order-button .btn {
             font-size: 13px;
-            padding: 7px 12px;
+            padding: 10px 12px;
+            width: 210px;
         }
         .category-title h2 {
             font-size: 16px;

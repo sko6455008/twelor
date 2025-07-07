@@ -387,7 +387,7 @@ function twelor_register_acf_fields() {
                     'key' => 'field_coupon_guidance',
                     'label' => '料金案内',
                     'name' => 'coupon_guidance',
-                    'type' => 'textarea',
+                    'type' => 'text',
                     'required' => 1,
                     'instructions' => '例: 初回5510円/リピ6510円',
                 ),
