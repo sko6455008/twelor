@@ -1366,7 +1366,7 @@ function twelor_auto_set_menu_order($data, $postarr) {
         
             global $wpdb;
             $min_order = $wpdb->get_var($wpdb->prepare(
-                "SELECT MIN(menu_order) FROM {$wpdb->posts} WHERE post_type = %s AND post_status != 'trash'",
+                "SELECT MIN(menu_order) FROM {$wpdb->posts} WHERE post_type = %s AND post_status != 'trash' AND post_status != 'auto-draft'",
                 $data['post_type']
             ));
     
