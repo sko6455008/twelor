@@ -22,65 +22,6 @@
             });
         });
 
-
-        // ランキングスライダー自動スクロール
-        var $slider = $('.ranking-slider');
-        var $slides = $('.ranking-slide');
-        var $prevButton = $('.ranking-prev');
-        var $nextButton = $('.ranking-next');
-
-        var speed = 1;
-        var fastSpeed = 5;
-        var direction = -1; // 右方向
-        var isFast = false;
-
-        var slideWidth = $slides.outerWidth(true); // 各スライド幅
-        var totalSlides = $slides.length;
-        var totalWidth = slideWidth * totalSlides;
-
-        $slider.append($slides.clone()); // スライドを複製して末尾に追加して無限スクロールっぽく
-
-        var position = 0;
-
-        function animateSlider() {
-            position += (isFast ? fastSpeed : speed) * direction;
-            $slider.css('transform', 'translateX(' + position + 'px)');
-
-            // 右方向（direction = -1） 
-            if (direction === -1 && Math.abs(position) > totalWidth) {
-                position = 0;
-            }
-             // 左方向（direction = 1）
-            else if (direction === 1 && position >= 0) {
-                position = -totalWidth;
-            }
-            requestAnimationFrame(animateSlider);
-        }
-
-        $prevButton.on('mouseenter', function() {
-            direction = 1; // 左方向
-            isFast = true;
-        });
-
-        $nextButton.on('mouseenter', function() {
-            direction = -1; // 右方向
-            isFast = true;
-        });
-
-
-        $prevButton.on('mouseleave', function() {
-            direction = -1;
-            isFast = false;
-        });
-
-        $nextButton.on('mouseleave', function() {
-            direction = -1;
-            isFast = false;
-        });
-
-        animateSlider();
-
-
         // ギャラリータブの切り替え
         $('.nav-pills a').on('click', function(e) {
             e.preventDefault();
@@ -154,6 +95,28 @@
         
         // 初期表示時にカードの高さを調整
         equalizeCardHeights();
+
+        // スクロールアニメーション
+        function handleScrollAnimation() {
+            $('.fade-in-section').each(function() {
+                var $element = $(this);
+                var elementTop = $element.offset().top;
+                var elementBottom = elementTop + $element.outerHeight();
+                var viewportTop = $(window).scrollTop();
+                var viewportBottom = viewportTop + $(window).height();
+                
+                // 要素が画面に入ったかチェック
+                if (elementBottom > viewportTop && elementTop < viewportBottom) {
+                    $element.addClass('is-visible');
+                }
+            });
+        }
+        
+        // スクロール時にアニメーションをチェック
+        $(window).on('scroll', handleScrollAnimation);
+        
+        // 初期表示時にもチェック
+        handleScrollAnimation();
         
     });
     

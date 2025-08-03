@@ -22,6 +22,9 @@ add_action('after_setup_theme', 'twelor_setup');
 
 // スタイルシートとスクリプトの読み込み
 function twelor_scripts() {
+    // Google Fonts - Lobster
+    wp_enqueue_style('google-fonts-lobster', 'https://fonts.googleapis.com/css2?family=Lobster&display=swap', array(), null);
+
     // Bootstrap CSS
     wp_enqueue_style('bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css');
     
@@ -381,14 +384,6 @@ function twelor_register_acf_fields() {
                     'name' => 'coupon_price',
                     'type' => 'text',
                     'required' => 1,
-                    'instructions' => '例: ¥1,000'
-                ),
-                array(
-                    'key' => 'field_coupon_guidance',
-                    'label' => '料金案内',
-                    'name' => 'coupon_guidance',
-                    'type' => 'text',
-                    'required' => 1,
                     'instructions' => '例: 初回5510円/リピ6510円',
                 ),
                 array(
@@ -694,7 +689,6 @@ function twelor_add_coupon_columns($columns) {
     $new_columns['display_settings'] = '表示設定';
     $new_columns['period'] = '表示期間';
     $new_columns['price'] = 'クーポン価格';
-    $new_columns['guidance'] = '案内文';
     $new_columns['description'] = '説明文';
     if (isset($new_columns['date'])) {
         $date = $new_columns['date'];
@@ -722,8 +716,6 @@ function twelor_coupon_column_content($column_name, $post_id) {
         }
     } elseif ($column_name === 'price') {
         echo get_field('coupon_price', $post_id);
-    } elseif ($column_name === 'guidance') {
-        echo get_field('coupon_guidance', $post_id);
     } elseif ($column_name === 'description') {
         echo get_field('coupon_description', $post_id);
     } elseif ($column_name === 'display_settings') {
@@ -832,7 +824,6 @@ function twelor_admin_columns_style() {
         }
         .column-title,
         .column-period,
-        .column-guidance,
         .column-position,
         .column-description { 
             width: 300px; 

@@ -2,8 +2,9 @@
         <div class="footer-container">
             <section class="footer-left">
                 <div class="footer-logo">
-                    <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/images/logo.png" alt="Twelorロゴ">
-                    <a href="https://lin.ee/yW1QATC" class="footer-contact-btn" target="_blank">お問い合わせ</a>
+                    <a href="<?php echo home_url(); ?>">
+                        <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/images/logo.png" alt="Twelorロゴ">
+                    </a>
                 </div>
             </section>
             <section class="footer-middle">
