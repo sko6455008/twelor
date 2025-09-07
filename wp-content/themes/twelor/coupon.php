@@ -6,61 +6,91 @@
 get_header();
 
 // 現在のページ番号を取得
-$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+$current_paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+
+// 1ページあたりの表示数
+$posts_per_page = 51;
 
 // 現在時刻を取得
 $current_time = current_time('mysql');
 
+//ネイリスト情報を取得
+$nailist = get_query_var('nailist');
+
 // クーポンの投稿を取得
-$coupon_query = twelor_get_coupon_page_posts(51, $paged);
+$coupon_query = twelor_get_coupon_page_posts($posts_per_page, $current_paged, $nailist);
+
+$nailist_navigation = twelor_get_nailist_navigation($nailist);
+
+// 総ページ数を計算
+$total_posts = $coupon_query->found_posts;
+$total_pages = ceil($total_posts / $posts_per_page);
 ?>
 
+<div class="page-header">
+    <div class="headline-area">
+        <h1 class="headline">Coupon</h1>
+        <p class="title">月替わりクーポン</p>
+    </div>
+</div>
+
 <div class="coupon-container">
-    <div class="coupon-header">
-        <h1 class="coupon-title"><?php echo esc_html(get_the_title()); ?></h1>
+    <div class="nailist-navigation">
+        <div class="row">
+            <?php 
+            foreach ($nailist_navigation as $nav_item) : 
+            ?>
+                <div class="col-md-4 col-6">
+                    <a href="<?php echo esc_url($nav_item['url']); ?>" class="nailist-nav-item <?php echo $nav_item['active'] ? 'active' : ''; ?>">
+                        <?php echo esc_html($nav_item['name']); ?>
+                    </a>
+                </div>
+            <?php endforeach; ?>
+        </div>
     </div>
 
-    <?php if ($coupon_query->have_posts()) : ?>
-        <div class="coupon-grid">
-            <div class="row">
-                <?php while ($coupon_query->have_posts()) : $coupon_query->the_post(); 
-                    $period = get_field('coupon_period', get_the_ID());
-                    $price = get_field('coupon_price', get_the_ID());
-                    $guidance = get_field('coupon_guidance', get_the_ID());
-                    $description = get_field('coupon_description', get_the_ID());
-                ?>
-                    <div class="col-lg-4-0 col-md-6 col-12">
-                        <div class="coupon-item">
-                            <div class="coupon-content">
-                                <h2 class="coupon-name"><?php the_title(); ?></h2>
-                                <?php if ($guidance) : ?>
-                                    <p class="coupon-guidance"><?php echo nl2br(esc_html($guidance)); ?></p>
-                                <?php endif; ?>
-                                <?php if ($description) : ?>
-                                    <p class="coupon-description"><?php echo nl2br(esc_html($description)); ?></p>
-                                <?php endif; ?>
-                                <?php if ($price) : ?>
-                                    <p class="coupon-price"><?php echo esc_html($price); ?></p>
-                                <?php endif; ?>
-                                <?php if (has_post_thumbnail()) : ?>
-                                <div class="coupon-image">
-                                    <?php the_post_thumbnail('large', array('class' => 'img-fluid')); ?>
-                                </div>
-                                <?php endif; ?>
-                                <?php 
-                                $start_date = get_field('coupon_period_start_date', get_the_ID());
-                                $end_date = get_field('coupon_period_end_date', get_the_ID());
-                                if ($start_date && $end_date) : 
-                                    $start_date_formatted = date_i18n('Y年m月d日', strtotime($start_date));
-                                    $end_date_formatted = date_i18n('Y年m月d日', strtotime($end_date));
-                                ?>
-                                    <p class="coupon-period"><?php echo esc_html($start_date_formatted); ?>～<?php echo esc_html($end_date_formatted); ?>迄</p>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                    </div>
-                <?php endwhile; ?>
+    <!-- カテゴリータイトル -->
+    <div class="category-title">
+        <?php if ($total_pages > 0): ?>
+            <div class="page-indicator">
+                <span class="page-number"><?php echo $current_paged; ?>ページ目</span>
             </div>
+        <?php endif; ?>
+    </div>
+
+    <!-- ギャラリー本体 -->
+    <?php if ($coupon_query->have_posts()) : ?>
+        <div class="coupon-box">
+            <?php while ($coupon_query->have_posts()) : $coupon_query->the_post(); 
+                $period = get_field('coupon_period', get_the_ID());
+                $price = get_field('coupon_price', get_the_ID());
+                $description = get_field('coupon_description', get_the_ID());
+            ?>
+                <div class="coupon fade-in-section">
+                    <h2 class="coupon-title"><?php the_title(); ?></h2>
+                    <?php if (has_post_thumbnail()) : ?>
+                    <div class="coupon-image-box">
+                        <?php the_post_thumbnail('large', array('class' => 'coupon-image')); ?>
+                    </div>
+                    <?php endif; ?>
+                    <?php if ($description) : ?>
+                        <p class="coupon-description"><?php echo nl2br(esc_html($description)); ?></p>
+                    <?php endif; ?>
+                    <?php if ($price) : ?>
+                        <p class="coupon-price"><?php echo esc_html($price); ?></p>
+                    <?php endif; ?>
+                    
+                    <?php 
+                    $start_date = get_field('coupon_period_start_date', get_the_ID());
+                    $end_date = get_field('coupon_period_end_date', get_the_ID());
+                    if ($start_date && $end_date) : 
+                        $start_date_formatted = date_i18n('Y年m月d日', strtotime($start_date));
+                        $end_date_formatted = date_i18n('Y年m月d日', strtotime($end_date));
+                    ?>
+                        <p class="coupon-period">期間:<?php echo esc_html($start_date_formatted); ?>～<?php echo esc_html($end_date_formatted); ?></p>
+                    <?php endif; ?>
+                </div>
+            <?php endwhile; ?>
         </div>
 
         <!-- ページネーション -->
@@ -71,7 +101,7 @@ $coupon_query = twelor_get_coupon_page_posts(51, $paged);
                     $big = 999999999;
                     $links = paginate_links(array(
                         'base' => str_replace($big, '%#%', esc_url(get_pagenum_link($big))),
-                        'current' => max(1, $paged),
+                        'current' => max(1, $current_paged),
                         'total' => $coupon_query->max_num_pages,
                         'prev_text' => '&laquo; 前へ',
                         'next_text' => '次へ &raquo;',
@@ -103,76 +133,79 @@ $coupon_query = twelor_get_coupon_page_posts(51, $paged);
 </div>
 
 <style>
-    .coupon-container {
-        padding: 30px 0;
-    }
-    .coupon-header {
-        text-align: center;
-        margin-bottom: 20px;
-        border-bottom: 1px solid #ddd;
-        padding-bottom: 10px;
-    }
-    .coupon-title {
-        font-size: 24px;
-        color: #333;
-        font-weight: normal;
-    }
-    .coupon-grid {
-        margin: 30px;
-    }
-    .coupon-item {
-        margin-bottom: 40px;
-        padding: 0 10px;
-    }
-    .coupon-item:hover {
-        transform: translateY(-5px);
-    }
-    .coupon-image {
-        background-color: #fff;
-        overflow: hidden;
-        text-align: center;
-        transition: transform 0.3s ease;
-        padding: 5px;
-    }
-    .coupon-image img {
+    /* ページヘッダー */
+    .page-header {
+        background: url("<?php echo esc_url(get_template_directory_uri()); ?>/assets/images/coupon.jpg") no-repeat center center;
+        background-size: cover;
         width: 100%;
-        height: auto;
-        object-fit: cover;
+        height: 420px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 70px;
     }
-    .coupon-content {
-        padding: 20px;
-        background: #f1f1f1;
+    .headline-area {
+        max-width: 800px;
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        color: #fff;
     }
-    .coupon-name {
-        font-size: 16px;
-        margin: 0 0 5px;
+    .headline,.title {
+        text-shadow: 1px 1px 5px #735E59;
+    }
+
+    /* couponセクション */
+    .coupon-container {
+        padding: 50px 0;
+    }
+    .nailist-navigation {
+        margin-bottom: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    .nailist-nav-item {
+        display: block;
+        background-color: #f8f8f8;
+        padding: 12px;
+        margin-bottom: 10px;
+        text-align: center;
+        text-decoration: none;
         color: #333;
-        text-align: center;
+        border-radius: 4px;
+        transition: all 0.3s;
+        border: 1px solid #eee;
+        font-size: 13px;
     }
-    .coupon-period {
-        font-size: 14px;
-        color: #666;
-        text-align: center;
-    }
-    .coupon-price {
-        font-size: 18px;
-        font-weight: bold;
-        margin-bottom: 10px;
-    }
-    .coupon-guidance {
-        font-size: 15px;
-        color: #444;
-        margin-bottom: 10px;
-    }
-    .coupon-description {
-        font-size: 14px;
-        color: #666;
-        margin-bottom: 0;
+    .nailist-nav-item:hover, .nailist-nav-item.active {
+        background-color: #95bac3;
+        color: #fff;
+        border-color: #95bac3;
     }
     .no-coupons-found {
         text-align: center;
         padding: 50px 0;
         color: #666;
+    }
+    .category-title {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0px;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 10px;
+    }
+    .page-indicator {
+        font-size: 14px;
+        color: #666;
+    }
+    .coupon-box {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        list-style: none;
+        padding: 0 5%;
+        margin: 0;
     }
     .pagination-container {
         text-align: center;
@@ -214,59 +247,20 @@ $coupon_query = twelor_get_coupon_page_posts(51, $paged);
     .pagination-link:active {
         transform: scale(0.98);
     }
-    .col-lg-4-0 { 
-        flex: 0 0 33.3333%;
-        max-width: 33.3333%;
+    /* レスポンシブ対応 */
+    @media (max-width: 1024px) {
+        .nailist-navigation {
+            margin: 0 5%;
+        }
     }
-
-    /* カスタムグリッドクラス */
     @media (max-width: 991px) {
-        .coupon-item {
-            max-width: 100%;
-        }
-        .coupon-title {
-            font-size: 20px;
-        }
-        .coupon-name {
-            font-size: 15px;
-        }
-        .coupon-price {
-            font-size: 15px;
-        }
-        .col-lg-4-0 { 
-            flex: 0 0 50%;
-            max-width: 50%; 
+        .category-title h2 {
+            font-size: 16px;
         }
     }
-    @media (max-width: 767px) {
-        .coupon-item {
-            flex: 0 0 100%;
-            max-width: 100%;
-        }
-        .coupon-title {
-            font-size: 18px;
-        }
-        .coupon-content {
-            padding: 15px;
-        }
-        .coupon-name {
-            font-size: 14px;
-        }
-        .coupon-period {
-            font-size: 12px;
-        }
-        .coupon-price {
-            font-size: 14px;
-        }
-        .coupon-guidance {
-            font-size: 12px;
-        }
-        .coupon-description {
-            font-size: 12px;
-        }
-        .col-lg-4-0 { 
-            flex: 0 0 100%;
-            max-width: 100%;
+    @media (max-width: 768px) {
+        .coupon-box {
+            grid-template-columns: repeat(2, 1fr);
         }
     }
 </style>

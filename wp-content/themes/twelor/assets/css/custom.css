@@ -5,7 +5,7 @@
     box-sizing: border-box;
 }
 
-/* Twelorテーマ カスタムCSS */
+/* twelorテーマ カスタムCSS */
 
 /* 全体 */
 html, body {
@@ -79,7 +79,7 @@ header .row {
 
 .logo-container img {
     max-width: 100%;
-    max-height: 100%;
+    max-height: 95%;
     width: auto;
     height: auto;
     object-fit: contain;
@@ -99,7 +99,12 @@ header .row {
     gap: 0;
 }
 
-.right-container a {
+.header-sns {
+    margin-right: 10px;
+}
+
+.inquiry-link,
+.reservation-link {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -127,7 +132,7 @@ header .row {
     top: 0;
     left: 0;
     z-index: 200;
-    background:rgba(149, 186, 195, 0.7);
+    background: rgba(149, 186, 195, 1.0);
     border: none;
     font-size: 43.5px;
     color: #fff;
@@ -164,7 +169,7 @@ header .row {
 
 .sp-menu li {
     border-bottom: 1px solid #95bac3;
-    padding: 15px 10px;
+    padding: 12px 10px;
     text-align: left;
 }
 
@@ -175,16 +180,11 @@ header .row {
     display: block;
 }
 
-.sp-menu .sns-icons {
+.menu-sns {
     display: flex;
     justify-content: end;
-    gap: 15px;
+    gap: 25px;
     margin-top: 30px;
-}
-
-.sp-menu .sns-icons a img {
-    width: 32px;
-    height: 32px;
 }
 
 .menu-overlay {
@@ -224,13 +224,39 @@ header .row {
     height: auto;
 }
 
+/* バナーセクション */
+.banner-section {
+    width: 100%;
+    margin-bottom: 40px;
+}
+
+.banner-box {
+    padding: 0px 20%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.banner-item {
+    width: 100%;
+    text-align: center;
+}
+
+.banner-image {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    max-height: 330px;
+    object-fit: contain;
+}
+
 /* お知らせセクション */
 .info-section {
     margin-bottom: 50px;
 }
 
 .info-box {
-    padding: 0px 20%;
+    padding: 0px 25%;
 }
 
 .info-item {
@@ -285,7 +311,7 @@ header .row {
     padding: 0 10px;
     color: #333;
     text-align: center;
-    margin-bottom: 15px;
+    margin: 2px 15px 0px;
 }
 
 /* Guest Designセクション */
@@ -336,7 +362,7 @@ header .row {
 
 .coupon-price {
     color: #95bac3;
-    font-size: 18px;
+    font-size: 17px;
     font-weight: bold;
     text-align: center;
     margin: 15px 10px;
@@ -397,10 +423,10 @@ header .row {
 }
 
 .footer-logo img {
-    max-width: 120px;
+    max-width: 100px;
     height: auto;
     display: block;
-    margin: 0 auto;
+    margin: 10px auto 0px;
 }
 
 .footer-middle {
@@ -466,9 +492,14 @@ header .row {
 
 @media (max-width: 1024px) {
     /* ヘッダー */
-    .right-container a {
+    .inquiry-link,
+    .reservation-link {
         width: 100px;
         padding: 8px 10px;
+    }
+    /* お知らせセクション */
+    .info-box {
+        padding: 0px 20%;
     }
     /* クーポンセクション */
     .coupon-title {
@@ -492,15 +523,20 @@ header .row {
 
 @media (max-width: 768px) {
     /* ヘッダー */
-    .right-container a {
+    .inquiry-link,
+    .reservation-link {
         width: 100px;
         text-align: center;
     }
     .reservation-link {
         padding: 8px 20px !important;
     }
+    .header-sns {
+        display: none;
+    }
 
-    /* お知らせセクション */
+    /* バナー・お知らせセクション */
+    .banner-box,
     .info-box {
         padding: 0px 5%;
     }
@@ -514,9 +550,15 @@ header .row {
 
 @media (max-width: 425px) {
     /* ヘッダー */
-    .right-container a {
+    .inquiry-link,
+    .reservation-link {
         width: 70px;
         text-align: center;
+    }
+
+    /* バナーセクション */
+    .banner-box {
+        padding: 0px 2%;
     }
 
      /* Designセクション */
@@ -546,7 +588,8 @@ header .row {
 
 @media (max-width: 375px) {
     /* ヘッダー */
-    .right-container a {
+    .inquiry-link,
+    .reservation-link {
         width: 50px;
         text-align: center;
         font-size: 11px;
@@ -560,7 +603,8 @@ header .row {
 
 @media (max-width: 320px) {
     /* ヘッダー */
-    .right-container a {
+    .inquiry-link,
+    .reservation-link {
         width: 45px;
         text-align: center;
         font-size: 11px;

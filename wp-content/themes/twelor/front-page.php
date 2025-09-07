@@ -5,15 +5,22 @@
  */
 
 get_header(); ?>
+
 <!-- ヒーローセクション -->
 <section>
     <div>
-        <img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/images/slide.jpg" alt="パラジェル専門店 Twelor" class="hero-image">
-    </div>
+        <?php
+        $home_image = twelor_get_home_image();
+        if ($home_image && has_post_thumbnail($home_image->ID)) {
+            echo get_the_post_thumbnail($home_image->ID, 'full', array(
+                'class' => 'hero-image', 
+                'alt' => get_the_title($home_image->ID)
+            ));
+        } else {
+            echo '<img src="' . esc_url(get_template_directory_uri() . '/assets/images/slide.jpg') . '" class="hero-image" alt="パラジェル専門店 twelor">';
+        }
+        ?>
 </section>
-
-<!-- バナー -->
-
 
 <!-- お知らせセクション -->
 <section class="info-section">
@@ -44,6 +51,36 @@ get_header(); ?>
                 <p style="text-align: center;">newsはありません。</p>
             </div>
         <?php endif; ?>
+    </div>
+</section>
+
+<!-- バナーセクション -->
+<section class="banner-section">
+    <div class="banner-box">
+        <?php
+        $banner_args = array(
+            'post_type' => 'banner',
+            'posts_per_page' => -1,
+            'orderby' => array(
+                'date' => 'DESC',
+                'menu_order' => 'ASC'
+            ),
+        );
+        $banner_query = new WP_Query($banner_args);
+        if ($banner_query->have_posts()) :
+            while ($banner_query->have_posts()) : $banner_query->the_post();
+                $banner_url = get_field('banner_url');
+        ?>
+            <div class="banner-item">
+                <a href="<?php echo esc_url($banner_url); ?>" target="_blank">
+                    <?php the_post_thumbnail('large', array('class' => 'banner-image', 'alt' => get_the_title())); ?>
+                </a>
+            </div>
+        <?php
+            endwhile;
+            wp_reset_postdata();
+        endif;
+        ?>
     </div>
 </section>
 
@@ -95,15 +132,15 @@ get_header(); ?>
         <?php endif; ?>
     </div>
     <div class="text-center py-4">
-        <a href="<?php echo esc_url(home_url('/gallery_hand_design/simple/')); ?>" class="btn more-button">
-            More <i class="fas fa-chevron-right ms-2"></i>
+        <a href="<?php echo esc_url(home_url('/gallery_hand_design/simple/')); ?>" class="more-button">
+            More
         </a>
     </div>
 </section>
 
 <!-- Guest Designセクション -->
 <section class="guest-design-section fade-in-section">
-    <h1 class="twelor-section-title">Guest Design<h1>
+    <h1 class="twelor-section-title">Guest Design</h1>
     <div class="design-box">
         <?php
         $guest_args = array(
@@ -149,8 +186,8 @@ get_header(); ?>
         <?php endif; ?>
     </div>
     <div class="text-center py-4">
-        <a href="<?php echo esc_url(home_url('/gallery_guest_nail/')); ?>" class="btn more-button">
-            More <i class="fas fa-chevron-right ms-2"></i>
+        <a href="<?php echo esc_url(home_url('/gallery_guest_nail/simple-guest/')); ?>" class="more-button">
+            More
         </a>
     </div>
 </section>
@@ -199,7 +236,7 @@ get_header(); ?>
         <?php endif; ?>
     </div>
     <div class="text-center py-4">
-        <a href="<?php echo esc_url(home_url('/coupon/')); ?>" class="more-button">
+        <a href="<?php echo esc_url(home_url('/coupon/common/')); ?>" class="more-button">
             More
         </a>
     </div>

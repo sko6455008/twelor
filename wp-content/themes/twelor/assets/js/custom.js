@@ -1,5 +1,5 @@
 /**
- * Twelorテーマ カスタムJavaScript
+ * twelorテーマ カスタムJavaScript
  */
 
 (function($) {
@@ -95,7 +95,7 @@
         
         // 初期表示時にカードの高さを調整
         equalizeCardHeights();
-
+        
         // スクロールアニメーション
         function handleScrollAnimation() {
             $('.fade-in-section').each(function() {

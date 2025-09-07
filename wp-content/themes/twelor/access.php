@@ -1,77 +1,31 @@
 <?php
 /**
- * Template Name: アクセス
+ * Template Name: Access
  */
 get_header();
 ?>
 
-<div class="container py-5">
-    <h1 class="access-section-title"><?php echo esc_html(get_the_title()); ?></h1>
-    
-    <div class="row mb-5">
-        <div class="col-lg-6 mb-4">
-            <div class="store-info"> 
-                <div class="info-section">
-                    <h3 class="info-title">
-                        <i class="fas fa-map-marker-alt"></i>
-                        住所
-                    </h3>
-                    <p class="info-content">
-                        東京都豊島区西池袋5-2-3　平凡立教前ビル6F
-                    </p>
-                </div>
-                <div class="info-section">
-                    <h3 class="info-title">
-                        <i class="fas fa-phone"></i>
-                        電話番号
-                    </h3>
-                    <p class="info-content">
-                        <a href="tel:050-5305-3298" class="phone-link">050-5305-3314</a>
-                    </p>
-                    <p class="info-content">
-                        9時 ～ 22時（土日祝は10:00～）受付可
-                    </p>
-                </div>
-                <div class="info-section">
-                    <h3 class="info-title">
-                        <i class="fas fa-clock"></i>
-                        営業時間
-                    </h3>
-                    <p class="info-content">
-                        11:00 ～ 23：00（土日祝は10:00～）※年中無休
-                    </p>
-                </div>
-                <div class="info-section">
-                    <h3 class="info-title">
-                        <i class="fas fa-credit-card"></i>
-                        支払い方法
-                    </h3>
-                    <div class="info-content">
-                        <div class="payment-list">
-                            <span class="payment-item">現金</span>
-                            <span class="payment-item">クレジットカード</span>
-                            <span class="payment-item">電子マネー</span>
-                            <span class="payment-item">QRコード決済</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-6 mb-4">
-            <div class="store-images">
-                <h2 class="section-title">店舗画像</h2>
-                <div class="image-item">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/slide3.jpg" alt="店舗内観" class="img-fluid">
-                    <div class="image-caption">店舗内観</div>
-                </div>
-            </div>
-        </div>
+<div class="page-header">
+    <div class="headline-area">
+        <h1 class="headline">Access</h1>
+        <p class="title">アクセス</p>
     </div>
-    <div class="row">
-        <div class="col-12">
-            <div class="map-section">
-                <h2 class="section-title">マップ</h2>
-                <div class="map-container">
+</div>
+
+<div class="container">  
+    <div class="row mb-5">
+        <div class="section">
+            <div class="text-area">
+                <h2 class="main-text">木の温もりを感じる落ち着いた雰囲気のプライベート空間</h2>
+                <p class="sub-text">
+                    周りを気にすることなく、ゆったりとくつろぎながら、ネイリストとの会話や、自分だけの美しさを追求する時間を満喫していただけます。
+                    施術には、厳選された高品質な材料を使用し、お客様一人ひとりのライフスタイルや好みに合わせたデザインをご提案。
+                    指先から心まで満たされるような贅沢なネイル体験をお届けします。
+                </p>
+            </div>
+
+            <div class="access-content">
+                <div class="item">
                     <iframe 
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3238.7935529973183!2d139.70349811534672!3d35.73129548018266!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188d5945aebebb%3A0xbeeafaa25aa813f7!2stwelor!5e0!3m2!1sja!2sjp!4v1564540531876!5m2!1sja!2sjp" 
                         width="100%" 
@@ -82,235 +36,173 @@ get_header();
                         referrerpolicy="no-referrer-when-downgrade">
                     </iframe>
                 </div>
+
+                <div class="button-area">
+                    <a class="link-button" href="https://www.google.com/maps?ll=35.731296,139.705687&z=16&t=m&hl=ja&gl=JP&mapclient=embed&cid=13757083586969211895" target="_blank">大きな地図で表示する</a>
+                </div>
+
+                <div class="item">
+                    <h3 class="access-title">
+                        住所
+                    </h3>
+                    <p class="access-content">
+                        東京都豊島区西池袋5-2-3平凡立教前ビル6Ｆ
+                    </p>
+                </div>
+                <div class="item">
+                    <h3 class="access-title">
+                        営業時間
+                    </h3>
+                    <p class="access-content">
+                        平日 11:00 ～ 21:00<br>
+                        土日祝 10:00 ～ 20:00<br>
+                        ※年中無休
+                    </p>
+                </div>
+                <div class="item">
+                    <h3 class="access-title">
+                        電話番号
+                    </h3>
+                    <p class="access-content">
+                        <span class="tel">TEL.</span>
+                        <a href="tel:050-5305-3314" class="phone-link">050-5305-3314</a>
+                    </p>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <style>
-.access-section-title {
-    text-align: center;
-    color: #333;
-    font-size: 24px;
-    margin: 30px auto;
-    padding-bottom: 10px;
-    width: 100%;
-    border-bottom: 1px solid #ddd;
-}
+    /* ページヘッダー */
+    .page-header {
+        background: url("<?php echo esc_url(get_template_directory_uri()); ?>/assets/images/access.jpg") no-repeat center center;
+        background-size: cover;
+        width: 100%;
+        height: 420px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 70px;
+    }
+    .headline-area {
+        max-width: 800px;
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        color: #fff;
+    }
+    .headline,.title {
+        text-shadow: 1px 1px 5px #735E59;
+    }
 
-.store-info {
-    background: white;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    height: 100%;
-}
-
-.store-name {
-    font-size: 1.8rem;
-    color: #95bac3;
-    text-align: center;
-    margin-bottom: 30px;
-    padding-bottom: 15px;
-    border-bottom: 2px solid #95bac3;
-}
-
-.info-section {
-    margin: 30px 0;
-}
-
-.info-title {
-    font-size: 1.1rem;
-    color: #333;
-    margin-bottom: 10px;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-}
-
-.info-title i {
-    color: #95bac3;
-    margin-right: 10px;
-    width: 20px;
-}
-
-.info-content {
-    color: #666;
-    line-height: 1.6;
-    margin-left: 30px;
-}
-
-.phone-link {
-    color: #95bac3;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 1.1rem;
-}
-
-.hours-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 8px 0;
-    border-bottom: 1px solid #eee;
-}
-
-.day {
-    font-weight: 600;
-    color: #333;
-}
-
-.time {
-    color: #666;
-}
-
-.holiday-note {
-    color: #28a745;
-    font-weight: 600;
-    margin-top: 10px;
-    text-align: center;
-}
-
-.payment-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-}
-
-.payment-item {
-    background: #95bac3;
-    color: #fff;
-    padding: 5px 12px;
-    border-radius: 15px;
-    font-size: 0.9rem;
-    font-weight: 500;
-}
-
-/* グループ2: 店舗画像 */
-.store-images {
-    background: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    height: 100%;
-}
-
-.section-title {
-    font-size: 1.5rem;
-    color: #333;
-    text-align: center;
-    margin-bottom: 50px;
-    font-weight: 600;
-}
-
-.images-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-}
-
-.image-item {
-    text-align: center;
-}
-
-.image-item img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    border-radius: 8px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-}
-
-.image-caption {
-    margin-top: 8px;
-    font-size: 0.9rem;
-    color: #666;
-    font-weight: 500;
-}
-
-.map-section {
-    background: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-
-.map-container {
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-}
-
-@media (max-width: 992px) {
-    .store-info,
-    .store-images {
+    /* Accessセクション */
+    .container {
+        padding: 100px 0px;
+    }
+    .section {
+        background: #fff;
+        height: 100%;
+    }
+    .image-area {
+        display: flex;
+        gap: 1px;
+        margin-bottom: 40px;
+    }
+    .image-area-top {
+        height: 300px;
+        width: 100%;
+        object-fit: cover;
+    }
+    
+    .text-area {
+        text-align: center;
         margin-bottom: 30px;
+        padding: 0 20px;
     }
-}
-
-@media (max-width: 768px) {
-    .page-title {
-        font-size: 2rem;
+    .main-text {
+        font-size: 28px;
+        color: #735E59;
+        margin: 25px 0px;
+        font-weight: 600;
+        line-height: 1.4;
+        font-family: "ヒラギノ角ゴ W3", "游ゴシック体", "Yu Gothic", "メイリオ", sans-serif;
     }
-    
-    .store-info,
-    .store-images,
-    .map-section {
+    .sub-text {
+        font-size: 16px;
+        color: #666;
+        line-height: 1.8;
+        max-width: 800px;
+        margin: 0 auto;
+        font-family: "ヒラギノ角ゴ W3", "游ゴシック体", "Yu Gothic", "メイリオ", sans-serif;
+    }
+    .item {
         padding: 20px;
-    }
-    
-    .store-name {
-        font-size: 1.5rem;
-    }
-    
-    .info-content {
-        margin-left: 0;
-        margin-top: 10px;
-    }
-    
-    .hours-row {
-        flex-direction: column;
         text-align: center;
     }
-    
-    .payment-list {
+    .button-area {
+        padding-bottom: 10px;
+        text-align: center;
+    }
+    .access-title {
+        font-size: 18px;
+        color: #735E59;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
         justify-content: center;
     }
-    
-    .images-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
+    .access-content {
+        margin: 0px;
+        font-size: 15px;
+        font-family: "ヒラギノ角ゴ W3", "游ゴシック体", "Yu Gothic", "メイリオ", sans-serif;
     }
-    
-    .image-item img {
-        height: 200px;
-    }
-}
-
-@media (max-width: 576px) {
-    .container {
-        padding: 0 15px;
-    }
-    
-    .page-title {
-        font-size: 1.8rem;
-        margin-bottom: 2rem;
-    }
-    
-    .store-info,
-    .store-images,
-    .map-section {
+    .link-button {
+        color: #735E59;
+        background-color: #fff;
+        text-decoration: none;
+        border: 1px solid #735E59;
+        display: block;
+        width: 230px;
+        margin: 0 auto;
         padding: 15px;
     }
-    
-    .info-title {
-        font-size: 1rem;
+    .tel {
+        font-size: 15px;
+        color: #735E59;
     }
-    
-    .payment-item {
-        font-size: 0.8rem;
-        padding: 4px 10px;
+    .phone-link {
+        font-size: 27px;
+        color: #735E59;
+        text-decoration: none;
+        font-weight: 600;
     }
-}
+
+    /* レスポンシブデザイン */
+    @media (max-width: 768px) {
+        .section {
+            padding: 20px;
+        }
+        .main-text {
+            font-size: 24px;
+        }
+        .sub-text {
+            font-size: 15px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .container {
+            padding: 0 15px;
+        }
+        .text-area {
+            padding: 0 10px;
+        }
+        .main-text {
+            font-size: 20px;
+        }
+    }
 </style>
 
 <?php get_footer(); ?>
