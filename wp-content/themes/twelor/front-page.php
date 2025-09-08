@@ -222,7 +222,7 @@ get_header(); ?>
                         $start_date_formatted = date_i18n('Y年m月d日', strtotime($start_date));
                         $end_date_formatted = date_i18n('Y年m月d日', strtotime($end_date));
                     ?>
-                        <p class="coupon-period">期間:<?php echo esc_html($start_date_formatted); ?>～<?php echo esc_html($end_date_formatted); ?></p>
+                        <p class="coupon-period"><?php echo esc_html($start_date_formatted); ?>～<?php echo esc_html($end_date_formatted); ?></p>
                     <?php endif; ?>
                 </div>
         <?php

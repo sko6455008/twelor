@@ -555,6 +555,9 @@ header .row {
         width: 70px;
         text-align: center;
     }
+    .hero-image{
+        margin-top: 70px;
+    }
 
     /* バナーセクション */
     .banner-box {
