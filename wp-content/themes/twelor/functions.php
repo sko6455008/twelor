@@ -218,10 +218,11 @@ function twelor_register_nailist_post_type() {
             'add_new_item' => '新規ネイリストを追加',
             'edit_item' => 'ネイリストを編集',
         ),
-        'supports' => array('custom-fields'),
+        'supports' => array('custom-fields', 'page-attributes'),
         'menu_icon' => 'dashicons-admin-users',
         'has_archive' => true,
         'rewrite' => array('slug' => 'nailist'),
+        'hierarchical' => false,
     );
     register_post_type('nailist', $args);
 }
@@ -260,15 +261,28 @@ function twelor_register_banner_post_type() {
             'add_new_item' => '新規バナーを追加',
             'edit_item' => 'バナーを編集',
         ),
-        'supports' => array('title', 'thumbnail', 'custom-fields'),
+        'supports' => array('title', 'thumbnail', 'custom-fields', 'page-attributes'),
         'menu_icon' => 'dashicons-images-alt2',
         'has_archive' => false,
         'rewrite' => array('slug' => 'banner'),
         'show_in_menu' => true,
+        'hierarchical' => false,
     );
     register_post_type('banner', $args);
 }
 add_action('init', 'twelor_register_banner_post_type');
+
+// バナーの取得用関数
+function twelor_get_banner_posts() {
+    $args = array(
+        'post_type' => 'banner',
+        'posts_per_page' => -1,
+        'post_status' => 'publish',
+        'orderby' => 'menu_order',
+        'order' => 'ASC'
+    );
+    return get_posts($args);
+}
 
 // カスタム投稿タイプ: Q&A
 function twelor_register_qa_post_type() {
@@ -918,6 +932,11 @@ function twelor_set_default_gallery_order($query) {
             $query->set('orderby', 'menu_order');
             $query->set('order', 'ASC');
         }
+        // バナーの場合
+        if (is_post_type_archive('banner') || $query->get('post_type') === 'banner') {
+            $query->set('orderby', 'menu_order');
+            $query->set('order', 'ASC');
+        }
     }
 }
 add_action('pre_get_posts', 'twelor_set_default_gallery_order');
@@ -927,7 +946,7 @@ function twelor_admin_gallery_order($query) {
     if (is_admin() && $query->is_main_query()) {
         $post_type = $query->get('post_type');
        
-        if (in_array($post_type, array('gallery', 'coupon'))) {
+        if (in_array($post_type, array('gallery', 'coupon', 'banner', 'nailist'))) {
             if (!$query->get('orderby')) {
                 $query->set('orderby', 'menu_order');
                 $query->set('order', 'ASC');
@@ -1203,6 +1222,7 @@ add_action('manage_coupon_posts_custom_column', 'twelor_coupon_column_content', 
 function twelor_add_nailist_columns($columns) {
     unset($columns['title']);
     $new_columns = array();
+    $new_columns['menu_order'] = '表示順';
     $new_columns['nailist_name'] = 'ネイリスト名';
     $new_columns['nailist_slug'] = 'ローマ字スラッグ';
     if (isset($columns['date'])) {
@@ -1216,7 +1236,10 @@ add_filter('manage_nailist_posts_columns', 'twelor_add_nailist_columns');
 
 // ネイリスト一覧のカラム内容を表示
 function twelor_nailist_column_content($column_name, $post_id) {
-    if ($column_name === 'nailist_name') {
+    if ($column_name === 'menu_order') {
+        $post = get_post($post_id);
+        echo $post->menu_order;
+    } else if ($column_name === 'nailist_name') {
         echo get_field('nailist_name', $post_id);
     } else if ($column_name === 'nailist_slug') {
         echo get_field('nailist_slug', $post_id);
@@ -1254,6 +1277,7 @@ function twelor_add_banner_columns($columns) {
     $new_columns = array();
     $new_columns['thumbnail'] = '画像';
     $new_columns['title'] = 'バナー名';
+    $new_columns['menu_order'] = '表示順';
     $new_columns['banner_url'] = 'URL';
     if (isset($columns['date'])) {
         $date = $columns['date'];
@@ -1270,6 +1294,9 @@ function twelor_banner_column_content($column_name, $post_id) {
         if (has_post_thumbnail($post_id)) {
             echo get_the_post_thumbnail($post_id, array(60, 60));
         }
+    } elseif ($column_name === 'menu_order') {
+        $post = get_post($post_id);
+        echo $post->menu_order;
     } elseif ($column_name === 'banner_url') {
         echo get_field('banner_url', $post_id);
     }
@@ -1365,6 +1392,20 @@ function twelor_sortable_course_columns($columns) {
 }
 add_filter('manage_edit-course_sortable_columns', 'twelor_sortable_course_columns');
 
+// バナーの表示順列をソート可能にする
+function twelor_sortable_banner_columns($columns) {
+    $columns['menu_order'] = 'menu_order';
+    return $columns;
+}
+add_filter('manage_edit-banner_sortable_columns', 'twelor_sortable_banner_columns');
+
+// ネイリストの表示順列をソート可能にする
+function twelor_sortable_nailist_columns($columns) {
+    $columns['menu_order'] = 'menu_order';
+    return $columns;
+}
+add_filter('manage_edit-nailist_sortable_columns', 'twelor_sortable_nailist_columns');
+
 // 管理画面の一覧のスタイル調整
 function twelor_admin_columns_style() {
     echo '<style>
@@ -1412,8 +1453,8 @@ add_action('admin_head', 'twelor_admin_columns_style');
 function twelor_custom_order_admin_script() {
     global $post_type;
    
-    // ギャラリー、クーポン、コースの一覧ページでのみ読み込み
-    if (in_array($post_type, array('gallery', 'coupon', 'course'))) {
+    // ギャラリー、クーポン、コース、バナー、ネイリストの一覧ページでのみ読み込み
+    if (in_array($post_type, array('gallery', 'coupon', 'course', 'banner', 'nailist'))) {
         ?>
         <script>
         jQuery(document).ready(function($) {
@@ -2033,7 +2074,7 @@ add_action('admin_head', 'twelor_quick_edit_style');
 
 // ギャラリー、クーポン、コース登録時にmenu_orderの自動設定
 function twelor_auto_set_menu_order($data, $postarr) {
-    if (!in_array($data['post_type'], array('gallery', 'coupon', 'course'))) {
+    if (!in_array($data['post_type'], array('gallery', 'coupon', 'course', 'banner', 'nailist'))) {
         return $data;
     }
 
@@ -2056,7 +2097,7 @@ add_filter('wp_insert_post_data', 'twelor_auto_set_menu_order', 10, 2);
 // 新規登録、更新時の表示順フィールド削除
 function twelor_hide_menu_order_field() {
     global $post_type;
-    if (in_array($post_type, array('gallery', 'coupon', 'course'))) {
+    if (in_array($post_type, array('gallery', 'coupon', 'course', 'banner', 'nailist'))) {
         echo '<style>
             #pageparentdiv,
             #pageparentdiv .inside {

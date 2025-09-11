@@ -17,7 +17,7 @@ get_header(); ?>
                 'alt' => get_the_title($home_image->ID)
             ));
         } else {
-            echo '<img src="' . esc_url(get_template_directory_uri() . '/assets/images/slide.jpg') . '" class="hero-image" alt="パラジェル専門店 twelor">';
+            echo '<img src="' . esc_url(get_template_directory_uri() . '/assets/images/slide.png') . '" class="hero-image" alt="パラジェル専門店 twelor">';
         }
         ?>
 </section>
@@ -61,10 +61,8 @@ get_header(); ?>
         $banner_args = array(
             'post_type' => 'banner',
             'posts_per_page' => -1,
-            'orderby' => array(
-                'date' => 'DESC',
-                'menu_order' => 'ASC'
-            ),
+            'orderby' => 'menu_order',
+            'order' => 'ASC',
         );
         $banner_query = new WP_Query($banner_args);
         if ($banner_query->have_posts()) :
