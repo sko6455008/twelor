@@ -454,32 +454,6 @@ get_header();
         </div>
     </div>
 
-    <div class="row mb-5">
-        <div class="col-12 mb-4">
-            <div class="table-title">
-                <span class="en">Men's Nail Care</span>
-                <span class="ja">メンズネイルケア</span>
-            </div>
-            <table class="table">
-                <tbody>
-                    <tr>
-                        <td>
-                            <span class="fw-bold">メンズケア</span>
-                            <p class="description small mb-0 mt-1">所要時間30分,フィンガーバス、甘皮処理、ファイリング、バフィング or トップコート</p>
-                        </td>
-                        <td class="price">¥5,780</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span class="fw-bold">メンズフットケア</span>
-                            <p class="description small mb-0 mt-1">所要時間60分,フットバス、甘皮処理、ファイリング、バフィング又はトップコート仕上げ</p>
-                        </td>
-                        <td class="price">¥7,700</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
 </div>
 
 <style>
