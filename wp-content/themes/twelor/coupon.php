@@ -62,7 +62,6 @@ $total_pages = ceil($total_posts / $posts_per_page);
     <?php if ($coupon_query->have_posts()) : ?>
         <div class="coupon-box">
             <?php while ($coupon_query->have_posts()) : $coupon_query->the_post(); 
-                $period = get_field('coupon_period', get_the_ID());
                 $price = get_field('coupon_price', get_the_ID());
                 $description = get_field('coupon_description', get_the_ID());
             ?>
@@ -78,16 +77,6 @@ $total_pages = ceil($total_posts / $posts_per_page);
                     <?php endif; ?>
                     <?php if ($price) : ?>
                         <p class="coupon-price"><?php echo esc_html($price); ?></p>
-                    <?php endif; ?>
-                    
-                    <?php 
-                    $start_date = get_field('coupon_period_start_date', get_the_ID());
-                    $end_date = get_field('coupon_period_end_date', get_the_ID());
-                    if ($start_date && $end_date) : 
-                        $start_date_formatted = date_i18n('Y年m月d日', strtotime($start_date));
-                        $end_date_formatted = date_i18n('Y年m月d日', strtotime($end_date));
-                    ?>
-                        <p class="coupon-period"><?php echo esc_html($start_date_formatted); ?>～<?php echo esc_html($end_date_formatted); ?></p>
                     <?php endif; ?>
                 </div>
             <?php endwhile; ?>

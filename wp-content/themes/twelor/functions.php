@@ -708,36 +708,6 @@ function twelor_register_acf_fields() {
                     'layout' => 'vertical'
                 ),
                 array(
-                    'key' => 'field_coupon_period',
-                    'label' => 'クーポン表示期間',
-                    'name' => 'coupon_period',
-                    'type' => 'group',
-                    'required' => 1,
-                    'layout' => 'block',
-                    'sub_fields' => array(
-                        array(
-                            'key' => 'field_coupon_period_start',
-                            'label' => '開始日時',
-                            'name' => 'start_date',
-                            'type' => 'date_time_picker',
-                            'required' => 1,
-                            'display_format' => 'Y年m月d日H時i分',
-                            'return_format' => 'Y-m-d H:i:s',
-                            'first_day' => 1,
-                        ),
-                        array(
-                            'key' => 'field_coupon_period_end',
-                            'label' => '終了日時',
-                            'name' => 'end_date',
-                            'type' => 'date_time_picker',
-                            'required' => 1,
-                            'display_format' => 'Y年m月d日H時i分',
-                            'return_format' => 'Y-m-d H:i:s',
-                            'first_day' => 1,
-                        ),
-                    ),
-                ),
-                array(
                     'key' => 'field_coupon_price',
                     'label' => 'クーポン価格',
                     'name' => 'coupon_price',
@@ -1169,7 +1139,6 @@ function twelor_add_coupon_columns($columns) {
     }
     $new_columns['display_settings'] = '表示設定';
     $new_columns['nailist'] = 'ネイリスト';
-    $new_columns['period'] = '表示期間';
     $new_columns['price'] = 'クーポン価格';
     $new_columns['description'] = '説明文';
     if (isset($new_columns['date'])) {
@@ -1193,12 +1162,6 @@ function twelor_coupon_column_content($column_name, $post_id) {
     } elseif ($column_name === 'menu_order') {
         $post = get_post($post_id);
         echo $post->menu_order;
-    } elseif ($column_name === 'period') {
-        $period = get_field('coupon_period', $post_id);
-        if ($period) {
-            echo date('Y/m/d H:i', strtotime($period['start_date'])) . ' 〜 ' .
-                 date('Y/m/d H:i', strtotime($period['end_date']));
-        }
     } elseif ($column_name === 'price') {
         echo get_field('coupon_price', $post_id);
     } elseif ($column_name === 'description') {

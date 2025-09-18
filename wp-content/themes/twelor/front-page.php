@@ -202,7 +202,6 @@ get_header(); ?>
             while ($coupon_query->have_posts()) : $coupon_query->the_post();
                 $delay_counter++;
                 $delay_class = 'delay-' . ($delay_counter % 3 + 1);
-                $coupon_period = get_field('coupon_period');
                 $coupon_price = get_field('coupon_price');
                 $coupon_description = get_field('coupon_description');
         ?>
@@ -213,15 +212,6 @@ get_header(); ?>
                     </div>
                     <div class="coupon-description"><?php echo nl2br(esc_html($coupon_description)); ?></div>   
                     <div class="coupon-price"><?php echo esc_html($coupon_price); ?></div>
-                    <?php 
-                    $start_date = get_field('coupon_period_start_date', get_the_ID());
-                    $end_date = get_field('coupon_period_end_date', get_the_ID());
-                    if ($start_date && $end_date) : 
-                        $start_date_formatted = date_i18n('Y年m月d日', strtotime($start_date));
-                        $end_date_formatted = date_i18n('Y年m月d日', strtotime($end_date));
-                    ?>
-                        <p class="coupon-period"><?php echo esc_html($start_date_formatted); ?>～<?php echo esc_html($end_date_formatted); ?></p>
-                    <?php endif; ?>
                 </div>
         <?php
             endwhile;
