@@ -184,7 +184,7 @@ get_header(); ?>
         <?php endif; ?>
     </div>
     <div class="text-center py-4">
-        <a href="<?php echo esc_url(home_url('/gallery_guest_nail/simple-guest/')); ?>" class="more-button">
+        <a href="<?php echo esc_url(home_url('/gallery_guest_nail/all/')); ?>" class="more-button">
             More
         </a>
     </div>

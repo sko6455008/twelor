@@ -1615,6 +1615,16 @@ function twelor_add_gallery_filters() {
             }
         }
         echo '</select>';
+
+        // 現在選択されているメインカテゴリーをJavaScriptに渡す
+        echo '<script>
+        jQuery(document).ready(function($) {
+            var currentMain = "' . esc_js($current_main) . '";
+            if (currentMain) {
+                $("#main-category-filter").trigger("change");
+            }
+        });
+        </script>';
     }
 }
 add_action('restrict_manage_posts', 'twelor_add_gallery_filters');
@@ -2075,15 +2085,18 @@ add_action('admin_head', 'twelor_hide_menu_order_field');
 function twelor_admin_filters_script() {
     global $typenow;
     if ($typenow === 'gallery') {
+        $current_main = isset($_GET['main_category']) ? $_GET['main_category'] : '';
+        $current_sub = isset($_GET['sub_category']) ? $_GET['sub_category'] : '';
         ?>
         <script>
         jQuery(document).ready(function($) {
-            $('#main-category-filter').on('change', function() {
-                var mainCategory = $(this).val();
+            var currentMain = '<?php echo esc_js($current_main); ?>';
+            var currentSub = '<?php echo esc_js($current_sub); ?>';
+            
+            function updateSubCategories(mainCategory, selectedValue) {
                 var $subCategorySelect = $('#sub-category-filter');
-               
+                
                 if (mainCategory) {
-                    // AJAXでサブカテゴリーを取得
                     $.ajax({
                         url: ajaxurl,
                         type: 'POST',
@@ -2096,7 +2109,8 @@ function twelor_admin_filters_script() {
                             if (response.success) {
                                 $subCategorySelect.html('<option value="">サブカテゴリーを選択</option>');
                                 $.each(response.data, function(slug, name) {
-                                    $subCategorySelect.append('<option value="' + slug + '">' + name + '</option>');
+                                    var selected = (selectedValue === slug) ? ' selected' : '';
+                                    $subCategorySelect.append('<option value="' + slug + '"' + selected + '>' + name + '</option>');
                                 });
                                 $subCategorySelect.prop('disabled', false);
                             }
@@ -2105,10 +2119,18 @@ function twelor_admin_filters_script() {
                 } else {
                     $subCategorySelect.html('<option value="">サブカテゴリーを選択</option>').prop('disabled', true);
                 }
+            }
 
-                // セレクトボックスをリセット
-                $subCategorySelect.val('');
+            // メインカテゴリー変更時の処理
+            $('#main-category-filter').on('change', function() {
+                var mainCategory = $(this).val();
+                updateSubCategories(mainCategory, '');
             });
+
+            // 初期表示時の処理
+            if (currentMain) {
+                updateSubCategories(currentMain, currentSub);
+            }
         });
         </script>
         <?php
