@@ -26,7 +26,7 @@ get_header();
                             <span class="fw-bold">ネイルハンドケア</span>
                             <p class="description small mb-0 mt-1">所要時間30分,フィンガーバス＋甘皮処理＋整爪＋バッフィング＋シャイニング</p>
                         </td>
-                        <td class="price">¥5,480</td>
+                        <td class="price">¥3,550</td>
                     </tr>
                 </tbody>
             </table>
@@ -46,7 +46,7 @@ get_header();
                             <span class="fw-bold">フットケア</span>
                             <p class="description small mb-0 mt-1">所要時間60分,フットバス＋整爪＋甘皮処理＋角質除去</p>
                         </td>
-                        <td class="price">¥7,400</td>
+                        <td class="price">¥6,500</td>
                     </tr>
                 </tbody>
             </table>
@@ -114,21 +114,14 @@ get_header();
                             <span class="fw-bold">ソフトジェルオフ</span>
                             <p class="description small mb-0 mt-1">所要時間30分,10本あたり,付け替え時は¥1,100～</p>
                         </td>
-                        <td class="price">¥3,330</td>
+                        <td class="price">¥3,300</td>
                     </tr>
                     <tr>
                         <td>
                             <span class="fw-bold">スカルプチュアオフ</span>
                             <p class="description small mb-0 mt-1">所要時間30分,10本あたり,付け替え時は¥2,200～</p>
                         </td>
-                        <td class="price">¥5,480</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span class="fw-bold">ハードジェルオフ</span>
-                            <p class="description small mb-0 mt-1">所要時間30分,10本あたり,付け替え時は¥2,200～</p>
-                        </td>
-                        <td class="price">¥5,480</td>
+                        <td class="price">¥3,980</td>
                     </tr>
                 </tbody>
             </table>
@@ -138,185 +131,226 @@ get_header();
     <div class="row mb-5">
         <div class="col-12 mb-4">
             <div class="table-title">
-                <span class="en">Soft Gel</span>
-                <span class="ja">ソフトジェル</span>
+                <span class="en">Hand Gel</span>
+                <span class="ja">ハンドジェル</span>
             </div>
             <table class="table">
                 <tbody>
                     <tr>
                         <td>
                             <span class="fw-bold">クリア</span>
-                            <p class="description small mb-0 mt-1">所要時間30分,ファイル、甘皮処理、キューティクルオイル付き</p>
+                            <p class="description small mb-0 mt-1">所要時間30分,ファイル,甘皮処理,キューティクルオイル付き</p>
                         </td>
-                        <td class="price">¥5,500</td>
+                        <td class="price">¥4,400</td>
                     </tr>    
                     <tr>
                         <td>
                             <span class="fw-bold">ラメグラデーション</span>
-                            <p class="description small mb-0 mt-1">所要時間40分</p>
+                            <p class="description small mb-0 mt-1">所要時間60分</p>
                         </td>
-                        <td class="price">¥6,500</td>
+                        <td class="price">¥5,400</td>
                     </tr>
                     <tr>
                         <td>
-                            <span class="fw-bold">カラー1色</span>
-                            <p class="description small mb-0 mt-1">所要時間40分</p>
+                            <span class="fw-bold">オフ込みワンカラー</span>
+                            <p class="description small mb-0 mt-1">所要時間60分,ソフトジェルオフのみ対応,1色のみ選択可</p>
                         </td>
-                        <td class="price">¥6,500</td>
+                        <td class="price">¥6,000</td>
                     </tr>
                     <tr>
                         <td>
                             <span class="fw-bold">カラーグラデーション</span>
-                            <p class="description small mb-0 mt-1">所要時間40分</p>
+                            <p class="description small mb-0 mt-1">所要時間60分</p>
                         </td>
-                        <td class="price">¥8,080</td>
+                        <td class="price">¥6,980</td>
                     </tr>
                     <tr>
                         <td>
                             <span class="fw-bold">フレンチ</span>
                             <p class="description small mb-0 mt-1">所要時間60分,フレンチ形自由/ベース有フレンチ+¥1,000</p>
                         </td>
-                        <td class="price">¥8,580</td>
+                        <td class="price">¥7,480</td>
                     </tr>
                     <tr>
                         <td>
                             <span class="fw-bold">マグネット</span>
-                            <p class="description small mb-0 mt-1">所要時間50分</p>
+                            <p class="description small mb-0 mt-1">所要時間60分</p>
                         </td>
-                        <td class="price">¥7,600</td>
+                        <td class="price">¥6,500</td>
                     </tr>
                     <tr>
                         <td>
                             <span class="fw-bold">ガラスフレンチ</span>
-                            <p class="description small mb-0 mt-1">所要時間60分</p>
-                        </td>
-                        <td class="price">¥9,080</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span class="fw-bold">定額アート込コース(シンプル)</span>
-                            <p class="description small mb-0 mt-1">所要時間40分</p>
-                        </td>
-                        <td class="price">¥7,000</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span class="fw-bold">定額アート込コース(一番人気)</span>
-                            <p class="description small mb-0 mt-1">所要時間50分</p>
-                        </td>
-                        <td class="price">¥8,000</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span class="fw-bold">定額アート込コース(こだわり)</span>
-                            <p class="description small mb-0 mt-1">所要時間60分</p>
-                        </td>
-                        <td class="price">¥8,500</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span class="fw-bold">定額アート込コース(キレイめ)</span>
                             <p class="description small mb-0 mt-1">所要時間70分</p>
                         </td>
-                        <td class="price">¥11,080</td>
+                        <td class="price">¥7,980</td>
                     </tr>
                     <tr>
                         <td>
-                            <span class="fw-bold">定額ニュアンスS</span>
-                            <p class="description small mb-0 mt-1">所要時間40分</p>
-                        </td>
-                        <td class="price">¥8,080</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span class="fw-bold">定額ニュアンスM</span>
-                            <p class="description small mb-0 mt-1">所要時間50分</p>
-                        </td>
-                        <td class="price">¥9,080</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span class="fw-bold">定額ニュアンスL</span>
+                            <span class="fw-bold">シンプル定額コース(アート込)</span>
                             <p class="description small mb-0 mt-1">所要時間60分</p>
                         </td>
-                        <td class="price">¥10,080</td>
+                        <td class="price">¥5,900</td>
                     </tr>
                     <tr>
                         <td>
-                            <span class="fw-bold">定額ニュアンスXL</span>
-                            <p class="description small mb-0 mt-1">所要時間70分</p>
-                        </td>
-                        <td class="price">¥11,080</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span class="fw-bold">定額ワンホン スモール</span>
-                            <p class="description small mb-0 mt-1">所要時間40分</p>
-                        </td>
-                        <td class="price">¥9,080</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span class="fw-bold">定額ワンホン ミディアム</span>
-                            <p class="description small mb-0 mt-1">所要時間50分</p>
-                        </td>
-                        <td class="price">¥10,080</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span class="fw-bold">定額ワンホン ラージ</span>
+                            <span class="fw-bold">一番人気定額コース(アート込)</span>
                             <p class="description small mb-0 mt-1">所要時間60分</p>
                         </td>
-                        <td class="price">¥11,080</td>
+                        <td class="price">¥6,900</td>
                     </tr>
                     <tr>
                         <td>
-                            <span class="fw-bold">オフ込90分オーダーメイドコース</span>
-                            <p class="description small mb-0 mt-1">長さ出し亀裂補強1本まで</p>
+                            <span class="fw-bold">こだわり定額コース(アート込)</span>
+                            <p class="description small mb-0 mt-1">所要時間80分</p>
+                        </td>
+                        <td class="price">¥7,400</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="fw-bold">キレイめ定額コース(アート込)</span>
+                            <p class="description small mb-0 mt-1">所要時間90分</p>
                         </td>
                         <td class="price">¥9,980</td>
                     </tr>
                     <tr>
                         <td>
-                            <span class="fw-bold">オフ込100分オーダーメイドコース</span>
-                            <p class="description small mb-0 mt-1">長さ出し亀裂補強1～3本まで</p>
+                            <span class="fw-bold">定額ニュアンスS</span>
+                            <p class="description small mb-0 mt-1">所要時間60分</p>
                         </td>
-                        <td class="price">¥10,980</td>
+                        <td class="price">¥6,980</td>
                     </tr>
                     <tr>
                         <td>
-                            <span class="fw-bold">オフ込110分オーダーメイドコース</span>
-                            <p class="description small mb-0 mt-1">長さ出し亀裂補強2～3本まで</p>
+                            <span class="fw-bold">定額ニュアンスM</span>
+                            <p class="description small mb-0 mt-1">所要時間60分</p>
+                        </td>
+                        <td class="price">¥7,980</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="fw-bold">定額ニュアンスL</span>
+                            <p class="description small mb-0 mt-1">所要時間80分</p>
+                        </td>
+                        <td class="price">¥8,980</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="fw-bold">定額ニュアンスXL</span>
+                            <p class="description small mb-0 mt-1">所要時間90分</p>
+                        </td>
+                        <td class="price">¥10,480</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="fw-bold">定額ワンホン スモール</span>
+                            <p class="description small mb-0 mt-1">所要時間60分</p>
+                        </td>
+                        <td class="price">¥7,980</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="fw-bold">定額ワンホン ミディアム</span>
+                            <p class="description small mb-0 mt-1">所要時間80分</p>
+                        </td>
+                        <td class="price">¥8,980</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="fw-bold">定額ワンホン ラージ</span>
+                            <p class="description small mb-0 mt-1">所要時間90分</p>
+                        </td>
+                        <td class="price">¥9,980</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="fw-bold">オフ込90分オーダーメイドコース</span>
+                            <p class="description small mb-0 mt-1">長さ出し亀裂補強1本まで,+10分につき¥1,000円</p>
+                        </td>
+                        <td class="price">¥8,980</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="fw-bold">オフ込120分オーダーメイドコース</span>
+                            <p class="description small mb-0 mt-1">長さ出し亀裂補強3～4本まで,+10分につき¥1,000円</p>
                         </td>
                         <td class="price">¥11,980</td>
                     </tr>
                     <tr>
                         <td>
-                            <span class="fw-bold">オフ込120分オーダーメイドコース</span>
-                            <p class="description small mb-0 mt-1">長さ出し亀裂補強3～4本まで</p>
-                        </td>
-                        <td class="price">¥12,980</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span class="fw-bold">オフ込130分オーダーメイドコース</span>
-                            <p class="description small mb-0 mt-1">長さ出し亀裂補強3～5本まで</p>
-                        </td>
-                        <td class="price">¥13,980</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span class="fw-bold">オフ込140分オーダーメイドコース</span>
-                            <p class="description small mb-0 mt-1">長さ出し亀裂補強4～7本まで</p>
+                            <span class="fw-bold">オフ込150分オーダーメイドコース</span>
+                            <p class="description small mb-0 mt-1">長さ出し亀裂補強10本まで+10分につき¥1,000円</p>
                         </td>
                         <td class="price">¥14,980</td>
                     </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        <div class="col-12 mb-4">
+            <div class="table-title">
+                <span class="en">Foot Gel</span>
+                <span class="ja">フットジェル</span>
+            </div>
+            <table class="table">
+                <tbody>
                     <tr>
                         <td>
-                            <span class="fw-bold">オフ込150分オーダーメイドコース</span>
-                            <p class="description small mb-0 mt-1">長さ出し亀裂補強10本まで</p>
+                            <span class="fw-bold">クリア</span>
+                            <p class="description small mb-0 mt-1">所要時間30分,ファイル,甘皮処理,キューティクルオイル付き</p>
                         </td>
-                        <td class="price">¥15,980</td>
+                        <td class="price">¥4,900</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="fw-bold">ラメグラデーション</span>
+                            <p class="description small mb-0 mt-1">所要時間40分</p>
+                        </td>
+                        <td class="price">¥6,900</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="fw-bold">オフ込みワンカラー</span>
+                            <p class="description small mb-0 mt-1">所要時間60分,ソフトジェルオフのみ対応,1色のみ選択可</p>
+                        </td>
+                        <td class="price">¥6,500</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="fw-bold">シンプル定額コース(アート込)</span>
+                            <p class="description small mb-0 mt-1">所要時間60分</p>
+                        </td>
+                        <td class="price">¥6,900</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="fw-bold">一番人気定額コース(アート込)</span>
+                            <p class="description small mb-0 mt-1">所要時間60分</p>
+                        </td>
+                        <td class="price">¥7,900</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="fw-bold">こだわり定額コース(アート込)</span>
+                            <p class="description small mb-0 mt-1">所要時間80分</p>
+                        </td>
+                        <td class="price">¥8,400</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="fw-bold">オフ込90分オーダーメイドコース</span>
+                            <p class="description small mb-0 mt-1">長さ出し亀裂補強1本まで,+10分につき¥1,000円</p>
+                        </td>
+                        <td class="price">¥9,980</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="fw-bold">オフ込120分オーダーメイドコース</span>
+                            <p class="description small mb-0 mt-1">長さ出し亀裂補強3～4本まで,+10分につき¥1,000円</p>
+                        </td>
+                        <td class="price">¥12,980</td>
                     </tr>
                 </tbody>
             </table>
