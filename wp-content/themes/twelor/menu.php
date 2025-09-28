@@ -119,7 +119,7 @@ get_header();
                     <tr>
                         <td>
                             <span class="fw-bold">スカルプチュアオフ</span>
-                            <p class="description small mb-0 mt-1">所要時間30分,10本あたり,付け替え時は¥2,200～</p>
+                            <p class="description small mb-0 mt-1">所要時間40分,10本あたり,付け替え時は¥2,200～</p>
                         </td>
                         <td class="price">¥3,980</td>
                     </tr>
@@ -306,7 +306,7 @@ get_header();
                     <tr>
                         <td>
                             <span class="fw-bold">ラメグラデーション</span>
-                            <p class="description small mb-0 mt-1">所要時間40分</p>
+                            <p class="description small mb-0 mt-1">所要時間60分</p>
                         </td>
                         <td class="price">¥6,900</td>
                     </tr>
