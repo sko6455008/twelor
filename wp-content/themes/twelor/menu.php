@@ -265,21 +265,21 @@ get_header();
                     <tr>
                         <td>
                             <span class="fw-bold">オフ込90分オーダーメイドコース</span>
-                            <p class="description small mb-0 mt-1">長さ出し亀裂補強1本まで,+10分につき¥1,000円</p>
+                            <p class="description small mb-0 mt-1">長さ出し亀裂補強1本まで</p>
                         </td>
                         <td class="price">¥8,980</td>
                     </tr>
                     <tr>
                         <td>
                             <span class="fw-bold">オフ込120分オーダーメイドコース</span>
-                            <p class="description small mb-0 mt-1">長さ出し亀裂補強3～4本まで,+10分につき¥1,000円</p>
+                            <p class="description small mb-0 mt-1">長さ出し亀裂補強3～4本まで</p>
                         </td>
                         <td class="price">¥11,980</td>
                     </tr>
                     <tr>
                         <td>
                             <span class="fw-bold">オフ込150分オーダーメイドコース</span>
-                            <p class="description small mb-0 mt-1">長さ出し亀裂補強10本まで+10分につき¥1,000円</p>
+                            <p class="description small mb-0 mt-1">長さ出し亀裂補強10本まで</p>
                         </td>
                         <td class="price">¥14,980</td>
                     </tr>
@@ -341,14 +341,14 @@ get_header();
                     <tr>
                         <td>
                             <span class="fw-bold">オフ込90分オーダーメイドコース</span>
-                            <p class="description small mb-0 mt-1">長さ出し亀裂補強1本まで,+10分につき¥1,000円</p>
+                            <p class="description small mb-0 mt-1">長さ出し亀裂補強1本まで</p>
                         </td>
                         <td class="price">¥9,980</td>
                     </tr>
                     <tr>
                         <td>
                             <span class="fw-bold">オフ込120分オーダーメイドコース</span>
-                            <p class="description small mb-0 mt-1">長さ出し亀裂補強3～4本まで,+10分につき¥1,000円</p>
+                            <p class="description small mb-0 mt-1">長さ出し亀裂補強3～4本まで</p>
                         </td>
                         <td class="price">¥12,980</td>
                     </tr>
