@@ -95,17 +95,17 @@ function twelor_register_gallery_post_type() {
 }
 add_action('init', 'twelor_register_gallery_post_type');
 
-// カスタム投稿タイプ: コース
+// カスタム投稿タイプ: サブカテゴリー
 function twelor_register_course_post_type() {
     $args = array(
         'public' => true,
-        'label'  => 'コース(サブカテゴリー)',
+        'label'  => 'サブカテゴリー',
         'labels' => array(
-            'name' => 'コース(サブカテゴリー)',
-            'singular_name' => 'コース(サブカテゴリー)',
+            'name' => 'サブカテゴリー',
+            'singular_name' => 'サブカテゴリー',
             'add_new' => '新規追加',
-            'add_new_item' => '新規コース(サブカテゴリー)を追加',
-            'edit_item' => 'コース(サブカテゴリー)を編集',
+            'add_new_item' => 'サブカテゴリーを追加',
+            'edit_item' => 'サブカテゴリーを編集',
         ),
         'supports' => array('custom-fields'),
         'menu_icon' => 'dashicons-category',
@@ -118,7 +118,7 @@ function twelor_register_course_post_type() {
 }
 add_action('init', 'twelor_register_course_post_type');
 
-// コース(サブカテゴリー)を取得する関数
+// サブカテゴリーを取得する関数
 function twelor_get_course_choices($main_category) {
     $choices = array();
    
@@ -466,10 +466,10 @@ function twelor_register_acf_fields() {
             ),
         ));
 
-        // コース用(サブカテゴリー)フィールド
+        // サブカテゴリーフィールド
         acf_add_local_field_group(array(
             'key' => 'group_course',
-            'title' => 'コース詳細',
+            'title' => 'サブカテゴリー詳細',
             'fields' => array(
                 array(
                     'key' => 'field_course_main_category',
@@ -488,10 +488,10 @@ function twelor_register_acf_fields() {
                 ),
                 array(
                     'key' => 'field_course',
-                    'label' => 'コース名(サブカテゴリー名)',
+                    'label' => 'サブカテゴリー名',
                     'name' => 'course_name',
                     'type' => 'text',
-                    'instructions' => 'コース名(サブカテゴリー名)を入力してください',
+                    'instructions' => 'サブカテゴリー名を入力してください',
                     'required' => 1,
                     'placeholder' => '例: シンプル 定額,ニュアンスM 定額'
                 ),
@@ -701,11 +701,15 @@ function twelor_register_acf_fields() {
                     'key' => 'field_coupon_nailist',
                     'label' => 'ネイリスト',
                     'name' => 'coupon_nailist',
-                    'type' => 'radio',
+                    'type' => 'checkbox',
                     'required' => 1,
                     'choices' => twelor_get_nailist_choices(),
                     'return_format' => 'value',
-                    'layout' => 'vertical'
+                    'layout' => 'vertical',
+                    'allow_custom' => 0,
+                    'save_custom' => 0,
+                    'toggle' => 0,
+                    'other_choice' => 0
                 ),
                 array(
                     'key' => 'field_coupon_price',
@@ -855,11 +859,12 @@ function twelor_auto_generate_nailist_slug($post_id) {
 }
 add_action('save_post', 'twelor_auto_generate_nailist_slug');
 
-// ネイリスト削除時、割り当て済みクーポンを削除
-function twelor_delete_coupons_on_nailist_delete($post_id) {
+// ネイリスト削除時、割り当て済みクーポンからネイリストの値を削除
+function twelor_remove_nailist_from_coupons_on_delete($post_id) {
     if (get_post_type($post_id) !== 'nailist') return;
     $post = get_post($post_id);
     $slug = $post ? $post->post_name : '';
+    
     $query = new WP_Query(array(
         'post_type' => 'coupon',
         'posts_per_page' => -1,
@@ -869,24 +874,48 @@ function twelor_delete_coupons_on_nailist_delete($post_id) {
             array(
                 'key' => 'coupon_nailist',
                 'value' => (string)$post_id,
-                'compare' => '='
+                'compare' => 'LIKE'
             ),
             array(
                 'key' => 'coupon_nailist',
                 'value' => $slug,
-                'compare' => '='
+                'compare' => 'LIKE'
             )
         ),
         'fields' => 'ids'
     ));
+    
     if ($query->have_posts()) {
         foreach ($query->posts as $coupon_id) {
-            wp_delete_post($coupon_id, true);
+            $current_nailists = get_field('coupon_nailist', $coupon_id);
+            
+            if (is_array($current_nailists)) {
+                // 配列から該当するネイリストを削除
+                $updated_nailists = array();
+                foreach ($current_nailists as $nailist_value) {
+                    if ($nailist_value !== (string)$post_id && $nailist_value !== $slug) {
+                        $updated_nailists[] = $nailist_value;
+                    }
+                }
+                
+                // 更新されたネイリストリストを保存
+                if (empty($updated_nailists)) {
+                    // ネイリストが空になった場合は空の配列を保存
+                    update_field('coupon_nailist', array(), $coupon_id);
+                } else {
+                    update_field('coupon_nailist', $updated_nailists, $coupon_id);
+                }
+            } else {
+                // 単一値の場合
+                if ($current_nailists === (string)$post_id || $current_nailists === $slug) {
+                    update_field('coupon_nailist', array(), $coupon_id);
+                }
+            }
         }
     }
 }
-add_action('before_delete_post', 'twelor_delete_coupons_on_nailist_delete');
-add_action('trashed_post', 'twelor_delete_coupons_on_nailist_delete');
+add_action('before_delete_post', 'twelor_remove_nailist_from_coupons_on_delete');
+add_action('trashed_post', 'twelor_remove_nailist_from_coupons_on_delete');
 
 // デフォルトのクエリでカスタムオーダーを使用
 function twelor_set_default_gallery_order($query) {
@@ -1086,13 +1115,13 @@ function twelor_gallery_column_content($column_name, $post_id) {
 }
 add_action('manage_gallery_posts_custom_column', 'twelor_gallery_column_content', 10, 2);
 
-// コース一覧のカラムをカスタマイズ
+// サブカテゴリー一覧のカラムをカスタマイズ
 function twelor_add_course_columns($columns) {
     unset($columns['title']);
     $new_columns = array();
     $new_columns['menu_order'] = '表示順';
     $new_columns['course_main_category'] = 'メインカテゴリー名';
-    $new_columns['course_name'] = 'コース名(サブカテゴリー名)';
+    $new_columns['course_name'] = 'サブカテゴリー名';
     $new_columns['course_slug'] = 'スラッグ';
     if (isset($columns['date'])) {
         $date = $columns['date'];
@@ -1103,7 +1132,7 @@ function twelor_add_course_columns($columns) {
 }
 add_filter('manage_course_posts_columns', 'twelor_add_course_columns');
 
-// コース一覧のカラム内容を表示
+// サブカテゴリー一覧のカラム内容を表示
 function twelor_course_column_content($column_name, $post_id) {
     if ($column_name === 'menu_order') {
         $post = get_post($post_id);
@@ -1157,8 +1186,19 @@ function twelor_coupon_column_content($column_name, $post_id) {
             echo get_the_post_thumbnail($post_id, array(60, 60));
         }
     } elseif ($column_name === 'nailist') {
-        $nailist_value = get_field('coupon_nailist', $post_id);
-        echo esc_html(twelor_get_nailist_display_name_by_value($nailist_value));
+        $nailist_values = get_field('coupon_nailist', $post_id);
+        if (is_array($nailist_values)) {
+            $nailist_names = array();
+            foreach ($nailist_values as $value) {
+                $name = twelor_get_nailist_display_name_by_value($value);
+                if ($name) {
+                    $nailist_names[] = $name;
+                }
+            }
+            echo esc_html(implode(', ', $nailist_names));
+        } else {
+            echo esc_html(twelor_get_nailist_display_name_by_value($nailist_values));
+        }
     } elseif ($column_name === 'menu_order') {
         $post = get_post($post_id);
         echo $post->menu_order;
@@ -1348,7 +1388,7 @@ function twelor_sortable_gallery_columns($columns) {
 }
 add_filter('manage_edit-gallery_sortable_columns', 'twelor_sortable_gallery_columns');
 
-// コースの表示順列をソート可能にする
+// サブカテゴリーの表示順列をソート可能にする
 function twelor_sortable_course_columns($columns) {
     $columns['menu_order'] = 'menu_order';
     return $columns;
@@ -1415,8 +1455,8 @@ add_action('admin_head', 'twelor_admin_columns_style');
 // 管理画面カスタムオーダー用のスタイル
 function twelor_custom_order_admin_script() {
     global $post_type;
-   
-    // ギャラリー、クーポン、コース、バナー、ネイリストの一覧ページでのみ読み込み
+
+    // ギャラリー、クーポン、サブカテゴリー、バナー、ネイリストの一覧ページでのみ読み込み
     if (in_array($post_type, array('gallery', 'coupon', 'course', 'banner', 'nailist'))) {
         ?>
         <script>
@@ -1606,6 +1646,10 @@ function twelor_add_gallery_filters() {
         if($current_main){
             $sub_categories = twelor_get_course_choices($current_main);
             foreach ($sub_categories as $value => $label) {
+                // Guestギャラリーの場合は「all」を除外
+                if ($current_main === 'guest' && $value === 'all') {
+                    continue;
+                }
                 printf(
                     '<option value="%s" %s>%s</option>',
                     esc_attr($value),
@@ -1682,7 +1726,7 @@ function twelor_add_coupon_filters() {
 }
 add_action('restrict_manage_posts', 'twelor_add_coupon_filters');
 
-// 管理画面のコース一覧にフィルターを追加
+// 管理画面のサブカテゴリー一覧にフィルターを追加
 function twelor_add_course_filters() {
     global $typenow;
     if ($typenow === 'course') {
@@ -1725,7 +1769,7 @@ function twelor_apply_coupon_filters($query) {
             $meta_query[] = array(
                 'key' => 'coupon_nailist',
                 'value' => $_GET['coupon_nailist_filter'],
-                'compare' => '='
+                'compare' => 'LIKE'
             );
             $query->set('meta_query', $meta_query);
         }
@@ -1733,7 +1777,7 @@ function twelor_apply_coupon_filters($query) {
 }
 add_action('pre_get_posts', 'twelor_apply_coupon_filters');
 
-// コースのフィルター条件を適用
+// サブカテゴリーのフィルター条件を適用
 function twelor_apply_course_filters($query) {
     global $pagenow, $typenow;
     if ($pagenow === 'edit.php' && $typenow === 'course' && is_admin() && $query->is_main_query()) {
@@ -1839,11 +1883,38 @@ function twelor_get_gallery_page_posts($main_category = '', $sub_category = '', 
    
     // サブカテゴリーの条件（サブカテゴリーがbridalの場合はセットしない)
     if (!empty($sub_category) && $sub_category !== 'bridal') {
-        $meta_query[] = array(
-            'key' => 'gallery_sub_category',
-            'value' => $sub_category,
-            'compare' => '='
-        );
+        // GuestギャラリーでAllが選択された場合は特別な処理
+        if ($main_category === 'guest' && $sub_category === 'all') {
+            // GuestギャラリーのAll以外のサブカテゴリーを取得
+            $guest_sub_categories = twelor_get_course_choices('guest');
+            $guest_slugs = array_keys($guest_sub_categories);
+            
+            
+            // All以外のサブカテゴリーの条件を作成（Allも含める）
+            $sub_category_conditions = array();
+            foreach ($guest_slugs as $slug) {
+                $sub_category_conditions[] = array(
+                    'key' => 'gallery_sub_category',
+                    'value' => $slug,
+                    'compare' => '='
+                );
+            }
+            
+            if (!empty($sub_category_conditions)) {
+                $or_condition = array('relation' => 'OR');
+                foreach ($sub_category_conditions as $condition) {
+                    $or_condition[] = $condition;
+                }
+                $meta_query[] = $or_condition;
+                
+            }
+        } else {
+            $meta_query[] = array(
+                'key' => 'gallery_sub_category',
+                'value' => $sub_category,
+                'compare' => '='
+            );
+        }
     }
 
     // ブライダルデザインの条件
@@ -1865,6 +1936,7 @@ function twelor_get_gallery_page_posts($main_category = '', $sub_category = '', 
             'date' => 'DESC'
         )
     );
+    
    
     return new WP_Query($args);
 }
@@ -1905,7 +1977,7 @@ function twelor_get_coupon_page_posts($posts_per_page = 9, $paged = 1, $nailist 
         $meta_query[] = array(
             'key' => 'coupon_nailist',
             'value' => $nailist,
-            'compare' => '='
+            'compare' => 'LIKE'
         );
     }
    
@@ -2045,7 +2117,7 @@ function twelor_quick_edit_style() {
 }
 add_action('admin_head', 'twelor_quick_edit_style');
 
-// ギャラリー、クーポン、コース登録時にmenu_orderの自動設定
+// ギャラリー、クーポン、サブカテゴリー登録時にmenu_orderの自動設定
 function twelor_auto_set_menu_order($data, $postarr) {
     if (!in_array($data['post_type'], array('gallery', 'coupon', 'course', 'banner', 'nailist'))) {
         return $data;
@@ -2109,6 +2181,10 @@ function twelor_admin_filters_script() {
                             if (response.success) {
                                 $subCategorySelect.html('<option value="">サブカテゴリーを選択</option>');
                                 $.each(response.data, function(slug, name) {
+                                    // Guestギャラリーの場合は「all」を除外
+                                    if (mainCategory === 'guest' && slug === 'all') {
+                                        return;
+                                    }
                                     var selected = (selectedValue === slug) ? ' selected' : '';
                                     $subCategorySelect.append('<option value="' + slug + '"' + selected + '>' + name + '</option>');
                                 });
