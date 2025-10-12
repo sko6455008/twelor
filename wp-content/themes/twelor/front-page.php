@@ -89,7 +89,7 @@ get_header(); ?>
         <?php
         $hand_args = array(
             'post_type' => 'gallery',
-            'posts_per_page' => 9,
+            'posts_per_page' => 12,
             'meta_query' => array(
                 'relation' => 'AND',
                 array(
@@ -143,7 +143,7 @@ get_header(); ?>
         <?php
         $guest_args = array(
             'post_type' => 'gallery',
-            'posts_per_page' => 9,
+            'posts_per_page' => 12,
             'meta_query' => array(
                 'relation' => 'AND',
                 array(
@@ -195,7 +195,7 @@ get_header(); ?>
     <h1 class="twelor-section-title">Coupon</h1>
     <div class="design-box">
         <?php
-        $coupon_query = twelor_get_top_coupon_posts(9);
+        $coupon_query = twelor_get_top_coupon_posts(12);
 
         if ($coupon_query->have_posts()) :
             $delay_counter = 0;
