@@ -471,7 +471,7 @@ function twelor_register_acf_fields() {
                     'label' => 'サブカテゴリー',
                     'name' => 'gallery_sub_category',
                     'type' => 'radio',
-                    'instructions' => '※ギャラリーに紐づいいているサブカテゴリーを削除した場合、一覧上のサブカテゴリーは空白です。その場合、どこにも表示されません。',
+                    'instructions' => '※ギャラリーに紐づいいているサブカテゴリーを削除した場合、Guestギャラリーページの「一覧」にだけ表示されます。',
                     'required' => 1,
                     'choices' => array(),
                     'return_format' => 'value',
@@ -779,7 +779,7 @@ function twelor_register_acf_fields() {
                     'name' => 'coupon_nailist',
                     'type' => 'checkbox',
                     'required' => 0,
-                    'instructions' => 'ネイリストを選択してください。未選択の場合は「一覧」にだけ表示されます。',
+                    'instructions' => '※未選択の場合はクーポンページの「一覧」にだけ表示されます。',
                     'choices' => twelor_get_nailist_choices_for_registration(),
                     'return_format' => 'value',
                     'layout' => 'vertical'
@@ -904,12 +904,17 @@ function twelor_get_nailist_display_name_by_value($value) {
         $value = !empty($value) ? $value[0] : '';
     }
     
+    // 空の値の場合は空文字列を返す（管理画面で空白表示）
+    if (empty($value)) {
+        return '';
+    }
+    
     // choices（ローマ字スラッグ or post_name キー）に存在すればその表示名を返す
     $choices = twelor_get_nailist_choices();
     if (isset($choices[$value])) {
         return $choices[$value];
     }
-    return;
+    return '';
 }
 
 // ネイリスト保存時にタイトルを同期
@@ -1024,14 +1029,10 @@ function twelor_clear_galleries_on_subcategory_delete($post_id) {
         )
     ));
     
-    // ギャラリーのサブカテゴリーフィールドを空にして非表示にする
+    // ギャラリーのサブカテゴリーフィールドを空にする（表示設定は変更しない）
     foreach ($galleries as $gallery) {
         // サブカテゴリーフィールドを空にする
         update_field('gallery_sub_category', '', $gallery->ID);
-        
-        // 表示設定をfalseにする
-        update_field('gallery_display_top', false, $gallery->ID);
-        update_field('gallery_display_gallery', false, $gallery->ID);
     }
 }
 add_action('before_delete_post', 'twelor_clear_galleries_on_subcategory_delete');
@@ -2005,8 +2006,10 @@ function twelor_get_gallery_page_posts($main_category = '', $sub_category = '', 
             $guest_sub_categories = twelor_get_course_choices('guest');
             $guest_slugs = array_keys($guest_sub_categories);
             
+            // 空のサブカテゴリーも含める
+            $guest_slugs[] = '';
             
-            // All以外のサブカテゴリーの条件を作成（Allも含める）
+            // 一覧以外のサブカテゴリーの条件を作成（一覧も含める）
             $sub_category_conditions = array();
             foreach ($guest_slugs as $slug) {
                 $sub_category_conditions[] = array(
@@ -2041,13 +2044,6 @@ function twelor_get_gallery_page_posts($main_category = '', $sub_category = '', 
             'compare' => '='
         );
     }
-    
-    // サブカテゴリーフィールドが空のギャラリーを除外（削除されたサブカテゴリーに関連するギャラリー）
-    $meta_query[] = array(
-        'key' => 'gallery_sub_category',
-        'value' => '',
-        'compare' => '!='
-    );
    
     $args = array(
         'post_type' => 'gallery',
@@ -2099,7 +2095,43 @@ function twelor_get_coupon_page_posts($posts_per_page = 9, $paged = 1, $nailist 
     if (!empty($nailist)) {
         // 「一覧」が選択された場合は特別な処理
         if ($nailist === 'list') {
-            // すべてのクーポンを表示（ネイリストフィルターなし）
+            // 空のネイリストも含めてすべてのクーポンを表示
+            $nailist_conditions = array();
+            
+            // 既存のネイリストを取得
+            $nailist_posts = get_posts(array(
+                'post_type' => 'nailist',
+                'posts_per_page' => -1,
+                'post_status' => 'publish'
+            ));
+            
+            foreach ($nailist_posts as $nailist_post) {
+                $nailist_conditions[] = array(
+                    'key' => 'coupon_nailist',
+                    'value' => $nailist_post->post_name,
+                    'compare' => 'LIKE'
+                );
+            }
+            
+            // 空のネイリストも含める（空文字列と空配列の両方）
+            $nailist_conditions[] = array(
+                'key' => 'coupon_nailist',
+                'value' => '',
+                'compare' => '='
+            );
+            $nailist_conditions[] = array(
+                'key' => 'coupon_nailist',
+                'value' => array(),
+                'compare' => '='
+            );
+            
+            if (!empty($nailist_conditions)) {
+                $or_condition = array('relation' => 'OR');
+                foreach ($nailist_conditions as $condition) {
+                    $or_condition[] = $condition;
+                }
+                $meta_query[] = $or_condition;
+            }
         } else {
             // 通常のネイリストフィルター
             $meta_query[] = array(
