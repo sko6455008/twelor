@@ -22,37 +22,6 @@ get_header(); ?>
         ?>
 </section>
 
-<!-- お知らせセクション -->
-<section class="info-section">
-    <h1 class="twelor-section-title">news</h1>
-    <div class="info-box">
-        <?php
-        $info_args = array(
-            'post_type' => 'info',
-            'posts_per_page' => 3,
-        );
-        $info_query = new WP_Query($info_args);
-
-        if ($info_query->have_posts()) :
-            while ($info_query->have_posts()) : $info_query->the_post();
-                $period = get_field('info_period');
-                $description = get_field('info_description');
-        ?>
-            <div class="info-item">
-                <div class="info-period"><?php echo esc_html(acf_format_date($period, 'Y/m/d')); ?></div>
-                <div class="info-description"><?php echo esc_html($description); ?></div>
-            </div>
-        <?php
-            endwhile;
-            wp_reset_postdata();
-        else :
-        ?>
-            <div class="col-12">
-                <p style="text-align: center;">newsはありません。</p>
-            </div>
-        <?php endif; ?>
-    </div>
-</section>
 
 <!-- バナーセクション -->
 <section class="banner-section">
@@ -116,7 +85,12 @@ get_header(); ?>
                 $delay_class = 'delay-' . ($delay_counter % 3 + 1);
         ?>
             <div class="fade-in-section <?php echo $delay_class; ?>">
-                <?php the_post_thumbnail('large', array('class' => 'image')); ?>
+                <div class="design-image-container">
+                    <?php the_post_thumbnail('large', array('class' => 'image')); ?>
+                    <?php if (twelor_should_show_new_tag(get_the_ID())): ?>
+                        <?php echo twelor_get_new_tag_html(); ?>
+                    <?php endif; ?>
+                </div>
                 <p class="design-title"><?php the_title(); ?></p>
             </div>
         <?php
@@ -170,7 +144,12 @@ get_header(); ?>
                 $delay_class = 'delay-' . ($delay_counter % 3 + 1);
         ?>
             <div class="fade-in-section <?php echo $delay_class; ?>">
-                <?php the_post_thumbnail('large', array('class' => 'image')); ?>
+                <div class="design-image-container">
+                    <?php the_post_thumbnail('large', array('class' => 'image')); ?>
+                    <?php if (twelor_should_show_new_tag(get_the_ID())): ?>
+                        <?php echo twelor_get_new_tag_html(); ?>
+                    <?php endif; ?>
+                </div>
                 <p class="design-title"><?php the_title(); ?></p>
             </div>
         <?php
@@ -206,6 +185,9 @@ get_header(); ?>
                 $coupon_description = get_field('coupon_description');
         ?>
                 <div class="coupon fade-in-section <?php echo $delay_class; ?>">
+                    <?php if (twelor_should_show_new_tag(get_the_ID())): ?>
+                        <?php echo twelor_get_new_tag_html(); ?>
+                    <?php endif; ?>
                     <div class="coupon-title"><?php the_title(); ?></div>
                     <div class="coupon-image-box">
                         <?php the_post_thumbnail('large', array('class' => 'coupon-image')); ?>

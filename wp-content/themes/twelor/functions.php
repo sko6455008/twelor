@@ -235,26 +235,6 @@ function twelor_register_coupon_post_type() {
 }
 add_action('init', 'twelor_register_coupon_post_type');
 
-// カスタム投稿タイプ: お知らせ
-function twelor_register_info_post_type() {
-    $args = array(
-        'public' => true,
-        'label'  => 'お知らせ',
-        'labels' => array(
-            'name' => 'お知らせ',
-            'singular_name' => 'お知らせ',
-            'add_new' => '新規追加',
-            'add_new_item' => '新規お知らせを追加',
-            'edit_item' => 'お知らせを編集',
-        ),
-        'supports' => array('custom-fields'),
-        'menu_icon' => 'dashicons-megaphone',
-        'has_archive' => true,
-        'rewrite' => array('slug' => 'info'),
-    );
-    register_post_type('info', $args);
-}
-add_action('init', 'twelor_register_info_post_type');
 
 // カスタム投稿タイプ: ネイリスト
 function twelor_register_nailist_post_type() {
@@ -600,46 +580,6 @@ function twelor_register_acf_fields() {
             'description' => '',
         ));
 
-        // お知らせ用フィールド
-        acf_add_local_field_group(array(
-            'key' => 'group_info',
-            'title' => 'お知らせ詳細',
-            'fields' => array(
-                array(
-                    'key' => 'field_info_period',
-                    'label' => '日付',
-                    'name' => 'info_period',
-                    'type' => 'date_picker',
-                    'required' => 1,
-                    'display_format' => 'Y/m/d',
-                    'return_format' => 'Y/m/d',
-                ),
-                array(
-                    'key' => 'field_info_description',
-                    'label' => '案内文',
-                    'name' => 'info_description',
-                    'type' => 'textarea',
-                    'required' => 1,
-                ),
-            ),
-            'location' => array(
-                array(
-                    array(
-                        'param' => 'post_type',
-                        'operator' => '==',
-                        'value' => 'info',
-                    ),
-                ),
-            ),
-            'menu_order' => 0,
-            'position' => 'normal',
-            'style' => 'default',
-            'label_placement' => 'top',
-            'instruction_placement' => 'label',
-            'hide_on_screen' => '',
-            'active' => true,
-            'description' => '',
-        ));
 
         // バナー用フィールド
         acf_add_local_field_group(array(
@@ -1038,6 +978,68 @@ function twelor_clear_galleries_on_subcategory_delete($post_id) {
 add_action('before_delete_post', 'twelor_clear_galleries_on_subcategory_delete');
 add_action('trashed_post', 'twelor_clear_galleries_on_subcategory_delete');
 
+// 新規投稿の作成日時を保存
+function twelor_save_creation_date($post_id, $post, $update) {
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+    
+    // 更新の場合はスキップ
+    if ($update) return;
+    
+    // ギャラリーまたはクーポンの場合のみ処理
+    $post_type = get_post_type($post_id);
+    if (!in_array($post_type, ['gallery', 'coupon'])) return;
+    
+    // 現在の日時を保存（新規投稿時のみ）
+    update_post_meta($post_id, '_creation_date', current_time('mysql'));
+}
+add_action('wp_insert_post', 'twelor_save_creation_date', 10, 3);
+
+// Newタグを表示するかどうかを判定する関数
+function twelor_should_show_new_tag($post_id) {
+    $creation_date = get_post_meta($post_id, '_creation_date', true);
+    if (empty($creation_date)) return false;
+    
+    $creation_timestamp = strtotime($creation_date);
+    $current_timestamp = current_time('timestamp');
+    $diff_in_days = ($current_timestamp - $creation_timestamp) / (60 * 60 * 24);
+    
+    return $diff_in_days <= 30; // 30日以内ならtrue
+}
+
+// Newタグのクラスを取得する関数
+function twelor_get_new_tag_html() {
+    return '<div class="new-tag-wrapper"><span class="new-tag">New</span></div>';
+}
+
+// 既存の投稿に作成日時を設定する関数
+function twelor_set_creation_date_for_existing_posts() {
+    $args = array(
+        'post_type' => array('gallery', 'coupon'),
+        'posts_per_page' => -1,
+        'post_status' => 'publish',
+        'meta_query' => array(
+            array(
+                'key' => '_creation_date',
+                'compare' => 'NOT EXISTS'
+            )
+        )
+    );
+    
+    $query = new WP_Query($args);
+    
+    if ($query->have_posts()) {
+        while ($query->have_posts()) {
+            $query->the_post();
+            $post_id = get_the_ID();
+            $post_date = get_the_date('Y-m-d H:i:s', $post_id);
+            update_post_meta($post_id, '_creation_date', $post_date);
+        }
+        wp_reset_postdata();
+    }
+}
+// プラグインやテーマが有効化されたときに実行
+add_action('after_switch_theme', 'twelor_set_creation_date_for_existing_posts');
+
 // デフォルトのクエリでカスタムオーダーを使用
 function twelor_set_default_gallery_order($query) {
     // 管理画面ではない場合のみ適用
@@ -1359,30 +1361,6 @@ function twelor_nailist_column_content($column_name, $post_id) {
 }
 add_action('manage_nailist_posts_custom_column', 'twelor_nailist_column_content', 10, 2);
 
-// お知らせ一覧のカラムをカスタマイズ
-function twelor_add_info_columns($columns) {
-    unset($columns['title']); // タイトルカラムを非表示
-    $new_columns = array();
-    $new_columns['description'] = '案内文';
-    $new_columns['period'] = '日付';
-    if (isset($columns['date'])) {
-        $date = $columns['date'];
-        unset($columns['date']);
-        $new_columns['date'] = $date;
-    }
-    return $new_columns;
-}
-add_filter('manage_info_posts_columns', 'twelor_add_info_columns');
-
-// お知らせ一覧のカラム内容を表示
-function twelor_info_column_content($column_name, $post_id) {
-    if ($column_name === 'period') {
-        echo get_field('info_period', $post_id);
-    } elseif ($column_name === 'description') {
-        echo get_field('info_description', $post_id);
-    }
-}
-add_action('manage_info_posts_custom_column', 'twelor_info_column_content', 10, 2);
 
 // バナー一覧のカラムをカスタマイズ
 function twelor_add_banner_columns($columns) {

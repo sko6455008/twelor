@@ -224,10 +224,45 @@ header .row {
     height: auto;
 }
 
+.design-image-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.coupon {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Newタグ */
+.new-tag-wrapper {
+    position: absolute;
+    top: 0px;
+    left: -75px;
+    width: 200px;
+    height: 40px;
+    overflow: hidden;
+    transform: rotate(-45deg);
+    z-index: 2;
+}
+
+.new-tag {
+    position: absolute;
+    display: block;
+    width: 100%;
+    padding: 8px 0;
+    background-color: #95bac3;
+    color: #fff;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
 /* バナーセクション */
 .banner-section {
     width: 100%;
-    margin-bottom: 40px;
+    margin: 40px 0;
 }
 
 .banner-box {
@@ -250,31 +285,6 @@ header .row {
     object-fit: contain;
 }
 
-/* お知らせセクション */
-.info-section {
-    margin-bottom: 50px;
-}
-
-.info-box {
-    padding: 0px 25%;
-}
-
-.info-item {
-    display: flex;
-    margin-bottom: 20px;
-    align-items: flex-start;
-}
-
-.info-period {
-    width: 120px;
-    flex-shrink: 0;
-    width: 30%;
-}
-
-.info-description {
-    flex-grow: 1;
-    width: 70%;
-}
 
 /* Hand Designセクション */
 .hand-design-section {
@@ -497,10 +507,6 @@ header .row {
         width: 100px;
         padding: 8px 10px;
     }
-    /* お知らせセクション */
-    .info-box {
-        padding: 0px 20%;
-    }
     /* クーポンセクション */
     .coupon-title {
         font-size: 14px;
@@ -549,6 +555,15 @@ header .row {
 }
 
 @media (max-width: 425px) {
+    /* Newタグ */
+    .new-tag-wrapper {
+        left: -80px;
+    }
+    .new-tag {
+        padding: 2px 0;
+        font-size: 10px;
+    }
+
     /* ヘッダー */
     .inquiry-link,
     .reservation-link {
@@ -612,13 +627,6 @@ header .row {
         text-align: center;
         font-size: 11px;
         padding: 6px;
-    }
-    /* お知らせセクション */
-    .info-period {
-        font-size: 14px;
-    }
-    .info-description {
-        font-size: 14px;
     }
     /* クーポンセクション */
     .coupon-title {

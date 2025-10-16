@@ -155,6 +155,9 @@ $sub_category_name = twelor_get_sub_category_name($main_category, $sub_category)
                                             data-desc="<?php echo $desc; ?>"
                                             data-img="<?php echo $img; ?>"
                                         />
+                                        <?php if (twelor_should_show_new_tag(get_the_ID())): ?>
+                                            <?php echo twelor_get_new_tag_html(); ?>
+                                        <?php endif; ?>
                                     </div>
                                 <?php endif; ?>
                                 <div class="gallery-caption">
@@ -311,6 +314,31 @@ $sub_category_name = twelor_get_sub_category_name($main_category, $sub_category)
         text-align: center;
         transition: transform 0.3s ease;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        position: relative;
+    }
+    
+    .new-tag-wrapper {
+        position: absolute;
+        top: 0;
+        left: -75px;
+        width: 200px;
+        height: 40px;
+        overflow: hidden;
+        transform: rotate(-45deg);
+    }
+
+    .new-tag {
+        position: absolute;
+        display: block;
+        width: 100%;
+        padding: 8px 0;
+        background-color: #95bac3;;
+        color: #fff;
+        text-align: center;
+        font-size: 14px;
+        font-weight: bold;
+        z-index: 1;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
     .gallery-image img {
         width: 100%;
@@ -494,6 +522,16 @@ $sub_category_name = twelor_get_sub_category_name($main_category, $sub_category)
         .gallery-modal-content { padding: 10px; }
         .gallery-modal-title { font-size: 16px; }
         .gallery-modal-desc { font-size: 13px; }
+    }
+
+    @media (max-width: 425px) {
+        .new-tag-wrapper {
+            left: -80px;
+        }
+        .new-tag {
+            padding: 2px 0;
+            font-size: 10px;
+        }
     }
 </style>
 

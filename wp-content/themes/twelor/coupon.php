@@ -70,6 +70,9 @@ $total_pages = ceil($total_posts / $posts_per_page);
                     <?php if (has_post_thumbnail()) : ?>
                     <div class="coupon-image-box">
                         <?php the_post_thumbnail('large', array('class' => 'coupon-image')); ?>
+                        <?php if (twelor_should_show_new_tag(get_the_ID())): ?>
+                            <?php echo twelor_get_new_tag_html(); ?>
+                        <?php endif; ?>
                     </div>
                     <?php endif; ?>
                     <?php if ($description) : ?>
@@ -247,9 +250,43 @@ $total_pages = ceil($total_posts / $posts_per_page);
             font-size: 16px;
         }
     }
+    .new-tag-wrapper {
+        position: absolute;
+        top: 0;
+        left: -75px;
+        width: 200px;
+        height: 40px;
+        overflow: hidden;
+        transform: rotate(-45deg);
+    }
+
+    .new-tag {
+        position: absolute;
+        display: block;
+        width: 100%;
+        padding: 8px 0;
+        background-color: #95bac3;;
+        color: #fff;
+        text-align: center;
+        font-size: 14px;
+        font-weight: bold;
+        z-index: 1;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    
     @media (max-width: 768px) {
         .coupon-box {
             grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 425px) {
+        .new-tag-wrapper {
+            left: -80px;
+        }
+        .new-tag {
+            padding: 2px 0;
+            font-size: 10px;
         }
     }
 </style>

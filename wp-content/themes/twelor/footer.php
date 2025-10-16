@@ -11,7 +11,7 @@
                 <div class="footer-address-group">
                     <p><strong>■住所</strong><br>東京都豊島区西池袋5-2-3平凡立教前ビル6Ｆ</p>
                     <p><strong>■営業時間</strong><br>平日11：00 〜 21:00<br>土日祝10：00 〜 20:00</p>
-                    <p><strong>■ ご予約・お問い合わせ</strong><br>9：00 〜 22：00（ご予約受付時間）</p>
+                    <p><strong>■ ご予約・お問い合わせ</strong><br>10：00 〜 21：00（ご予約受付時間）</p>
                 </div>
             </section>
             <article class="footer-right">
