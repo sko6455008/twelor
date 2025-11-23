@@ -215,7 +215,7 @@ get_header();
                     </tr>
                     <tr>
                         <td>
-                            <span class="fw-bold">ワンホンコース</span>
+                            <span class="fw-bold">ワンホン定額コース</span>
                             <p class="description small mb-0 mt-1">所要時間80分</p>
                         </td>
                         <td class="price">¥8,980</td>
