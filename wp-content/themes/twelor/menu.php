@@ -204,63 +204,21 @@ get_header();
                             <span class="fw-bold">こだわり定額コース(アート込)</span>
                             <p class="description small mb-0 mt-1">所要時間80分</p>
                         </td>
-                        <td class="price">¥7,400</td>
+                        <td class="price">¥8,400</td>
                     </tr>
                     <tr>
                         <td>
-                            <span class="fw-bold">キレイめ定額コース(アート込)</span>
-                            <p class="description small mb-0 mt-1">所要時間90分</p>
-                        </td>
-                        <td class="price">¥9,980</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span class="fw-bold">定額ニュアンスS</span>
+                            <span class="fw-bold">ニュアンス定額コース</span>
                             <p class="description small mb-0 mt-1">所要時間60分</p>
                         </td>
-                        <td class="price">¥6,980</td>
+                        <td class="price">¥7,480</td>
                     </tr>
                     <tr>
                         <td>
-                            <span class="fw-bold">定額ニュアンスM</span>
-                            <p class="description small mb-0 mt-1">所要時間60分</p>
-                        </td>
-                        <td class="price">¥7,980</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span class="fw-bold">定額ニュアンスL</span>
+                            <span class="fw-bold">ワンホンコース</span>
                             <p class="description small mb-0 mt-1">所要時間80分</p>
                         </td>
                         <td class="price">¥8,980</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span class="fw-bold">定額ニュアンスXL</span>
-                            <p class="description small mb-0 mt-1">所要時間90分</p>
-                        </td>
-                        <td class="price">¥10,480</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span class="fw-bold">定額ワンホン スモール</span>
-                            <p class="description small mb-0 mt-1">所要時間60分</p>
-                        </td>
-                        <td class="price">¥7,980</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span class="fw-bold">定額ワンホン ミディアム</span>
-                            <p class="description small mb-0 mt-1">所要時間80分</p>
-                        </td>
-                        <td class="price">¥8,980</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span class="fw-bold">定額ワンホン ラージ</span>
-                            <p class="description small mb-0 mt-1">所要時間90分</p>
-                        </td>
-                        <td class="price">¥9,980</td>
                     </tr>
                     <tr>
                         <td>
