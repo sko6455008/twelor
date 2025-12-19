@@ -12,6 +12,7 @@ wp-content/*
 ## 対象外のディレクトリ
 !wp-content/themes/
 !wp-content/plugins/
+!wp-content/mu-plugins/
 
 # 一部を除くプラグインを除外
 wp-content/plugins/*

@@ -1,6 +1,6 @@
 <?php
 /**
- * Twelor テーマの機能
+ * Twelorテーマの機能
  */
 
 // テーマのセットアップ
@@ -58,7 +58,9 @@ function twelor_change_title_placeholder($title, $post) {
     } elseif ($post->post_type === 'banner') {
         $title = 'バナー名を入力';
     } elseif ($post->post_type === 'home') {
-        $title = 'SEOに適した画像タイトル入力(例：パラジェル専門店 Twelor)';
+        $title = 'SEOに適した画像タイトル入力(例：パラジェル専門店 twelor)';
+    } elseif ($post->post_type === 'process_chart') {
+        $title = '工程表のタイトルを入力';
     }
     return $title;
 }
@@ -423,6 +425,36 @@ function twelor_get_home_image() {
     return null;
 }
 
+// カスタム投稿タイプ: 工程表
+function twelor_register_process_chart_post_type() {
+    $args = array(
+        'public' => false, // 公開表示しない
+        'publicly_queryable' => false, // 公開クエリ不可
+        'show_ui' => true, // 管理画面に表示
+        'show_in_menu' => true, // メニューに表示
+        'label'  => '工程表',
+        'labels' => array(
+            'name' => '工程表',
+            'singular_name' => '工程表',
+            'add_new' => '新規追加',
+            'add_new_item' => '新規工程表を追加',
+            'edit_item' => '工程表を編集',
+            'new_item' => '新しい工程表',
+            'view_item' => '工程表を表示',
+            'search_items' => '工程表を検索',
+            'not_found' => '工程表が見つかりませんでした',
+            'not_found_in_trash' => 'ゴミ箱に工程表はありません',
+        ),
+        'supports' => array('title'),
+        'menu_icon' => 'dashicons-chart-line',
+        'has_archive' => false, // アーカイブページなし
+        'rewrite' => false, // リライトルールなし
+        'hierarchical' => false,
+    );
+    register_post_type('process_chart', $args);
+}
+add_action('init', 'twelor_register_process_chart_post_type');
+
 // ACFフィールドの登録
 function twelor_register_acf_fields() {
     if (function_exists('acf_add_local_field_group')) {
@@ -771,6 +803,53 @@ function twelor_register_acf_fields() {
                         'param' => 'post_type',
                         'operator' => '==',
                         'value' => 'coupon',
+                    ),
+                ),
+            ),
+            'menu_order' => 0,
+            'position' => 'normal',
+            'style' => 'default',
+            'label_placement' => 'top',
+            'instruction_placement' => 'label',
+            'hide_on_screen' => '',
+            'active' => true,
+            'description' => '',
+        ));
+
+        // 工程表用フィールド
+        acf_add_local_field_group(array(
+            'key' => 'group_process_chart',
+            'title' => '工程表詳細',
+            'fields' => array(
+                array(
+                    'key' => 'field_process_image',
+                    'label' => '工程表の画像',
+                    'name' => 'process_image',
+                    'type' => 'image',
+                    'instructions' => '工程表の画像をアップロードしてください',
+                    'required' => 0,
+                    'return_format' => 'array',
+                    'preview_size' => 'thumbnail',
+                    'library' => 'all',
+                ),
+                array(
+                    'key' => 'field_design_image',
+                    'label' => 'デザインの画像',
+                    'name' => 'design_image',
+                    'type' => 'image',
+                    'instructions' => 'デザインの画像をアップロードしてください',
+                    'required' => 0,
+                    'return_format' => 'array',
+                    'preview_size' => 'thumbnail',
+                    'library' => 'all',
+                ),
+            ),
+            'location' => array(
+                array(
+                    array(
+                        'param' => 'post_type',
+                        'operator' => '==',
+                        'value' => 'process_chart',
                     ),
                 ),
             ),
@@ -1453,6 +1532,87 @@ function twelor_home_column_content($column_name, $post_id) {
     }
 }
 add_action('manage_home_posts_custom_column', 'twelor_home_column_content', 10, 2);
+
+// 工程表一覧のカラムをカスタマイズ
+function twelor_add_process_chart_columns($columns) {
+    $new_columns = array();
+    $new_columns['title'] = 'タイトル';
+    $new_columns['process_image'] = '工程表の画像';
+    $new_columns['design_image'] = 'デザインの画像';
+    if (isset($columns['date'])) {
+        $date = $columns['date'];
+        unset($columns['date']);
+        $new_columns['date'] = $date;
+    }
+    return $new_columns;
+}
+add_filter('manage_process_chart_posts_columns', 'twelor_add_process_chart_columns');
+
+// 工程表一覧のカラム内容を表示
+function twelor_process_chart_column_content($column_name, $post_id) {
+    if ($column_name === 'process_image') {
+        $process_image = get_field('process_image', $post_id);
+        if ($process_image) {
+            $image_id = null;
+            // 画像IDを取得
+            if (is_numeric($process_image)) {
+                $image_id = $process_image;
+            } elseif (is_array($process_image) && isset($process_image['id'])) {
+                $image_id = $process_image['id'];
+            }
+            
+            // 既存のthumbnailサイズを使用（新しい画像サイズを生成しない）
+            if ($image_id) {
+                $image_url = wp_get_attachment_image_url($image_id, 'thumbnail');
+                if ($image_url) {
+                    echo '<img src="' . esc_url($image_url) . '" alt="工程表の画像" style="width: 100px; height: 100px; object-fit: cover;" />';
+                } else {
+                    echo '未設定';
+                }
+            } elseif (is_array($process_image) && isset($process_image['url'])) {
+                // 画像IDがない場合は元のURLを使用
+                echo '<img src="' . esc_url($process_image['url']) . '" alt="工程表の画像" style="width: 100px; height: 100px; object-fit: cover;" />';
+            } elseif (is_string($process_image)) {
+                echo '<img src="' . esc_url($process_image) . '" alt="工程表の画像" style="width: 100px; height: 100px; object-fit: cover;" />';
+            } else {
+                echo '未設定';
+            }
+        } else {
+            echo '未設定';
+        }
+    } elseif ($column_name === 'design_image') {
+        $design_image = get_field('design_image', $post_id);
+        if ($design_image) {
+            $image_id = null;
+            // 画像IDを取得
+            if (is_numeric($design_image)) {
+                $image_id = $design_image;
+            } elseif (is_array($design_image) && isset($design_image['id'])) {
+                $image_id = $design_image['id'];
+            }
+            
+            // 既存のthumbnailサイズを使用（新しい画像サイズを生成しない）
+            if ($image_id) {
+                $image_url = wp_get_attachment_image_url($image_id, 'thumbnail');
+                if ($image_url) {
+                    echo '<img src="' . esc_url($image_url) . '" alt="デザインの画像" style="width: 100px; height: 100px; object-fit: cover;" />';
+                } else {
+                    echo '未設定';
+                }
+            } elseif (is_array($design_image) && isset($design_image['url'])) {
+                // 画像IDがない場合は元のURLを使用
+                echo '<img src="' . esc_url($design_image['url']) . '" alt="デザインの画像" style="width: 100px; height: 100px; object-fit: cover;" />';
+            } elseif (is_string($design_image)) {
+                echo '<img src="' . esc_url($design_image) . '" alt="デザインの画像" style="width: 100px; height: 100px; object-fit: cover;" />';
+            } else {
+                echo '未設定';
+            }
+        } else {
+            echo '未設定';
+        }
+    }
+}
+add_action('manage_process_chart_posts_custom_column', 'twelor_process_chart_column_content', 10, 2);
 
 // Q&Aの表示順列をソート可能にする
 function twelor_sortable_qa_columns($columns) {
