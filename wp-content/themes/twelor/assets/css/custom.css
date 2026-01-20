@@ -307,6 +307,8 @@ header .row {
 .image {
     width: 100%;
     height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
     display: inline-block;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.20);
 }
@@ -356,6 +358,8 @@ header .row {
 .coupon-image {
     width: 100%;
     height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
     display: inline-block;
     padding: 0px 10px;
 }

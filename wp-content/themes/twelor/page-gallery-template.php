@@ -343,6 +343,7 @@ $sub_category_name = twelor_get_sub_category_name($main_category, $sub_category)
     .gallery-image img {
         width: 100%;
         height: auto;
+        aspect-ratio: 4 / 3;
         object-fit: cover;
     }
     .gallery-image:hover img {
