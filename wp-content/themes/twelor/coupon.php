@@ -9,7 +9,7 @@ get_header();
 $current_paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
 // 1ページあたりの表示数
-$posts_per_page = 51;
+$posts_per_page = 102;
 
 // 現在時刻を取得
 $current_time = current_time('mysql');

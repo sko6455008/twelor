@@ -829,7 +829,7 @@ function twelor_register_acf_fields() {
                     'instructions' => '工程表の画像をアップロードしてください',
                     'required' => 0,
                     'return_format' => 'array',
-                    'preview_size' => 'thumbnail',
+                    'preview_size' => 'large',
                     'library' => 'all',
                 ),
                 array(
@@ -840,7 +840,7 @@ function twelor_register_acf_fields() {
                     'instructions' => 'デザインの画像をアップロードしてください',
                     'required' => 0,
                     'return_format' => 'array',
-                    'preview_size' => 'thumbnail',
+                    'preview_size' => 'large',
                     'library' => 'all',
                 ),
             ),
