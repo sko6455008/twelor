@@ -1090,6 +1090,17 @@ function twelor_get_new_tag_html() {
     return '<div class="new-tag-wrapper"><span class="new-tag">New</span></div>';
 }
 
+// ブログアーカイブの表示件数を変更
+function twelor_blog_query_settings($query)
+{
+    if (!is_admin() && $query->is_main_query()) {
+        if (is_post_type_archive('blog') || is_tax('blog_cat') || is_tax('blog_tag')) {
+            $query->set('posts_per_page', 5);
+        }
+    }
+}
+add_action('pre_get_posts', 'twelor_blog_query_settings');
+
 // 既存の投稿に作成日時を設定する関数
 function twelor_set_creation_date_for_existing_posts() {
     $args = array(
