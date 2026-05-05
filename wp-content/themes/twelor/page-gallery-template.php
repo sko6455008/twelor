@@ -77,23 +77,6 @@ $sub_category_name = twelor_get_sub_category_name($main_category, $sub_category)
         </div>
         <?php endforeach; ?>
     </div>
-    <?php elseif ($main_category === 'guest'): ?>
-    <div class="course-navigation">
-        <?php
-        $sub_categories = twelor_get_course_choices($main_category);
-        $chunks = array_chunk($sub_categories, 4, true);
-        foreach ($chunks as $chunk): ?>
-        <div class="row">
-            <?php foreach ($chunk as $slug => $name): ?>
-            <div class="col-md-3 col-6">
-                <a href="<?php echo home_url('/gallery_guest_nail/' . $slug . '/'); ?>" class="course-nav-item <?php echo ($sub_category == $slug) ? 'active' : ''; ?>">
-                    <?php echo esc_html($name); ?>
-                </a>
-            </div>
-            <?php endforeach; ?>
-        </div>
-        <?php endforeach; ?>
-    </div>
     <?php elseif ($main_category === 'arts-parts'): ?>
     <div class="course-navigation">
         <?php

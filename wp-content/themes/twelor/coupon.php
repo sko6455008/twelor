@@ -14,13 +14,8 @@ $posts_per_page = 102;
 // 現在時刻を取得
 $current_time = current_time('mysql');
 
-//ネイリスト情報を取得
-$nailist = get_query_var('nailist');
-
 // クーポンの投稿を取得
-$coupon_query = twelor_get_coupon_page_posts($posts_per_page, $current_paged, $nailist);
-
-$nailist_navigation = twelor_get_nailist_navigation($nailist);
+$coupon_query = fascina_get_coupon_page_posts($posts_per_page, $current_paged);
 
 // 総ページ数を計算
 $total_posts = $coupon_query->found_posts;
@@ -34,20 +29,7 @@ $total_pages = ceil($total_posts / $posts_per_page);
     </div>
 </div>
 
-<div class="coupon-container">
-    <div class="nailist-navigation">
-        <div class="row">
-            <?php 
-            foreach ($nailist_navigation as $nav_item) : 
-            ?>
-                <div class="col-md-4 col-6">
-                    <a href="<?php echo esc_url($nav_item['url']); ?>" class="nailist-nav-item <?php echo $nav_item['active'] ? 'active' : ''; ?>">
-                        <?php echo esc_html($nav_item['name']); ?>
-                    </a>
-                </div>
-            <?php endforeach; ?>
-        </div>
-    </div>
+<div class="coupon-container">     
 
     <!-- カテゴリータイトル -->
     <div class="category-title">
@@ -152,29 +134,7 @@ $total_pages = ceil($total_posts / $posts_per_page);
     .coupon-container {
         padding: 50px 0;
     }
-    .nailist-navigation {
-        margin-bottom: 30px;
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-    .nailist-nav-item {
-        display: block;
-        background-color: #f8f8f8;
-        padding: 12px;
-        margin-bottom: 10px;
-        text-align: center;
-        text-decoration: none;
-        color: #333;
-        border-radius: 4px;
-        transition: all 0.3s;
-        border: 1px solid #eee;
-        font-size: 13px;
-    }
-    .nailist-nav-item:hover, .nailist-nav-item.active {
-        background-color: #95bac3;
-        color: #fff;
-        border-color: #95bac3;
-    }
+
     .no-coupons-found {
         text-align: center;
         padding: 50px 0;
@@ -240,11 +200,6 @@ $total_pages = ceil($total_posts / $posts_per_page);
         transform: scale(0.98);
     }
     /* レスポンシブ対応 */
-    @media (max-width: 1024px) {
-        .nailist-navigation {
-            margin: 0 5%;
-        }
-    }
     @media (max-width: 991px) {
         .category-title h2 {
             font-size: 16px;

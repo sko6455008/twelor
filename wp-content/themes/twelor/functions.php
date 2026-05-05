@@ -237,75 +237,6 @@ function twelor_register_coupon_post_type() {
 }
 add_action('init', 'twelor_register_coupon_post_type');
 
-
-// カスタム投稿タイプ: ネイリスト
-function twelor_register_nailist_post_type() {
-    $args = array(
-        'public' => true,
-        'label'  => 'ネイリスト',
-        'labels' => array(
-            'name' => 'ネイリスト',
-            'singular_name' => 'ネイリスト',
-            'add_new' => '新規追加',
-            'add_new_item' => '新規ネイリストを追加',
-            'edit_item' => 'ネイリストを編集',
-        ),
-        'supports' => array('custom-fields', 'page-attributes'),
-        'menu_icon' => 'dashicons-admin-users',
-        'has_archive' => true,
-        'rewrite' => array('slug' => 'nailist'),
-        'hierarchical' => false,
-    );
-    register_post_type('nailist', $args);
-}
-add_action('init', 'twelor_register_nailist_post_type');
-
-// ネイリストの選択肢を動的に生成する関数
-function twelor_get_nailist_choices() {
-    $choices = array();
-   
-    $nailists = get_posts(array(
-        'post_type' => 'nailist',
-        'posts_per_page' => -1,
-        'post_status' => 'publish',
-        'orderby' => 'menu_order',
-        'order' => 'ASC'
-    ));
-   
-    foreach ($nailists as $nailist) {
-        $nailist_name = get_field('nailist_name', $nailist->ID);
-        $roman_slug = get_field('nailist_slug', $nailist->ID);
-        $choices[$roman_slug] = $nailist_name;
-    }
-   
-    return $choices;
-}
-
-// クーポン登録用のネイリスト選択肢を取得（「一覧」を除外）
-function twelor_get_nailist_choices_for_registration() {
-    $choices = array();
-   
-    $nailists = get_posts(array(
-        'post_type' => 'nailist',
-        'posts_per_page' => -1,
-        'post_status' => 'publish',
-        'orderby' => 'menu_order',
-        'order' => 'ASC'
-    ));
-   
-    foreach ($nailists as $nailist) {
-        $nailist_name = get_field('nailist_name', $nailist->ID);
-        $roman_slug = get_field('nailist_slug', $nailist->ID);
-        
-        // 「一覧」は除外
-        if ($roman_slug !== 'list') {
-            $choices[$roman_slug] = $nailist_name;
-        }
-    }
-   
-    return $choices;
-}
-
 // カスタム投稿タイプ: バナー
 function twelor_register_banner_post_type() {
     $args = array(
@@ -483,7 +414,7 @@ function twelor_register_acf_fields() {
                     'label' => 'サブカテゴリー',
                     'name' => 'gallery_sub_category',
                     'type' => 'radio',
-                    'instructions' => '※ギャラリーに紐づいいているサブカテゴリーを削除した場合、Guestギャラリーページの「一覧」にだけ表示されます。',
+                    'instructions' => '※紐づいているサブカテゴリーが削除された場合、ギャラリーページに表示されなくなります。',
                     'required' => 1,
                     'choices' => array(),
                     'return_format' => 'value',
@@ -568,7 +499,6 @@ function twelor_register_acf_fields() {
                     'choices' => array(
                         'hand' => 'Handデザイン',
                         'foot' => 'Footデザイン',
-                        'guest' => 'Guestデザイン',
                         'arts-parts' => 'アートパーツ',
                     ),
                     'return_format' => 'value',
@@ -646,49 +576,6 @@ function twelor_register_acf_fields() {
             'description' => '',
         ));
 
-        // ネイリスト用フィールド
-        acf_add_local_field_group(array(
-            'key' => 'group_nailist',
-            'title' => 'ネイリスト設定',
-            'fields' => array(
-                array(
-                    'key' => 'field_nailist_name',
-                    'label' => 'ネイリスト名',
-                    'name' => 'nailist_name',
-                    'type' => 'text',
-                    'instructions' => 'ネイリストの名前を入力してください',
-                    'required' => 1,
-                    'placeholder' => '例: 田中,佐藤'
-                ),
-                array(
-                    'key' => 'field_nailist_slug',
-                    'label' => 'ローマ字スラッグ',
-                    'name' => 'nailist_slug',
-                    'type' => 'text',
-                    'instructions' => 'URLに使う半角英数字・ハイフンのみ（例: tanaka, sato）。',
-                    'required' => 1,
-                    'placeholder' => '例: tanaka,sato'
-                ),
-            ),
-            'location' => array(
-                array(
-                    array(
-                        'param' => 'post_type',
-                        'operator' => '==',
-                        'value' => 'nailist',
-                    ),
-                ),
-            ),
-            'menu_order' => 0,
-            'position' => 'normal',
-            'style' => 'default',
-            'label_placement' => 'top',
-            'instruction_placement' => 'label',
-            'hide_on_screen' => '',
-            'active' => true,
-            'description' => '',
-        ));
-
         acf_add_local_field_group(array(
             'key' => 'group_qa',
             'title' => 'Q&A詳細',
@@ -745,17 +632,6 @@ function twelor_register_acf_fields() {
             'key' => 'group_coupon',
             'title' => 'クーポン詳細',
             'fields' => array(
-                array(
-                    'key' => 'field_coupon_nailist',
-                    'label' => 'ネイリスト',
-                    'name' => 'coupon_nailist',
-                    'type' => 'checkbox',
-                    'required' => 0,
-                    'instructions' => '※未選択の場合はクーポンページの「一覧」にだけ表示されます。',
-                    'choices' => twelor_get_nailist_choices_for_registration(),
-                    'return_format' => 'value',
-                    'layout' => 'vertical'
-                ),
                 array(
                     'key' => 'field_coupon_price',
                     'label' => 'クーポン価格',
@@ -892,132 +768,6 @@ function twelor_load_gallery_sub_category_choices($field) {
     return $field;
 }
 add_filter('acf/load_field/name=gallery_sub_category', 'twelor_load_gallery_sub_category_choices');
-
-// ACFフィールドの選択肢を動的に更新
-function twelor_load_nailist_field_choices($field) {
-    if ($field['name'] === 'coupon_nailist') {
-        $field['choices'] = twelor_get_nailist_choices();
-    }
-    return $field;
-}
-add_filter('acf/load_field/name=coupon_nailist', 'twelor_load_nailist_field_choices');
-
-// nailist_slug バリデーション（半角英字小文字のみ）
-function twelor_validate_nailist_slug($valid, $value, $field, $input) {
-    if ($valid !== true) {
-        return $valid;
-    }
-    if (!is_string($value)) {
-        return 'ローマ字小文字（a〜z）のみで入力してください。';
-    }
-    if (!preg_match('/^[a-z]+$/', $value)) {
-        return 'ローマ字小文字（a〜z）のみで入力してください。';
-    }
-    return $valid;
-}
-add_filter('acf/validate_value/key=field_nailist_slug', 'twelor_validate_nailist_slug', 10, 4);
-
-function twelor_get_nailist_display_name_by_value($value) {
-    // 配列の場合は最初の要素を使用（チェックボックスで単一選択の場合）
-    if (is_array($value)) {
-        $value = !empty($value) ? $value[0] : '';
-    }
-    
-    // 空の値の場合は空文字列を返す（管理画面で空白表示）
-    if (empty($value)) {
-        return '';
-    }
-    
-    // choices（ローマ字スラッグ or post_name キー）に存在すればその表示名を返す
-    $choices = twelor_get_nailist_choices();
-    if (isset($choices[$value])) {
-        return $choices[$value];
-    }
-    return '';
-}
-
-// ネイリスト保存時にタイトルを同期
-function twelor_auto_generate_nailist_slug($post_id) {
-    if (get_post_type($post_id) !== 'nailist') {
-        return;
-    }
-   
-    // 無限ループを防ぐ
-    remove_action('save_post', 'twelor_auto_generate_nailist_slug');
-   
-    $nailist_name = get_field('nailist_name', $post_id);
-    $nailist_slug = get_field('nailist_slug', $post_id);
-   
-    if (!empty($nailist_name)) {
-        wp_update_post(array(
-            'ID' => $post_id,
-            'post_title' => $nailist_name,
-            'post_name' => $nailist_slug,
-        ));
-    }
-   
-    // アクションを再度追加
-    add_action('save_post', 'twelor_auto_generate_nailist_slug');
-}
-add_action('save_post', 'twelor_auto_generate_nailist_slug');
-
-// ネイリスト削除時、割り当て済みクーポンからネイリストの値を削除
-function twelor_remove_nailist_from_coupons_on_delete($post_id) {
-    if (get_post_type($post_id) !== 'nailist') return;
-    $post = get_post($post_id);
-    $slug = $post ? $post->post_name : '';
-    
-    $query = new WP_Query(array(
-        'post_type' => 'coupon',
-        'posts_per_page' => -1,
-        'post_status' => 'any',
-        'meta_query' => array(
-            'relation' => 'OR',
-            array(
-                'key' => 'coupon_nailist',
-                'value' => (string)$post_id,
-                'compare' => 'LIKE'
-            ),
-            array(
-                'key' => 'coupon_nailist',
-                'value' => $slug,
-                'compare' => 'LIKE'
-            )
-        ),
-        'fields' => 'ids'
-    ));
-    
-    if ($query->have_posts()) {
-        foreach ($query->posts as $coupon_id) {
-            $current_nailists = get_field('coupon_nailist', $coupon_id);
-            
-            if (is_array($current_nailists)) {
-                // 配列から該当するネイリストを削除
-                $updated_nailists = array();
-                foreach ($current_nailists as $nailist_value) {
-                    if ($nailist_value !== (string)$post_id && $nailist_value !== $slug) {
-                        $updated_nailists[] = $nailist_value;
-                    }
-                }
-                
-                // 更新されたネイリストリストを保存
-                if (empty($updated_nailists)) {
-                    // ネイリストが空になった場合は空の配列を保存
-                    update_field('coupon_nailist', array(), $coupon_id);
-                } else {
-                    update_field('coupon_nailist', $updated_nailists, $coupon_id);
-                }
-            } else {
-                // 単一値の場合
-                if ($current_nailists === (string)$post_id || $current_nailists === $slug) {
-                    update_field('coupon_nailist', array(), $coupon_id);
-                }
-            }
-        }
-    }
-}
-add_action('before_delete_post', 'twelor_remove_nailist_from_coupons_on_delete');
-add_action('trashed_post', 'twelor_remove_nailist_from_coupons_on_delete');
 
 // サブカテゴリー削除時、紐づいているギャラリーのサブカテゴリーフィールドを空にして非表示にする
 function twelor_clear_galleries_on_subcategory_delete($post_id) {
@@ -1158,7 +908,7 @@ function twelor_admin_gallery_order($query) {
     if (is_admin() && $query->is_main_query()) {
         $post_type = $query->get('post_type');
        
-        if (in_array($post_type, array('gallery', 'coupon', 'banner', 'nailist'))) {
+        if (in_array($post_type, array('gallery', 'coupon', 'banner'))) {
             if (!$query->get('orderby')) {
                 $query->set('orderby', 'menu_order');
                 $query->set('order', 'ASC');
@@ -1379,7 +1129,6 @@ function twelor_add_coupon_columns($columns) {
         }
     }
     $new_columns['display_settings'] = '表示設定';
-    $new_columns['nailist'] = 'ネイリスト';
     $new_columns['price'] = 'クーポン価格';
     $new_columns['description'] = '説明文';
     if (isset($new_columns['date'])) {
@@ -1397,9 +1146,6 @@ function twelor_coupon_column_content($column_name, $post_id) {
         if (has_post_thumbnail($post_id)) {
             echo get_the_post_thumbnail($post_id, array(60, 60));
         }
-    } elseif ($column_name === 'nailist') {
-        $nailist_value = get_field('coupon_nailist', $post_id);
-        echo esc_html(twelor_get_nailist_display_name_by_value($nailist_value));
     } elseif ($column_name === 'menu_order') {
         $post = get_post($post_id);
         echo $post->menu_order;
@@ -1421,36 +1167,6 @@ function twelor_coupon_column_content($column_name, $post_id) {
     }
 }
 add_action('manage_coupon_posts_custom_column', 'twelor_coupon_column_content', 10, 2);
-
-// ネイリスト一覧のカラムをカスタマイズ
-function twelor_add_nailist_columns($columns) {
-    unset($columns['title']);
-    $new_columns = array();
-    $new_columns['menu_order'] = '表示順';
-    $new_columns['nailist_name'] = 'ネイリスト名';
-    $new_columns['nailist_slug'] = 'ローマ字スラッグ';
-    if (isset($columns['date'])) {
-        $date = $columns['date'];
-        unset($columns['date']);
-        $new_columns['date'] = $date;
-    }
-    return $new_columns;
-}
-add_filter('manage_nailist_posts_columns', 'twelor_add_nailist_columns');
-
-// ネイリスト一覧のカラム内容を表示
-function twelor_nailist_column_content($column_name, $post_id) {
-    if ($column_name === 'menu_order') {
-        $post = get_post($post_id);
-        echo $post->menu_order;
-    } else if ($column_name === 'nailist_name') {
-        echo get_field('nailist_name', $post_id);
-    } else if ($column_name === 'nailist_slug') {
-        echo get_field('nailist_slug', $post_id);
-    }
-}
-add_action('manage_nailist_posts_custom_column', 'twelor_nailist_column_content', 10, 2);
-
 
 // バナー一覧のカラムをカスタマイズ
 function twelor_add_banner_columns($columns) {
@@ -1660,13 +1376,6 @@ function twelor_sortable_banner_columns($columns) {
 }
 add_filter('manage_edit-banner_sortable_columns', 'twelor_sortable_banner_columns');
 
-// ネイリストの表示順列をソート可能にする
-function twelor_sortable_nailist_columns($columns) {
-    $columns['menu_order'] = 'menu_order';
-    return $columns;
-}
-add_filter('manage_edit-nailist_sortable_columns', 'twelor_sortable_nailist_columns');
-
 // 管理画面の一覧のスタイル調整
 function twelor_admin_columns_style() {
     echo '<style>
@@ -1680,7 +1389,6 @@ function twelor_admin_columns_style() {
         .column-menu_order {
             width: 100px;
         }
-        .column-nailist,
         .column-main_category,
         .column-sub_category,
         .column-price,
@@ -1714,8 +1422,8 @@ add_action('admin_head', 'twelor_admin_columns_style');
 function twelor_custom_order_admin_script() {
     global $post_type;
 
-    // ギャラリー、クーポン、サブカテゴリー、バナー、ネイリストの一覧ページでのみ読み込み
-    if (in_array($post_type, array('gallery', 'coupon', 'course', 'banner', 'nailist'))) {
+    // ギャラリー、クーポン、サブカテゴリー、バナーの一覧ページでのみ読み込み
+    if (in_array($post_type, array('gallery', 'coupon', 'course', 'banner'))) {
         ?>
         <script>
         jQuery(document).ready(function($) {
@@ -1757,35 +1465,6 @@ function twelor_acf_notice() {
         <p><?php _e('twelorテーマは Advanced Custom Fields プラグインが必要です。インストールして有効化してください。', 'twelor'); ?></p>
     </div>
     <?php
-}
-
-// 動的ネイリストナビゲーションを生成する関数
-function twelor_get_nailist_navigation($current_nailist = '') {
-    $nailists = get_posts(array(
-        'post_type' => 'nailist',
-        'posts_per_page' => -1,
-        'post_status' => 'publish',
-        'orderby' => 'menu_order',
-        'order' => 'ASC'
-    ));
-   
-    $navigation = array();
-   
-    // 登録されたネイリストを追加（ローマ字スラッグ優先）
-    foreach ($nailists as $nailist) {
-        $nailist_name = get_field('nailist_name', $nailist->ID);
-        $display_name = $nailist_name;
-        $roman_slug = get_field('nailist_slug', $nailist->ID);
-        $slug = $roman_slug !== '' ? sanitize_title($roman_slug) : $nailist->post_name;
-        $navigation[] = array(
-            'slug' => $slug,
-            'name' => $display_name,
-            'url' => home_url('/coupon/' . $slug . '/'),
-            'active' => ($current_nailist === $slug)
-        );
-    }
-   
-    return $navigation;
 }
 
 // リライトルール
@@ -1962,30 +1641,6 @@ function twelor_apply_gallery_filters($query) {
 }
 add_action('pre_get_posts', 'twelor_apply_gallery_filters');
 
-// 管理画面のクーポン一覧にフィルターを追加
-function twelor_add_coupon_filters() {
-    global $typenow;
-    if ($typenow === 'coupon') {
-        $choices = twelor_get_nailist_choices();
-        $current_nailist = isset($_GET['coupon_nailist_filter']) ? $_GET['coupon_nailist_filter'] : '';
-        echo '<select name="coupon_nailist_filter">';
-        echo '<option value="">ネイリストで絞り込み</option>';
-        foreach ($choices as $value => $label) {
-            // 「一覧」は絞り込みから除外
-            if ($value === 'list') continue;
-            
-            printf(
-                '<option value="%s" %s>%s</option>',
-                esc_attr($value),
-                selected($current_nailist, $value, false),
-                esc_html($label)
-            );
-        }
-        echo '</select>';
-    }
-}
-add_action('restrict_manage_posts', 'twelor_add_coupon_filters');
-
 // 管理画面のサブカテゴリー一覧にフィルターを追加
 function twelor_add_course_filters() {
     global $typenow;
@@ -1994,7 +1649,6 @@ function twelor_add_course_filters() {
         $main_categories = array(
             'hand' => 'Handデザイン',
             'foot' => 'Footデザイン',
-            'guest' => 'Guestデザイン',
             'arts-parts' => 'アートパーツ'
         );
 
@@ -2016,32 +1670,6 @@ function twelor_add_course_filters() {
     }
 }
 add_action('restrict_manage_posts', 'twelor_add_course_filters');
-
-// クーポンのフィルター条件を適用
-function twelor_apply_coupon_filters($query) {
-    global $pagenow, $typenow;
-    if ($pagenow === 'edit.php' && $typenow === 'coupon' && is_admin() && $query->is_main_query()) {
-        if (!empty($_GET['coupon_nailist_filter'])) {
-            // 「一覧」が選択された場合は特別な処理
-            if ($_GET['coupon_nailist_filter'] === 'list') {
-                // すべてのクーポンを表示（ネイリストフィルターなし）
-            } else {
-                // 通常のネイリストフィルター
-                $meta_query = (array) $query->get('meta_query');
-                if (empty($meta_query)) {
-                    $meta_query = array('relation' => 'AND');
-                }
-                $meta_query[] = array(
-                    'key' => 'coupon_nailist',
-                    'value' => $_GET['coupon_nailist_filter'],
-                    'compare' => 'LIKE'
-                );
-                $query->set('meta_query', $meta_query);
-            }
-        }
-    }
-}
-add_action('pre_get_posts', 'twelor_apply_coupon_filters');
 
 // サブカテゴリーのフィルター条件を適用
 function twelor_apply_course_filters($query) {
@@ -2147,42 +1775,13 @@ function twelor_get_gallery_page_posts($main_category = '', $sub_category = '', 
         );
     }
    
-    // サブカテゴリーの条件（サブカテゴリーがbridalの場合はセットしない)
-    if (!empty($sub_category) && $sub_category !== 'bridal') {
-        // GuestギャラリーでAllが選択された場合は特別な処理
-        if ($main_category === 'guest' && $sub_category === 'list') {
-            // GuestギャラリーのAll以外のサブカテゴリーを取得
-            $guest_sub_categories = twelor_get_course_choices('guest');
-            $guest_slugs = array_keys($guest_sub_categories);
-            
-            // 空のサブカテゴリーも含める
-            $guest_slugs[] = '';
-            
-            // 一覧以外のサブカテゴリーの条件を作成（一覧も含める）
-            $sub_category_conditions = array();
-            foreach ($guest_slugs as $slug) {
-                $sub_category_conditions[] = array(
-                    'key' => 'gallery_sub_category',
-                    'value' => $slug,
-                    'compare' => '='
-                );
-            }
-            
-            if (!empty($sub_category_conditions)) {
-                $or_condition = array('relation' => 'OR');
-                foreach ($sub_category_conditions as $condition) {
-                    $or_condition[] = $condition;
-                }
-                $meta_query[] = $or_condition;
-                
-            }
-        } else {
-            $meta_query[] = array(
-                'key' => 'gallery_sub_category',
-                'value' => $sub_category,
-                'compare' => '='
-            );
-        }
+    // サブカテゴリーの条件（Guestはサブカテゴリーで絞り込まず全件表示。bridalはサブカテゴリー指定しない）
+    if ($main_category !== 'guest' && !empty($sub_category) && $sub_category !== 'bridal') {
+        $meta_query[] = array(
+            'key' => 'gallery_sub_category',
+            'value' => $sub_category,
+            'compare' => '='
+         );
     }
 
     // ブライダルデザインの条件
@@ -2231,71 +1830,18 @@ function twelor_get_top_coupon_posts($limit = 12) {
 }
 
 // クーポンページのクーポン表示制御
-function twelor_get_coupon_page_posts($posts_per_page = 9, $paged = 1, $nailist = '') {
-    $meta_query = array('relation' => 'AND');
-   
-    // 表示設定の条件
-    $meta_query[] = array(
-        'key' => 'coupon_display_coupon',
-        'value' => '1',
-        'compare' => '='
-    );
-   
-    if (!empty($nailist)) {
-        // 「一覧」が選択された場合は特別な処理
-        if ($nailist === 'list') {
-            // 空のネイリストも含めてすべてのクーポンを表示
-            $nailist_conditions = array();
-            
-            // 既存のネイリストを取得
-            $nailist_posts = get_posts(array(
-                'post_type' => 'nailist',
-                'posts_per_page' => -1,
-                'post_status' => 'publish'
-            ));
-            
-            foreach ($nailist_posts as $nailist_post) {
-                $nailist_conditions[] = array(
-                    'key' => 'coupon_nailist',
-                    'value' => $nailist_post->post_name,
-                    'compare' => 'LIKE'
-                );
-            }
-            
-            // 空のネイリストも含める（空文字列と空配列の両方）
-            $nailist_conditions[] = array(
-                'key' => 'coupon_nailist',
-                'value' => '',
-                'compare' => '='
-            );
-            $nailist_conditions[] = array(
-                'key' => 'coupon_nailist',
-                'value' => array(),
-                'compare' => '='
-            );
-            
-            if (!empty($nailist_conditions)) {
-                $or_condition = array('relation' => 'OR');
-                foreach ($nailist_conditions as $condition) {
-                    $or_condition[] = $condition;
-                }
-                $meta_query[] = $or_condition;
-            }
-        } else {
-            // 通常のネイリストフィルター
-            $meta_query[] = array(
-                'key' => 'coupon_nailist',
-                'value' => $nailist,
-                'compare' => 'LIKE'
-            );
-        }
-    }
-   
+function fascina_get_coupon_page_posts($posts_per_page = 9, $paged = 1) {
     $args = array(
         'post_type' => 'coupon',
         'posts_per_page' => $posts_per_page,
         'paged' => $paged,
-        'meta_query' => $meta_query,
+        'meta_query' => array(
+            array(
+                'key' => 'coupon_display_coupon',
+                'value' => '1',
+                'compare' => '='
+            )
+        ),
         'orderby' => array(
             'menu_order' => 'ASC',
             'date' => 'DESC'
@@ -2303,39 +1849,6 @@ function twelor_get_coupon_page_posts($posts_per_page = 9, $paged = 1, $nailist 
     );
     return new WP_Query($args);
 }
-
-// クーポンのネイリストチェックボックスで単一選択機能を実装
-function twelor_coupon_nailist_single_select_script() {
-    ?>
-    <script type="text/javascript">
-    jQuery(document).ready(function($) {
-        // クーポン編集画面でのみ実行
-        if ($('body').hasClass('post-type-coupon')) {
-            $('input[name="acf[field_coupon_nailist][]"]').on('change', function() {
-                var $this = $(this);
-                var $allCheckboxes = $('input[name="acf[field_coupon_nailist][]"]');
-                
-                if ($this.is(':checked')) {
-                    // 他のチェックボックスをすべて外す
-                    $allCheckboxes.not($this).prop('checked', false);
-                }
-            });
-        }
-    });
-    </script>
-    <?php
-}
-add_action('admin_footer', 'twelor_coupon_nailist_single_select_script');
-
-// ACFフィールドの選択肢を動的に更新
-function twelor_update_coupon_nailist_choices($field) {
-    if ($field['name'] === 'coupon_nailist') {
-        $field['choices'] = twelor_get_nailist_choices_for_registration();
-    }
-    return $field;
-}
-add_filter('acf/load_field/name=coupon_nailist', 'twelor_update_coupon_nailist_choices');
-add_filter('acf/load_field/key=field_coupon_nailist', 'twelor_update_coupon_nailist_choices');
 
 // クイック編集フィールドの追加
 function twelor_add_quick_edit_fields($column_name, $post_type) {
@@ -2485,7 +1998,7 @@ add_filter('wp_insert_post_data', 'twelor_auto_set_menu_order', 10, 2);
 // 新規登録、更新時の表示順フィールド削除
 function twelor_hide_menu_order_field() {
     global $post_type;
-    if (in_array($post_type, array('gallery', 'coupon', 'course', 'banner', 'nailist'))) {
+    if (in_array($post_type, array('gallery', 'coupon', 'course', 'banner'))) {
         echo '<style>
             #pageparentdiv,
             #pageparentdiv .inside {
