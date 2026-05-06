@@ -692,7 +692,12 @@ function wps_sync_rest_post($request) {
     
     // アイキャッチ画像を設定
     if (isset($data['thumbnail_id'])) {
-        set_post_thumbnail($final_post_id, intval($data['thumbnail_id']));
+        $thumb_id = intval($data['thumbnail_id']);
+        if ($thumb_id && get_post($thumb_id)) {
+            set_post_thumbnail($final_post_id, $thumb_id);
+        } else {
+            error_log('WPS Sync Warning: thumbnail attachment not found on receiver. Post ID: ' . $final_post_id . ', Thumbnail ID: ' . $thumb_id);
+        }
     }
     
     // タームの紐付けを更新（完全置き換え）
@@ -852,21 +857,6 @@ function wps_sync_rest_media($request) {
     if ($relative_path) {
         update_post_meta($final_attachment_id, '_wp_attached_file', $relative_path);
     }
-
-    // 送信されたattachment_metaがある場合は、fileパスを実ファイルに合わせて調整
-    if (isset($data['attachment_meta']) && is_array($data['attachment_meta'])) {
-        $data['attachment_meta']['file'] = $relative_path;
-    }
-
-    // data['meta'] 側にも _wp_attachment_metadata が含まれている場合は、file だけ合わせておく
-    if (isset($data['meta']['_wp_attachment_metadata'])) {
-        $raw_meta = $data['meta']['_wp_attachment_metadata'];
-        $meta_array = is_string($raw_meta) ? maybe_unserialize($raw_meta) : $raw_meta;
-        if (is_array($meta_array)) {
-            $meta_array['file'] = $relative_path;
-            $data['meta']['_wp_attachment_metadata'] = $meta_array;
-        }
-    }
     
     // メタデータを完全置き換え（_wp_attachment_metadata と _wp_attached_file を除外）
     if (isset($data['meta']) && is_array($data['meta'])) {
@@ -889,25 +879,14 @@ function wps_sync_rest_media($request) {
         }
     }
     
-    // メタデータを設定（_wp_attachment_metadataを確実に設定）
-    if (isset($data['attachment_meta']) && is_array($data['attachment_meta']) && !empty($data['attachment_meta'])) {
-        // 送信されたattachment_metaを使用（fileパスは上で実ファイルに合わせて調整済み）
-        wp_update_attachment_metadata($final_attachment_id, $data['attachment_meta']);
-    } elseif (isset($data['meta']['_wp_attachment_metadata'])) {
-        // data['meta']に_wp_attachment_metadataが含まれている場合（配列またはシリアライズ文字列）
-        $meta_value = $data['meta']['_wp_attachment_metadata'];
-        if (is_string($meta_value)) {
-            $meta_array = maybe_unserialize($meta_value);
-            if (is_array($meta_array)) {
-                wp_update_attachment_metadata($final_attachment_id, $meta_array);
-            }
-        } elseif (is_array($meta_value)) {
-            wp_update_attachment_metadata($final_attachment_id, $meta_value);
-        }
-    } else {
-        // メタデータが送信されていない場合、再生成
-        $attach_data = wp_generate_attachment_metadata($final_attachment_id, $upload['file']);
+    // メタデータを必ずローカルで再生成する
+    // （送信側のサムネイル参照は受信側ディスクに存在しないため使用しない）
+    $attach_data = wp_generate_attachment_metadata($final_attachment_id, $upload['file']);
+    if (!empty($attach_data)) {
         wp_update_attachment_metadata($final_attachment_id, $attach_data);
+    }
+    if (empty($attach_data) || empty($attach_data['sizes'])) {
+        error_log('WPS Sync Warning: Failed to generate attachment subsizes for attachment ID ' . $final_attachment_id . ' (file: ' . $upload['file'] . ')');
     }
     
     // 同期フラグを解除
