@@ -522,8 +522,9 @@ $sub_category_name = twelor_get_sub_category_name($main_category, $sub_category)
 <!-- モーダル制御用JS -->
 <script>
 jQuery(function($){
+    var $triggers = $('.gallery-modal-trigger');
     var items = [];
-    $('.gallery-modal-trigger').each(function(){
+    $triggers.each(function(){
         items.push({
             img: $(this).data('img'),
             title: $(this).data('title'),
@@ -553,8 +554,9 @@ jQuery(function($){
         openModal(idx);
     }
 
-    $('.gallery-modal-trigger').on('click', function(){
-        openModal($(this).data('index'));
+    $triggers.on('click', function(){
+        // data-index ではなく DOM 上の実順序を使う（アイキャッチ未設定の投稿でインデックスがズレないように）
+        openModal($triggers.index(this));
     });
     $('.gallery-modal-close').on('click', closeModal);
     $('.gallery-modal-prev').on('click', showPrev);

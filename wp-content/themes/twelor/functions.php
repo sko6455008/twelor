@@ -418,7 +418,19 @@ function twelor_register_acf_fields() {
                     'required' => 1,
                     'choices' => array(),
                     'return_format' => 'value',
-                    'layout' => 'vertical'
+                    'layout' => 'vertical',
+                    // Guestデザインはサブカテゴリーを持たない（全件表示）。
+                    // メインカテゴリーがguest以外のときだけ表示・必須にし、
+                    // guest選択時は非表示にして必須バリデーションをスキップする。
+                    'conditional_logic' => array(
+                        array(
+                            array(
+                                'field' => 'field_gallery_main_category',
+                                'operator' => '!=',
+                                'value' => 'guest',
+                            ),
+                        ),
+                    ),
                 ),
                 array(
                     'key' => 'field_gallery_is_bridal',

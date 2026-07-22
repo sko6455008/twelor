@@ -94,52 +94,81 @@ function wps_sync_set_syncing($object_id, $value = true, $type = 'post') {
  */
 function wps_sync_remote_request($endpoint, $method = 'POST', $data = array()) {
     $url = trailingslashit(SYNC_SITE_URL) . 'wp-json/sync/v1/' . ltrim($endpoint, '/');
-    
+
     // Application Passwordのスペースを削除（WordPressのApplication Passwordはスペースを含む形式で表示されるが、使用時はスペースを削除する必要がある）
     $auth_pass = str_replace(' ', '', SYNC_AUTH_PASS);
-    
+
+    $body = null;
+    if (!empty($data)) {
+        $body = json_encode($data);
+        // メディア画像などの大きなペイロードでjson_encodeが失敗すると、
+        // 本文が空のまま送信され、受信側で「Missing required fields」となって
+        // 画像が添付されない。失敗を検知してログを残し、中断する。
+        if ($body === false) {
+            error_log('WPS Sync Error: json_encode failed (payload too large or invalid) | URL: ' . $url . ' | json_last_error: ' . json_last_error_msg());
+            return false;
+        }
+    }
+
+    // メディア同期は画像本体(base64)を含み転送に時間がかかるため、タイムアウトを長めに取る
+    $is_media = (strpos(ltrim($endpoint, '/'), 'media') === 0);
+
     $args = array(
         'method' => $method,
-        'timeout' => 30,
+        'timeout' => $is_media ? 60 : 30,
         'headers' => array(
             'Content-Type' => 'application/json',
             'Authorization' => 'Basic ' . base64_encode(SYNC_AUTH_USER . ':' . $auth_pass),
         ),
     );
-    
-    if (!empty($data)) {
-        $args['body'] = json_encode($data);
+
+    if ($body !== null) {
+        $args['body'] = $body;
     }
-    
-    $response = wp_remote_request($url, $args);
-    
-    if (is_wp_error($response)) {
-        $error_message = $response->get_error_message();
-        error_log('WPS Sync Error: ' . $error_message . ' | URL: ' . $url);
-        
-        // 接続エラーの場合、リモート側の同期フラグをクリーンアップするためのリトライは行わない
-        // （リモート側でタイムアウト処理があるため）
+
+    // 一時的な接続エラー・タイムアウト・5xxで画像同期が取りこぼされるのを防ぐため、数回までリトライする。
+    // 受信側はID指定のupsert（import_id / ID指定の作成・更新）で冪等なため、再送は安全。
+    $max_attempts = 2;
+
+    for ($attempt = 1; $attempt <= $max_attempts; $attempt++) {
+        $response = wp_remote_request($url, $args);
+
+        if (is_wp_error($response)) {
+            error_log('WPS Sync Error (attempt ' . $attempt . '/' . $max_attempts . '): ' . $response->get_error_message() . ' | URL: ' . $url);
+            // 接続エラー・タイムアウトはリトライ
+            if ($attempt < $max_attempts) {
+                continue;
+            }
+            return false;
+        }
+
+        $response_code = wp_remote_retrieve_response_code($response);
+        $response_body = wp_remote_retrieve_body($response);
+
+        if ($response_code >= 200 && $response_code < 300) {
+            return json_decode($response_body, true);
+        }
+
+        // 5xxはリモート側の一時的な障害の可能性があるためリトライ
+        if ($response_code >= 500 && $attempt < $max_attempts) {
+            error_log('WPS Sync Warning (attempt ' . $attempt . '/' . $max_attempts . '): HTTP ' . $response_code . ' | URL: ' . $url);
+            continue;
+        }
+
+        // HTTP 400エラーで「Already syncing」の場合、リモート側の同期フラグが残っている可能性がある
+        // この場合は、リモート側でタイムアウト処理により自動的に解除される
+        if ($response_code === 400) {
+            $response_data = json_decode($response_body, true);
+            if (isset($response_data['code']) && $response_data['code'] === 'syncing') {
+                error_log('WPS Sync Warning: Remote site is already syncing. This may be due to a previous connection error. | URL: ' . $url);
+                // リモート側の同期フラグはタイムアウト処理により自動的に解除されるため、ここでは何もしない
+            }
+        }
+
+        error_log('WPS Sync Error: HTTP ' . $response_code . ' | URL: ' . $url . ' | Response: ' . $response_body);
         return false;
     }
-    
-    $response_code = wp_remote_retrieve_response_code($response);
-    $response_body = wp_remote_retrieve_body($response);
-    
-    if ($response_code >= 200 && $response_code < 300) {
-        return json_decode($response_body, true);
-    }
-    
-    // HTTP 400エラーで「Already syncing」の場合、リモート側の同期フラグが残っている可能性がある
-    // この場合は、リモート側でタイムアウト処理により自動的に解除される
-    if ($response_code === 400) {
-        $response_data = json_decode($response_body, true);
-        if (isset($response_data['code']) && $response_data['code'] === 'syncing') {
-            error_log('WPS Sync Warning: Remote site is already syncing. This may be due to a previous connection error. | URL: ' . $url);
-            // リモート側の同期フラグはタイムアウト処理により自動的に解除されるため、ここでは何もしない
-        }
-    }
-    
-    error_log('WPS Sync Error: HTTP ' . $response_code . ' | URL: ' . $url . ' | Response: ' . $response_body);
+
     return false;
 }
 
@@ -776,9 +805,17 @@ function wps_sync_rest_media($request) {
     }
     
     // ファイルデータを書き込む
-    $file_data = base64_decode($data['file_data']);
-    file_put_contents($tmp, $file_data);
-    
+    // strictモードでデコードし、転送中に欠落・破損したペイロードを検知する。
+    // 壊れた・空のデータで添付ファイルを作ると「画像が添付されない」状態になるため、
+    // ここで明確にエラーを返して中断する。
+    $file_data = base64_decode($data['file_data'], true);
+    if ($file_data === false || $file_data === '' || file_put_contents($tmp, $file_data) === false) {
+        @unlink($tmp);
+        wps_sync_set_syncing($attachment_id, false);
+        error_log('WPS Sync Error: invalid or empty media payload for attachment ID ' . $attachment_id);
+        return new WP_Error('invalid_media_data', 'Failed to decode or write media file data', array('status' => 400));
+    }
+
     // ファイルをアップロード
     $file_array = array(
         'name' => sanitize_file_name($data['file_name']),
