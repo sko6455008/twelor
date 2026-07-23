@@ -1049,7 +1049,8 @@ add_filter('manage_gallery_posts_columns', 'twelor_add_gallery_columns');
 function twelor_gallery_column_content($column_name, $post_id) {
     if ($column_name === 'thumbnail') {
         if (has_post_thumbnail($post_id)) {
-            echo get_the_post_thumbnail($post_id, array(60, 60));
+            // ホバー拡大時にぼやけないよう large サイズを読み込む(表示サイズはCSSで60pxに調整)
+            echo get_the_post_thumbnail($post_id, 'large');
         }
     } elseif ($column_name === 'menu_order') {
         $post = get_post($post_id);
@@ -1397,6 +1398,17 @@ function twelor_admin_columns_style() {
             width: 60px;
             height: 60px;
             object-fit: cover;
+        }
+        /* ギャラリー一覧では画像をホバーで拡大表示 */
+        .post-type-gallery .column-thumbnail img {
+            transition: transform 0.2s ease;
+        }
+        .post-type-gallery .column-thumbnail img:hover {
+            position: relative;
+            z-index: 100;
+            transform: scale(6);
+            transform-origin: left center;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
         }
         .column-menu_order {
             width: 100px;
