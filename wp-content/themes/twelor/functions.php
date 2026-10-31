@@ -156,6 +156,16 @@ function twelor_get_sub_category_name($main_category, $sub_category) {
 
 // サブカテゴリー表示名を取得
 function twelor_get_sub_category_display_name_by_value($main_category, $sub_category) {
+    if (is_array($sub_category)) {
+        $names = array();
+        foreach (twelor_normalize_gallery_sub_categories($sub_category) as $slug) {
+            $name = twelor_get_sub_category_display_name_by_value($main_category, $slug);
+            if ($name) {
+                $names[] = $name;
+            }
+        }
+        return implode(' / ', $names);
+    }
      if ($sub_category === 'list') {
         return '一覧';
     }
@@ -413,8 +423,8 @@ function twelor_register_acf_fields() {
                     'key' => 'field_gallery_sub_category',
                     'label' => 'サブカテゴリー',
                     'name' => 'gallery_sub_category',
-                    'type' => 'radio',
-                    'instructions' => '※紐づいているサブカテゴリーが削除された場合、ギャラリーページに表示されなくなります。',
+                    'type' => 'checkbox',
+                    'instructions' => '複数選択できます。選択した各サブカテゴリーに表示されます。カテゴリーを削除すると、その選択だけが解除されます。',
                     'required' => 1,
                     'choices' => array(),
                     'return_format' => 'value',
@@ -753,20 +763,27 @@ function twelor_register_acf_fields() {
     }
 }
 
+add_action('acf/init', 'twelor_register_acf_fields');
+
 // ACFフィールドの選択肢を動的に更新
 function twelor_load_gallery_sub_category_choices($field) {
     if ($field['name'] === 'gallery_sub_category') {
         // 現在選択されているメインカテゴリーを取得
         $main_category = '';
        
-        // 編集画面の場合
-        if (isset($_GET['post']) && $_GET['post']) {
-            $main_category = get_field('gallery_main_category', $_GET['post']);
+        // 変更・保存時は、編集前の値より送信されたメインカテゴリーを優先する。
+        if (isset($_POST['acf']['field_gallery_main_category']) && is_string($_POST['acf']['field_gallery_main_category'])) {
+            $main_category = sanitize_text_field(wp_unslash($_POST['acf']['field_gallery_main_category']));
+        } elseif (!empty($_GET['post'])) {
+            $main_category = get_post_meta(absint($_GET['post']), 'gallery_main_category', true);
         }
-        // 新規作成画面の場合
-        elseif (isset($_POST['acf']['field_gallery_main_category'])) {
-            $main_category = $_POST['acf']['field_gallery_main_category'];
-        }
+
+        $multiple = !$main_category || $main_category === 'hand';
+        $field['type'] = $multiple ? 'checkbox' : 'radio';
+        $field['instructions'] = $multiple
+            ? '複数選択できます。選択した各サブカテゴリーに表示されます。カテゴリーを削除すると、その選択だけが解除されます。'
+            : 'サブカテゴリーを1つ選択してください。';
+        $field = wp_parse_args($field, acf_get_field_type($field['type'])->defaults);
 
         // メインカテゴリーが選択されている場合、対応するサブカテゴリーを取得
         if ($main_category) {
@@ -781,7 +798,35 @@ function twelor_load_gallery_sub_category_choices($field) {
 }
 add_filter('acf/load_field/name=gallery_sub_category', 'twelor_load_gallery_sub_category_choices');
 
-// サブカテゴリー削除時、紐づいているギャラリーのサブカテゴリーフィールドを空にして非表示にする
+// HANDだけ配列で保存し、それ以外は従来の単一値を維持する。
+function twelor_save_gallery_sub_category_selection($value, $post_id, $field) {
+    $main_category = get_post_meta($post_id, 'gallery_main_category', true);
+    if (isset($_POST['acf']['field_gallery_main_category']) && is_string($_POST['acf']['field_gallery_main_category'])) {
+        $main_category = sanitize_text_field(wp_unslash($_POST['acf']['field_gallery_main_category']));
+    }
+    $selected = twelor_normalize_gallery_sub_categories($value);
+    return $main_category === 'hand' ? $selected : ($selected[0] ?? '');
+}
+add_filter('acf/update_value/name=gallery_sub_category', 'twelor_save_gallery_sub_category_selection', 20, 3);
+
+// 旧形式（文字列）と複数選択（配列）を共通の形で扱う。
+function twelor_normalize_gallery_sub_categories($value) {
+    $values = is_array($value) ? $value : array($value);
+    return array_values(array_unique(array_filter($values, function($slug) {
+        return is_string($slug) && $slug !== '';
+    })));
+}
+
+// 保存済みの単一値と、ACFチェックボックスのシリアライズ配列の両方を検索する。
+function twelor_gallery_sub_category_meta_query($slug) {
+    return array(
+        'relation' => 'OR',
+        array('key' => 'gallery_sub_category', 'value' => $slug, 'compare' => '='),
+        array('key' => 'gallery_sub_category', 'value' => '"' . $slug . '"', 'compare' => 'LIKE'),
+    );
+}
+
+// サブカテゴリー削除時、その選択だけを解除する（表示設定は変更しない）。
 function twelor_clear_galleries_on_subcategory_delete($post_id) {
     if (get_post_type($post_id) !== 'course') return;
     
@@ -802,18 +847,14 @@ function twelor_clear_galleries_on_subcategory_delete($post_id) {
                 'value' => $main_category,
                 'compare' => '='
             ),
-            array(
-                'key' => 'gallery_sub_category',
-                'value' => $course_slug,
-                'compare' => '='
-            )
+            twelor_gallery_sub_category_meta_query($course_slug)
         )
     ));
     
-    // ギャラリーのサブカテゴリーフィールドを空にする（表示設定は変更しない）
+    // 他のサブカテゴリーの選択を残す。
     foreach ($galleries as $gallery) {
-        // サブカテゴリーフィールドを空にする
-        update_field('gallery_sub_category', '', $gallery->ID);
+        $selected = twelor_normalize_gallery_sub_categories(get_post_meta($gallery->ID, 'gallery_sub_category', true));
+        update_field('field_gallery_sub_category', array_values(array_diff($selected, array($course_slug))), $gallery->ID);
     }
 }
 add_action('before_delete_post', 'twelor_clear_galleries_on_subcategory_delete');
@@ -936,12 +977,19 @@ function twelor_gallery_category_script() {
     ?>
     <script>
     jQuery(document).ready(function($) {
+        const $subCategoryContainer = $('[data-key="field_gallery_sub_category"]');
+        let requestVersion = 0;
         function updateSubCategories() {
+            const version = ++requestVersion;
             const mainSelected = $('[name="acf[field_gallery_main_category]"]:checked').val();
-            const $subCategories = $('[name="acf[field_gallery_sub_category]"]');
+            const multiple = mainSelected === 'hand';
+            const $subCategories = $subCategoryContainer.find('input[type="checkbox"], input[type="radio"]');
+            const $ul = $subCategoryContainer.find('ul.acf-checkbox-list, ul.acf-radio-list');
            
             if (mainSelected) {
-                const currentlySelected = $subCategories.filter(':checked').val();
+                const currentlySelected = $subCategories.filter(':checked').map(function() {
+                    return this.value;
+                }).get();
                
                 // AJAXでサブカテゴリーを取得
                 $.ajax({
@@ -953,53 +1001,39 @@ function twelor_gallery_category_script() {
                         nonce: '<?php echo wp_create_nonce("get_course_choices"); ?>'
                     },
                     success: function(response) {
-                        if (response.success) {
-                            // 既存の選択肢をクリア
-                            $subCategories.prop('checked', false);
-                           
-                            // サブカテゴリーの選択肢を完全に再構築
-                            const $subCategoryContainer = $subCategories.first().closest('.acf-field-radio');
-                            const $ul = $subCategoryContainer.find('ul.acf-radio-list');
-                            
+                        if (response.success && version === requestVersion) {
                             // 既存の選択肢をクリア
                             $ul.empty();
+                            $ul.toggleClass('acf-checkbox-list', multiple).toggleClass('acf-radio-list', !multiple);
+                            $subCategoryContainer.find('.acf-label .description').text(multiple
+                                ? '複数選択できます。選択した各サブカテゴリーに表示されます。カテゴリーを削除すると、その選択だけが解除されます。'
+                                : 'サブカテゴリーを1つ選択してください。');
+                            let selectedOne = false;
                             
                             // 新しい選択肢を追加
                             $.each(response.data, function(value, label) {
                                 const $li = $('<li>');
                                 const $label = $('<label>');
+                                const checked = currentlySelected.includes(value) && (multiple || !selectedOne);
+                                if (checked) selectedOne = true;
                                 const $input = $('<input>', {
-                                    type: 'radio',
-                                    name: 'acf[field_gallery_sub_category]',
-                                    value: value
+                                    type: multiple ? 'checkbox' : 'radio',
+                                    name: 'acf[field_gallery_sub_category]' + (multiple ? '[]' : ''),
+                                    value: value,
+                                    checked: checked
                                 });
                                 
                                 $label.append($input);
-                                $label.append('<span>' + label + '</span>');
+                                $label.append($('<span>').text(label));
                                 $li.append($label);
                                 $ul.append($li);
                             });
                             
-                            // 更新されたサブカテゴリーの要素を再取得
-                            const $newSubCategories = $('[name="acf[field_gallery_sub_category]"]');
-                           
-                            // 以前選択されていたサブカテゴリーが利用可能な場合は選択を維持
-                            if (currentlySelected && $newSubCategories.filter('[value="' + currentlySelected + '"]').length > 0) {
-                                $newSubCategories.filter('[value="' + currentlySelected + '"]').prop('checked', true);
-                            } else {
-                                // 最初のサブカテゴリーを選択
-                                const firstVisible = $newSubCategories.first();
-                                if (firstVisible.length) {
-                                    firstVisible.prop('checked', true);
-                                }
-                            }
                         }
                     }
                 });
             } else {
                 // メインカテゴリーが選択されていない場合、サブカテゴリーをクリア
-                const $subCategoryContainer = $subCategories.first().closest('.acf-field-radio');
-                const $ul = $subCategoryContainer.find('ul.acf-radio-list');
                 $ul.empty();
             }
         }
@@ -1007,8 +1041,7 @@ function twelor_gallery_category_script() {
         // メインカテゴリーの変更時にサブカテゴリーを更新
         $('[name="acf[field_gallery_main_category]"]').on('change', updateSubCategories);
 
-        // 初期表示時にも実行
-        updateSubCategories();
+        // 初期選択はACFのサーバー描画を使い、既存の選択を維持する。
     });
     </script>
     <?php
@@ -1475,9 +1508,6 @@ add_action('admin_footer', 'twelor_custom_order_admin_script');
 function twelor_check_acf() {
     if (!function_exists('acf_add_local_field_group')) {
         add_action('admin_notices', 'twelor_acf_notice');
-    } else {
-        // ACFフィールドの登録
-        twelor_register_acf_fields();
     }
 }
 add_action('admin_init', 'twelor_check_acf');
@@ -1637,7 +1667,7 @@ add_action('restrict_manage_posts', 'twelor_add_gallery_filters');
 function twelor_apply_gallery_filters($query) {
     global $pagenow, $typenow;
    
-    if ($pagenow === 'edit.php' && $typenow === 'gallery') {
+    if (is_admin() && $query->is_main_query() && $pagenow === 'edit.php' && $typenow === 'gallery') {
         $meta_query = array('relation' => 'AND');
 
         // メインカテゴリーのフィルター
@@ -1651,11 +1681,7 @@ function twelor_apply_gallery_filters($query) {
 
         // サブカテゴリーのフィルター
         if (!empty($_GET['sub_category'])) {
-            $meta_query[] = array(
-                'key' => 'gallery_sub_category',
-                'value' => $_GET['sub_category'],
-                'compare' => '='
-            );
+            $meta_query[] = twelor_gallery_sub_category_meta_query(sanitize_text_field(wp_unslash($_GET['sub_category'])));
         }
 
         if (count($meta_query) > 1) {
@@ -1799,13 +1825,9 @@ function twelor_get_gallery_page_posts($main_category = '', $sub_category = '', 
         );
     }
    
-    // サブカテゴリーの条件（Guestはサブカテゴリーで絞り込まず全件表示。bridalはサブカテゴリー指定しない）
-    if ($main_category !== 'guest' && !empty($sub_category) && $sub_category !== 'bridal') {
-        $meta_query[] = array(
-            'key' => 'gallery_sub_category',
-            'value' => $sub_category,
-            'compare' => '='
-         );
+    // サブカテゴリーの条件（Guestと一覧は絞り込まず全件表示。bridalは専用の条件で絞り込む）
+    if ($main_category !== 'guest' && !empty($sub_category) && $sub_category !== 'list' && $sub_category !== 'bridal') {
+        $meta_query[] = twelor_gallery_sub_category_meta_query($sub_category);
     }
 
     // ブライダルデザインの条件
@@ -2094,21 +2116,26 @@ function twelor_admin_filters_script() {
 }
 add_action('admin_footer-edit.php', 'twelor_admin_filters_script');
 
-// サブカテゴリーのスラッグ更新時にギャラリーも自動更新
+// ACFが値を保存する前に、現在のスラッグを保持する。
+function twelor_capture_course_slug_before_save($post_id) {
+    if (get_post_type($post_id) === 'course') {
+        update_post_meta($post_id, '_old_course_slug', get_post_meta($post_id, 'course_slug', true));
+    }
+}
+add_action('acf/save_post', 'twelor_capture_course_slug_before_save', 5);
+
+// ACFの保存後、変更されたスラッグだけを置換する。
 function twelor_update_gallery_sub_categories_on_course_slug_change($post_id) {
     if (get_post_type($post_id) !== 'course') {
         return;
     }
     
-    // 無限ループを防ぐ
-    remove_action('save_post', 'twelor_update_gallery_sub_categories_on_course_slug_change');
-    
     $old_slug = get_post_meta($post_id, '_old_course_slug', true);
-    $new_slug = get_field('course_slug', $post_id);
-    $main_category = get_field('course_main_category', $post_id);
+    $new_slug = get_post_meta($post_id, 'course_slug', true);
+    $main_category = get_post_meta($post_id, 'course_main_category', true);
     
     // スラッグが変更された場合のみ処理
-    if ($old_slug && $old_slug !== $new_slug && $main_category) {
+    if ($old_slug && $new_slug && $old_slug !== $new_slug && $main_category) {
         // 古いスラッグを使用しているギャラリーを検索
         $galleries = get_posts(array(
             'post_type' => 'gallery',
@@ -2121,27 +2148,25 @@ function twelor_update_gallery_sub_categories_on_course_slug_change($post_id) {
                     'value' => $main_category,
                     'compare' => '='
                 ),
-                array(
-                    'key' => 'gallery_sub_category',
-                    'value' => $old_slug,
-                    'compare' => '='
-                )
+                twelor_gallery_sub_category_meta_query($old_slug)
             )
         ));
         
         // ギャラリーのサブカテゴリーを新しいスラッグに更新
         foreach ($galleries as $gallery) {
-            update_field('gallery_sub_category', $new_slug, $gallery->ID);
+            $selected = twelor_normalize_gallery_sub_categories(get_post_meta($gallery->ID, 'gallery_sub_category', true));
+            $selected = array_map(function($slug) use ($old_slug, $new_slug) {
+                return $slug === $old_slug ? $new_slug : $slug;
+            }, $selected);
+            update_field('field_gallery_sub_category', twelor_normalize_gallery_sub_categories($selected), $gallery->ID);
         }
     }
     
     // 新しいスラッグを保存
     update_post_meta($post_id, '_old_course_slug', $new_slug);
     
-    // アクションを再度追加
-    add_action('save_post', 'twelor_update_gallery_sub_categories_on_course_slug_change');
 }
-add_action('save_post', 'twelor_update_gallery_sub_categories_on_course_slug_change');
+add_action('acf/save_post', 'twelor_update_gallery_sub_categories_on_course_slug_change', 20);
 
 // AJAXハンドラー
 function twelor_ajax_get_course_choices() {
