@@ -27,6 +27,8 @@ $total_pages = ceil($total_posts / $posts_per_page);
 // カテゴリー名を動的に取得
 $main_category_name = twelor_get_main_category_name($main_category);
 $sub_category_name = twelor_get_sub_category_name($main_category, $sub_category);
+$show_item_sub_category = $main_category === 'hand' && $sub_category === 'list';
+$item_sub_category_choices = $show_item_sub_category ? twelor_get_course_choices('hand') : array();
 ?>
 
 <div class="page-header">
@@ -124,6 +126,16 @@ $sub_category_name = twelor_get_sub_category_name($main_category, $sub_category)
                         $img = esc_url($gallery_items[$index]['img']);
                         $title = esc_html($gallery_items[$index]['title']);
                         $desc = esc_html($gallery_items[$index]['desc']);
+                        $item_sub_category_name = '';
+                        if ($show_item_sub_category) {
+                            $item_sub_category_names = array();
+                            foreach (twelor_normalize_gallery_sub_categories(get_field('gallery_sub_category')) as $item_sub_category) {
+                                if ($item_sub_category !== 'list' && isset($item_sub_category_choices[$item_sub_category])) {
+                                    $item_sub_category_names[] = $item_sub_category_choices[$item_sub_category];
+                                }
+                            }
+                            $item_sub_category_name = implode(' / ', $item_sub_category_names);
+                        }
                     ?>
                         <div class="col-lg-2-4 col-md-6 col-12">
                             <div class="gallery-item fade-in-section">
@@ -143,8 +155,11 @@ $sub_category_name = twelor_get_sub_category_name($main_category, $sub_category)
                                         <?php endif; ?>
                                     </div>
                                 <?php endif; ?>
-                                <div class="gallery-caption">
+                                <div class="gallery-caption<?php echo $item_sub_category_name !== '' ? ' gallery-caption--with-subcategory' : ''; ?>">
                                     <h2 class="gallery-title"><?php echo $title; ?></h2>
+                                    <?php if ($item_sub_category_name !== ''): ?>
+                                        <span class="gallery-subcategory"><?php echo esc_html($item_sub_category_name); ?></span>
+                                    <?php endif; ?>
                                     <p class="publish" style="display:none;"><?php echo get_the_date('Y/m/d H:i:s'); ?></p>
                                 </div>
                             </div>
@@ -340,6 +355,24 @@ $sub_category_name = twelor_get_sub_category_name($main_category, $sub_category)
         font-size: 16px;
         margin: 0 0 5px;
         color: #333;
+    }
+    .gallery-caption--with-subcategory {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 3px 6px;
+    }
+    .gallery-caption--with-subcategory .gallery-title {
+        margin: 0;
+        max-width: 100%;
+        overflow-wrap: anywhere;
+    }
+    .gallery-subcategory {
+        max-width: 100%;
+        font-size: 11px;
+        line-height: 1.5;
+        color: #666;
+        overflow-wrap: anywhere;
     }
     .pagination-container {
         text-align: center;

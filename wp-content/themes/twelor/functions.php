@@ -20,6 +20,22 @@ function twelor_setup() {
 }
 add_action('after_setup_theme', 'twelor_setup');
 
+// ヘッダーのHandギャラリーは一覧を初期表示する
+function twelor_header_hand_gallery_link($atts, $menu_item, $args) {
+    if (($args->theme_location ?? '') !== 'primary' || empty($atts['href'])) {
+        return $atts;
+    }
+
+    $path = wp_parse_url($atts['href'], PHP_URL_PATH);
+    $simple_path = wp_parse_url(home_url('/gallery_hand_design/simple/'), PHP_URL_PATH);
+    if (is_string($path) && untrailingslashit($path) === untrailingslashit($simple_path)) {
+        $atts['href'] = home_url('/gallery_hand_design/list/');
+    }
+
+    return $atts;
+}
+add_filter('nav_menu_link_attributes', 'twelor_header_hand_gallery_link', 10, 3);
+
 // スタイルシートとスクリプトの読み込み
 function twelor_scripts() {
     // Google Fonts - Lobster
