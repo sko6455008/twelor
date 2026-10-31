@@ -49,6 +49,15 @@ function twelor_scripts() {
    
     // カスタムCSS
     wp_enqueue_style('twelor-custom', get_template_directory_uri() . '/assets/css/custom.css', array(), '1.0.0');
+
+    if (is_page_template('page-nail-catalog.php') || is_page('nail-catalog')) {
+        wp_enqueue_style(
+            'twelor-nail-catalog',
+            get_template_directory_uri() . '/assets/css/nail-catalog.css',
+            array('twelor-custom'),
+            filemtime(get_template_directory() . '/assets/css/nail-catalog.css')
+        );
+    }
    
     // Bootstrap JavaScript
     wp_enqueue_script('bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js', array('jquery'), '5.3.0', true);

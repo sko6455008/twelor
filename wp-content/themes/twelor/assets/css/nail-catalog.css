@@ -1,0 +1,210 @@
+/* 既存テーマのブルーグレーに合わせた、ネイルカタログの入口。 */
+.nail-catalog {
+    --catalog-accent: #95bac3;
+    --catalog-ink: #3c4244;
+    margin-top: 70px;
+    padding: 58px 24px 60px;
+    background: #f6f7f6;
+    color: var(--catalog-ink);
+}
+
+.nail-catalog__inner {
+    max-width: 1140px;
+    margin: 0 auto;
+}
+
+.nail-catalog__heading {
+    margin-bottom: 36px;
+    text-align: center;
+}
+
+.nail-catalog__eyebrow {
+    margin: 0 0 12px;
+    color: #5c818b;
+    font-family: 'Lobster', cursive;
+    font-size: 28px;
+    line-height: 1.2;
+}
+
+.nail-catalog__heading h1 {
+    margin: 0 0 15px;
+    font-size: clamp(21px, 3.4vw, 30px);
+    font-weight: 700;
+    letter-spacing: .08em;
+    line-height: 1.5;
+}
+
+.nail-catalog__intro {
+    margin: 0;
+    color: #727a7a;
+    font-size: 13px;
+    letter-spacing: .08em;
+}
+
+.nail-catalog__cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.nail-catalog-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid #e7eae8;
+    border-radius: 20px;
+    background: #fff;
+    color: var(--catalog-ink);
+    text-decoration: none;
+    box-shadow: 0 8px 22px rgba(58, 76, 79, .06);
+    transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.nail-catalog-card:hover {
+    color: var(--catalog-ink);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(58, 76, 79, .12);
+}
+
+.nail-catalog-card:focus-visible {
+    outline: 3px solid #4f7c88;
+    outline-offset: 5px;
+}
+
+.nail-catalog-card__photos {
+    margin: 12px 12px 0;
+    border-bottom: 3px solid #d7e4e6;
+    background: #e9eeec;
+}
+
+.nail-catalog-card__image {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: contain;
+    object-position: center;
+}
+
+.nail-catalog-card__body {
+    position: relative;
+    flex: 1;
+    padding: 22px 34px 24px 20px;
+}
+
+.nail-catalog-card__label {
+    display: inline-block;
+    padding: 3px 12px;
+    border-radius: 20px;
+    background: #557980;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    line-height: 1.2;
+}
+
+.nail-catalog-card--foot .nail-catalog-card__label {
+    background: #62766b;
+}
+
+.nail-catalog-card--guest .nail-catalog-card__label {
+    background: #7a6f64;
+}
+
+.nail-catalog-card__body h2 {
+    margin: 11px 0 8px;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+}
+
+.nail-catalog-card__body p {
+    margin: 0;
+    color: #747b78;
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+.nail-catalog-card__arrow {
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    color: #769ca6;
+    font-size: 26px;
+    line-height: 1;
+    transform: translateY(-50%);
+}
+
+.nail-catalog__note {
+    margin: 30px 0 0;
+    color: #747b78;
+    font-size: 12px;
+    line-height: 1.8;
+    text-align: center;
+}
+
+@media (max-width: 959px) {
+    .nail-catalog__inner {
+        max-width: 600px;
+    }
+
+    .nail-catalog__cards {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 20px;
+    }
+}
+
+@media (max-width: 639px) {
+    .nail-catalog {
+        padding: 30px 16px 36px;
+    }
+
+    .nail-catalog__heading {
+        margin-bottom: 25px;
+    }
+
+    .nail-catalog__eyebrow {
+        margin-bottom: 9px;
+        font-size: 23px;
+    }
+
+    .nail-catalog__heading h1 {
+        margin-bottom: 10px;
+        letter-spacing: .035em;
+    }
+
+    .nail-catalog__intro {
+        font-size: 11px;
+    }
+
+    .nail-catalog__cards {
+        gap: 16px;
+    }
+
+    .nail-catalog-card__body {
+        padding: 15px 30px 17px 15px;
+    }
+
+    .nail-catalog-card__body h2 {
+        margin: 8px 0 5px;
+        font-size: clamp(13px, 3.85vw, 16px);
+    }
+
+    .nail-catalog-card__body p {
+        font-size: 11px;
+    }
+
+    .nail-catalog-card__arrow {
+        right: 13px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .nail-catalog-card,
+    .nail-catalog-card:hover {
+        transition: none;
+        transform: none;
+    }
+}
