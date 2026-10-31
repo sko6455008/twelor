@@ -31,7 +31,7 @@ $show_item_sub_category = $main_category === 'hand' && $sub_category === 'list';
 $item_sub_category_choices = $show_item_sub_category ? twelor_get_course_choices('hand') : array();
 ?>
 
-<div class="page-header">
+<div class="page-header<?php echo in_array($main_category, array('hand', 'guest', 'foot'), true) ? ' gallery-page-header--compact-mobile' : ''; ?>">
     <div class="headline-area">
         <h1 class="headline"><?php echo esc_html($main_category_name); ?></h1>
         <p class="title">ギャラリー</p>
@@ -39,11 +39,6 @@ $item_sub_category_choices = $show_item_sub_category ? twelor_get_course_choices
 </div>
 
 <div class="gallery-container">
-    <!-- 無料お色変更の案内 -->
-    <div class="color-change-notice">
-        <p>※お色変更無料※</p>
-    </div>
-
     <!-- コースカテゴリーナビゲーション -->
     <?php if ($main_category === 'hand'): ?>
     <div class="course-navigation">
@@ -255,11 +250,6 @@ $item_sub_category_choices = $show_item_sub_category ? twelor_get_course_choices
     /* gelleryセクション */
     .gallery-container {
         padding: 30px 0;
-    }
-    .color-change-notice {
-        text-align: center;
-        margin-bottom: 30px;
-        font-size: 15px;
     }
     .course-navigation {
         margin-bottom: 30px;
@@ -515,6 +505,30 @@ $item_sub_category_choices = $show_item_sub_category ? twelor_get_course_choices
     }
     
     @media (max-width: 767px) {
+        .gallery-container {
+            padding: 0;
+        }
+        .gallery-page-header--compact-mobile {
+            height: auto;
+            padding: 12px 20px 20px;
+            background: none;
+        }
+        .gallery-page-header--compact-mobile .headline-area {
+            color: #3c4244;
+        }
+        .gallery-page-header--compact-mobile .headline {
+            margin: 0;
+            font-size: 26px;
+            line-height: 1.4;
+            text-shadow: none;
+        }
+        .gallery-page-header--compact-mobile .title {
+            margin: 8px 0 0;
+            font-size: 13px;
+            line-height: 1.5;
+            color: #727a7a;
+            text-shadow: none;
+        }
         .category-title h2 {
             font-size: 16px;
         }
